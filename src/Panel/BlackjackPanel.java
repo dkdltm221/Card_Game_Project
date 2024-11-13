@@ -1,6 +1,7 @@
 package Panel;
 
 
+import Game.BlackJack;
 import Main.MainApp;
 
 import javax.swing.*;

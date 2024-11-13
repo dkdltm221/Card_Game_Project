@@ -50,7 +50,7 @@ public class MainApp extends JFrame {
 
     public static void updateScore(int point){
         user.addScore(point);
-        InputUsers.userUpdate(user.getName(),point);
+        InputUsers.userUpdate(user.getName(),user.getScore());
     }
     public void showScreen(String screenName) {
         cardLayout.show(mainPanel, screenName);

@@ -15,6 +15,7 @@ public class InputUsers {
     static ArrayList<User> users=new ArrayList<>();
 
     public void readAll(){
+        users.clear();
         String id;
         int point;
         Scanner scanner = openFile("user.txt");
@@ -68,7 +69,7 @@ public class InputUsers {
         writeSortedToFile();
     }
 
-    void writeSortedToFile() {
+    private static void writeSortedToFile() {
         try (FileWriter writer = new FileWriter("user.txt")) {
             Collections.sort(users, new Comparator<User>() {
                 @Override
@@ -81,6 +82,7 @@ public class InputUsers {
             for (User user : users) {
                 writer.write(user.getName() + " " + user.getScore() + "\n");
             }
+            writer.close();
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
@@ -101,8 +103,7 @@ public class InputUsers {
                 break;
             }
         }
-        InputUsers inputUsers = new InputUsers();
-        inputUsers.writeSortedToFile();
+        writeSortedToFile();
     }
 
 }

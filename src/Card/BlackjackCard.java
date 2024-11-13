@@ -1,6 +1,9 @@
-package Panel;
+package Card;
 
-public class Carddd
+
+import Card.Card;
+
+public class BlackjackCard implements Card
 {
     private String mSuit;
     private int mRank;
@@ -10,7 +13,7 @@ public class Carddd
     private boolean mIsACalc11;
 
     //기본적으로 A는 11로 취급한다.
-    public Carddd(String suit, int rank)
+    public BlackjackCard(String suit, int rank)
     {
         this.mSuit = suit;
         this.mRank = rank;
@@ -18,7 +21,7 @@ public class Carddd
         this.mIsACalc11 =true;
     }
 
-    public String GetSuit()
+    public String getName()
     {
         return mSuit;
     }
@@ -26,7 +29,8 @@ public class Carddd
     //GetRank를 호출하면 10을 초과하는 값은 10으로 리턴하고
     //A카드는 mIsACalc11의 참거짓에 따라 11, 1로 리턴한다.
     //그 외는 Rank에 맞게 리턴
-    public int GetRank()
+
+    public int getValue()
     {
         if(mRank >10)
         {

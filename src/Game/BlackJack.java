@@ -1,11 +1,11 @@
-package Panel;
+package Game;
 
+import Card.BlackjackCard;
 import Main.MainApp;
+import Panel.BlackjackPanel;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.*;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
@@ -20,84 +20,39 @@ public class BlackJack implements KeyListener {
     static public Integer MAX_CARD_COUNT =52;
     static public Integer MAX_CARD_TYPE =4;
     // 게임 중 사용할 카드를 집어넣는 큐
-    private LinkedList<Carddd> mCarddds;
+    private LinkedList<BlackjackCard> mCards;
     // 게임 중 각 참가자의 카드를 저장하는 벡터
-    private Vector<Carddd> mPlayerCarddd;
-    private Vector<Carddd> mDealerCarddd;
+    private Vector<BlackjackCard> mPlayerCard;
+    private Vector<BlackjackCard> mDealerCard;
     private int mPlayerCost;
     private int mDealerCost;
     private int mCurrentBetCost;
     private int mFlowCost;
-    private boolean mIsDataExist;
     static Random Rand =new Random();
     private MainApp mainApp;
+
     // 생성자
     public BlackJack(BlackjackPanel blackjackPanel, MainApp mainApp) {
         this.mainApp = mainApp;
         mFrame = blackjackPanel;
         mFrame.addKeyListener(this);  // BlackJack 인스턴스를 KeyListener로 등록
-        this.mPlayerCost = 100;
-        this.mDealerCost = 10000;
+        this.mPlayerCost = MainApp.getUserScore();
+        this.mDealerCost = 100;
         this.mFlowCost = mPlayerCost;
         mState = STATE.LOADGAME;
         SelectData();
     }
-    private void LoadData() {
-        try {
-            BufferedReader in=new BufferedReader(new FileReader("data.txt"));
-            mPlayerCost = Integer.parseInt(in.readLine());
-            mDealerCost = Integer.parseInt(in.readLine());
-
-            mFlowCost = mPlayerCost;
 
 
-            in.close();
-
-        }
-        catch (IOException e) {
-            if (e.equals(e)) {
-                // 에러 발생 내용을 출력
-                e.printStackTrace();
-                // 종료
-                System.exit(0);
-            }
-        }
-    }
-    private void SaveData() {
-        BufferedWriter out =null;
-        try {
-            // OutputStreamWriter ? UTF-8 캐스팅
-            out =new BufferedWriter(new OutputStreamWriter(new FileOutputStream("data.txt", false), "UTF-8"));
-            out.write(mPlayerCost +System.lineSeparator());
-            out.write(mDealerCost +System.lineSeparator());
-            out.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Could not write to file");
-        }
-    }
     private void SelectData() {
-
-        File checkFile =new File("data.txt");
-        if(checkFile.exists())
-        {
-            mIsDataExist =true;
-        }
-        else
-        {
-            mIsDataExist =false;
-        }
-
         mFrame.SetText(null);
         mFrame.AddText("\n\n");
         mFrame.AddText("   --------------- BlackJack Game ---------------\n\n");
         mFrame.AddText("   1. START NEW GAME\n\n");
-        if (mIsDataExist) {
-            mFrame.AddText("   2. CONTINUE GAME\n\n");
-        } else {
-            mFrame.AddText("\n\n");
-        }
+
+        mFrame.AddText("   2. CONTINUE GAME");
+        mFrame.AddText("\n\n");
+
         mFrame.AddText("   -------------------------------------------------\n\n");
         mFrame.AddText("   Select : ");
     }
@@ -107,9 +62,9 @@ public class BlackJack implements KeyListener {
         mCurrentBetCost += mCurrentBetCost % 10;
         mState = STATE.BET;
         mCode = FinishCode.NONE;
-        mCarddds =new LinkedList<>();
-        mPlayerCarddd =new Vector<>();
-        mDealerCarddd =new Vector<>();
+        mCards =new LinkedList<>();
+        mPlayerCard =new Vector<>();
+        mDealerCard =new Vector<>();
         String tempSuit ="?";
         for (int i =1; i <= MAX_CARD_COUNT / MAX_CARD_TYPE; ++i) {
             for (int j =0; j < MAX_CARD_TYPE; ++j) {
@@ -135,19 +90,17 @@ public class BlackJack implements KeyListener {
                         System.exit(0);
                     }
                 }
-                mCarddds.add(new Carddd(tempSuit, i));
+                mCards.add(new BlackjackCard(tempSuit, i));
             }
         }
         int randPos;
-        // 딜러와 플레이어에게 중복되지 않은 카드를 각 두장씩 나눠준다.
-        // Queue의 Poll함수로 선두에있는 원소를 리턴하며 제거한다.
         for (int i =0; i <2; ++i) {
-            randPos = Rand.nextInt(mCarddds.size());
-            mPlayerCarddd.add(mCarddds.get(randPos));
-            mCarddds.remove(randPos);
-            randPos = Rand.nextInt(mCarddds.size());
-            mDealerCarddd.add(mCarddds.get(randPos));
-            mCarddds.remove(randPos);
+            randPos = Rand.nextInt(mCards.size());
+            mPlayerCard.add(mCards.get(randPos));
+            mCards.remove(randPos);
+            randPos = Rand.nextInt(mCards.size());
+            mDealerCard.add(mCards.get(randPos));
+            mCards.remove(randPos);
         }
         DealMoney();
     }
@@ -165,52 +118,51 @@ public class BlackJack implements KeyListener {
         CalcBet();
         CheckPlayerCost();
 
-        Carddd tempCarddd;
+        BlackjackCard tempCarddd;
         mFrame.SetText(null);
         mFrame.AddText("\n\n   --------------- BlackJack Game ---------------\n");
         mFrame.AddText("    # Betting : $"+ mCurrentBetCost +"\n\n");
         mFrame.AddText("    # Dealer: ($"+ mDealerCost +") \t");
         // 0은 A로, 11이상은 각 J Q K로 출력한다 그 외는 정수 그대로
-        for (int i = 0; i < mDealerCarddd.size() -1; ++i) {
-            tempCarddd = mDealerCarddd.get(i);
+        for (int i = 0; i < mDealerCard.size() -1; ++i) {
+            tempCarddd = mDealerCard.get(i);
             mFrame.AddText(tempCarddd.DisplayCard());
         }
         if (mCode == FinishCode.NONE) {
             mFrame.AddText("XX");
         }
         else {
-            tempCarddd = mDealerCarddd.get(mDealerCarddd.size() -1);
+            tempCarddd = mDealerCard.get(mDealerCard.size() -1);
             mFrame.AddText(tempCarddd.DisplayCard());
         }
         mFrame.AddText("\n");
         mFrame.AddText("    # Player:  ($"+ mPlayerCost +") \t");
-        for (int i = 0; i < mPlayerCarddd.size(); ++i) {
-            tempCarddd = mPlayerCarddd.get(i);
+        for (int i = 0; i < mPlayerCard.size(); ++i) {
+            tempCarddd = mPlayerCard.get(i);
             mFrame.AddText(tempCarddd.DisplayCard());
         }
         mFrame.AddText("\n");
         mFrame.AddText("   -------------------------------------------------");
         DisplayCurrentState();
     }
-    // Hit을 하면 플레이어의 카드벡터에 전체카드큐에서 poll하여 추가한다.
     private void Hit() {
-        int randPos = Rand.nextInt(mCarddds.size());
-        mPlayerCarddd.add(mCarddds.get(randPos));
-        mCarddds.remove(randPos);
+        int randPos = Rand.nextInt(mCards.size());
+        mPlayerCard.add(mCards.get(randPos));
+        mCards.remove(randPos);
         // 만약 추가했을 때 총 값이 21을 초과하면 플레이어는 BUSTED한다.
-        if (CalcPrice(mPlayerCarddd) >21) {
+        if (CalcPrice(mPlayerCard) >21) {
             mCode = FinishCode.PLAYERBUSTED;
         }
     }
     // Stand을 하면 딜러의 카드벡터에 전체카드 큐를 17이상이 될때까지 전체카드큐에서 poll한다.
     private void Stand() {
-        while (CalcPrice(mDealerCarddd) <17) {
-            int randPos = Rand.nextInt(mCarddds.size());
-            mDealerCarddd.add(mCarddds.get(randPos));
-            mCarddds.remove(randPos);
+        while (CalcPrice(mDealerCard) <17) {
+            int randPos = Rand.nextInt(mCards.size());
+            mDealerCard.add(mCards.get(randPos));
+            mCards.remove(randPos);
         }
         // 만약에 21보다 커지면 딜러는 BUSTED한다.
-        if (CalcPrice(mDealerCarddd) >21) {
+        if (CalcPrice(mDealerCard) >21) {
             mCode = FinishCode.DEALERBUSTED;
         }
         // 그것이 아니라면 플레이어와 딜러의 값을 비교할 필요가 있다.
@@ -218,19 +170,19 @@ public class BlackJack implements KeyListener {
             mCode = FinishCode.NEEDCALC;
         }
     }
-    private int CalcPrice(Vector<Carddd> carddds) {
+    private int CalcPrice(Vector<BlackjackCard> carddds) {
         int sumRes =0;
-        Carddd tempCarddd =null;
+        BlackjackCard tempCarddd =null;
         for (int i = 0; i < carddds.size(); ++i) {
             tempCarddd = carddds.get(i);
-            sumRes += tempCarddd.GetRank();
+            sumRes += tempCarddd.getValue();
         }
         // 21을 초과한 시점에서
         // A 카드를 가지고 있고, 그 카드가 11로 계산되고 있을경우
         if (sumRes >21) {
             for (int i = 0; i < carddds.size(); ++i) {
                 // 랭크가 11이다? -> Calcto11이 True인경우?
-                if (carddds.get(i).GetRank() ==11) {
+                if (carddds.get(i).getValue() ==11) {
                     // 해당 A카드의 11여부를 false로 하고
                     carddds.get(i).SetACalcTo11(false);
                     // 11 -> 1로 했기에 10을 빼서 리턴한다.
@@ -244,8 +196,8 @@ public class BlackJack implements KeyListener {
     }
     // 게임이 끝나면 누가 이겼는지 계산한다.
     private void CalcWinner() {
-        int playerVal = CalcPrice(mPlayerCarddd);
-        int dealerVal = CalcPrice(mDealerCarddd);
+        int playerVal = CalcPrice(mPlayerCard);
+        int dealerVal = CalcPrice(mDealerCard);
         if (playerVal >21 && dealerVal >21) {
             mCode = FinishCode.DRAW;
         }
@@ -270,7 +222,8 @@ public class BlackJack implements KeyListener {
         mFrame.AddText("\n\n   ");
         if (mState == STATE.PLYAER_SQUANDERD) {
             mFrame.AddText("\n\n   You lost EVERYTHING!! Quit Game !");
-
+            mState = STATE.FINISH;
+            mFrame.AddText(" If you want to leave, please press the E ");
             return;
         }
         switch (mCode) {
@@ -300,7 +253,6 @@ public class BlackJack implements KeyListener {
             }
         }
         if (mState == STATE.PLYAER_NOT_SQUANDER) {
-            SaveData();
             mFrame.AddText("\n\n   Play Again? (Y/N)");
         }
     }
@@ -350,12 +302,6 @@ public class BlackJack implements KeyListener {
             }
 
             mState = STATE.PLYAER_SQUANDERD;
-            File file =new File("data.txt");
-
-            if(file.exists())
-            {
-                file.delete();
-            }
 
         } else {
             mState = STATE.PLYAER_NOT_SQUANDER;
@@ -380,7 +326,10 @@ public class BlackJack implements KeyListener {
             mFrame.AddText("   No $ changed");
         }
         mFrame.AddText("\n\n");
-        mFrame.AddText("   -------------------------------------------------");
+        mFrame.AddText("   -------------------------------------------------\n");
+        mState = STATE.FINISH;
+        mFrame.AddText(" If you want to leave, please press the E ");
+
     }
     @Override
     public void keyTyped(KeyEvent e) {
@@ -454,16 +403,22 @@ public class BlackJack implements KeyListener {
                 break;
             }
             case KeyEvent.VK_2: {
-                if (mState != STATE.LOADGAME ||!mIsDataExist)
+                if (mState != STATE.LOADGAME )
+                    break;
+                mState = STATE.FINISH;
+                DisplayResult();
+                break;
+            }
+            case KeyEvent.VK_E:{
+                if(mState!=STATE.FINISH)
                     break;
 
-                LoadData();
-                ContinueGame();
-
-                break;
+                MainApp.updateScore(mPlayerCost);
+                mainApp.showScreen("GameSelection");
             }
         }
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
         // TODO Auto-generated method stub

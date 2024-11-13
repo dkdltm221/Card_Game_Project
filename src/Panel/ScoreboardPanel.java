@@ -12,6 +12,7 @@ public class ScoreboardPanel extends JPanel {
         setLayout(new BorderLayout());
         // TablePanel 인스턴스를 생성하여 중앙에 추가
         TablePanel tablePanel = TablePanel.GetInstance();
+
         tablePanel.addComponentsToPane(); // 테이블 초기화
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> mainApp.showScreen("GameSelection"));
@@ -20,4 +21,5 @@ public class ScoreboardPanel extends JPanel {
         add(new JScrollPane(tablePanel), BorderLayout.CENTER);
         add(backButton, BorderLayout.SOUTH);
     }
+
 }

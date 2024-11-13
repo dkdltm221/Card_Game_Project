@@ -1,4 +1,4 @@
-package Panel;
+package Game;
 
 public enum FinishCode
 {
