@@ -1,6 +1,8 @@
 package Login;
 
-import GameUser.User;
+import Main.InputUsers;
+import Main.MainApp;
+import User.User;
 
 import javax.imageio.spi.RegisterableService;
 import javax.swing.*;
@@ -15,7 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class Login {
+public class Login  {
     static JFrame mainFrame = new JFrame("Login System");
     private Register register = new Register();
     private InputUsers inputUsers=new InputUsers();
@@ -52,6 +54,8 @@ public class Login {
                 String pw=new String(pwField.getPassword());
                 if (register.matches(username)&&register.matches(pw)) {
                     JOptionPane.showMessageDialog(mainFrame, "로그인 성공!");
+                    mainFrame.dispose();
+                    SwingUtilities.invokeLater(()->new MainApp(username));
                     //패널 변경 할거 넣기
                 } else {
                     JOptionPane.showMessageDialog(mainFrame, "로그인 실패!");
@@ -86,8 +90,9 @@ public class Login {
     }
 
     public static void main(String[] args) {
-        Login main = new Login();
-        main.startGUI();
+        Login login = new Login();
+        login.startGUI();
     }
+
 }
 

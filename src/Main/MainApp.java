@@ -2,6 +2,7 @@ package Main;
 
 import Deck.BlackjackDeck;
 import Deck.Deck;
+import Login.Login;
 import User.User;
 
 import javax.swing.*;
@@ -14,15 +15,14 @@ public class MainApp extends JFrame {
     private JPanel mainPanel;
     private static User user = null;
     static InputUsers inputUsers = new InputUsers();
-    public MainApp() {
+
+    public MainApp(String userName) {
         setTitle("Mini Game App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
-        Deck deck = null;
-        deck = new BlackjackDeck();
 
         inputUsers.readAll();
-        user = setUserName("Kim"); //이건 추후에 변경예정
+        user = setUserName(userName); //이건 추후에 변경예정
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -36,6 +36,9 @@ public class MainApp extends JFrame {
         setVisible(true);
     }
     public User setUserName(String id){
+        if(inputUsers.getUser(id)==null){
+            inputUsers.addUserToFile(id,10);
+        }
         return user = inputUsers.getUser(id);
     }
     public static String getUserName(){
@@ -54,7 +57,4 @@ public class MainApp extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainApp::new);
-    }
 }

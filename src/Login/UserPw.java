@@ -1,7 +1,7 @@
 package Login;
 
 
-import GameUser.User;
+import User.User;
 
 public class UserPw extends User {
     private String pw;

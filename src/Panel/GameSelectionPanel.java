@@ -44,7 +44,6 @@ public class GameSelectionPanel extends JPanel {
         JPanel southPanel = new JPanel();
         JButton scoreboardButton = new JButton("점수판");
         southPanel.add(scoreboardButton);
-
         scoreboardButton.addActionListener(e -> mainApp.showScreen("Scoreboard"));
 
         add(northPanel, BorderLayout.NORTH);

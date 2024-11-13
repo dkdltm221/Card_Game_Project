@@ -1,6 +1,6 @@
 package Login;
 
-import GameUser.User;
+import User.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
