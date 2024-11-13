@@ -18,9 +18,7 @@ public class User {
         return name;
     }
 
-    public void setDeck(Deck deck) {
-        this.deck = deck;
-    }
+
     public int getScore() {
         return score;
     }

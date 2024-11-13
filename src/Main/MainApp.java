@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
+import Panel.BlackjackPanel;
 public class MainApp extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -27,7 +28,9 @@ public class MainApp extends JFrame {
         mainPanel = new JPanel(cardLayout);
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
         mainPanel.add(new ScoreboardPanel(this), "Scoreboard");
+        mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
+
 
         add(mainPanel);
         setVisible(true);
