@@ -30,7 +30,7 @@ public class BlackJack implements KeyListener {
     private int mFlowCost;
     static Random Rand =new Random();
     private MainApp mainApp;
-
+    int addPoint;
     // 생성자
     public BlackJack(BlackjackPanel blackjackPanel, MainApp mainApp) {
         this.mainApp = mainApp;
@@ -39,6 +39,7 @@ public class BlackJack implements KeyListener {
         this.mPlayerCost = MainApp.getUserScore();
         this.mDealerCost = 100;
         this.mFlowCost = mPlayerCost;
+        this.addPoint = 0;
         mState = STATE.LOADGAME;
         SelectData();
     }
@@ -105,6 +106,12 @@ public class BlackJack implements KeyListener {
         DealMoney();
     }
     private void DealMoney() {
+        if (mDealerCost <= 0) {
+            mFrame.AddText("\n\n   Dealer has run out of money. Game over.");
+            mState = STATE.FINISH;
+            mFrame.AddText(" If you want to leave, please press the E ");
+            return;
+        }
         mFrame.SetText(null);
         mFrame.AddText("\n\n");
         mFrame.AddText("   --------------- BlackJack Game ---------------\n\n");
@@ -267,19 +274,23 @@ public class BlackJack implements KeyListener {
             case PLAYER: {
                 mDealerCost -= mCurrentBetCost;
                 mPlayerCost += mCurrentBetCost *2;
+                addPoint += mCurrentBetCost;
                 break;
             }
             case PLAYERBUSTED: {
                 mDealerCost += mCurrentBetCost;
+                addPoint-= mCurrentBetCost;
                 break;
             }
             case DEALER: {
                 mDealerCost += mCurrentBetCost;
+                addPoint-= mCurrentBetCost;
                 break;
             }
             case DEALERBUSTED: {
                 mDealerCost -= mCurrentBetCost;
                 mPlayerCost += mCurrentBetCost *2;
+                addPoint += mCurrentBetCost;
                 break;
             }
             case NEEDCALC:
@@ -289,6 +300,7 @@ public class BlackJack implements KeyListener {
             default:
                 break;
         }
+
     }
     private void CheckPlayerCost() {
         if (mCode == FinishCode.NONE)
@@ -412,8 +424,7 @@ public class BlackJack implements KeyListener {
             case KeyEvent.VK_E:{
                 if(mState!=STATE.FINISH)
                     break;
-
-                MainApp.updateScore(mPlayerCost);
+                MainApp.updateScore(addPoint);
                 mainApp.showScreen("GameSelection");
             }
         }

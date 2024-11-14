@@ -36,6 +36,7 @@ public class TablePanel extends JPanel implements ListSelectionListener {
 
 
 
+
     void addComponentsToPane() {
         initTablePane("user.txt");
         JScrollPane center = new JScrollPane(table);
@@ -107,5 +108,9 @@ public class TablePanel extends JPanel implements ListSelectionListener {
             System.exit(0);
         }
         return filein;
+    }
+    public void refreshTable() {
+        loadData("user.txt");
+        tableModel.fireTableDataChanged(); // tableModel은 테이블의 데이터 모델
     }
 }
