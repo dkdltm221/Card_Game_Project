@@ -4,7 +4,7 @@ import Card.Start;
 import Deck.Player;
 import system.Select;
 import system.Throw;
-import Card.*;
+import Card.T_Card;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -28,9 +28,9 @@ public class Thief extends JFrame {
     Player com = new Player();
     Player player = new Player();
 
-    Card[] com_array;
-    Card[] player_array;
-    Card[] trash;
+    T_Card[] com_array;
+    T_Card[] player_array;
+    T_Card[] trash;
 
     Select comturn = new Select();
 
@@ -71,7 +71,7 @@ public class Thief extends JFrame {
         JButton bring = new JButton("가져오기");
         bring.setBorderPainted(false);
         bring.setLocation(1075,215);
-        bring.setSize(100,140);
+        bring.setSize(100,40);
 
         add(bring);
         bring.addMouseListener(new MouseBring());
@@ -84,10 +84,10 @@ public class Thief extends JFrame {
             }
         }
 
-        com_array = new Card[com.getSize()];
+        com_array = new T_Card[com.getSize()];
 
         for(int i = 0; i<com.getSize();i++){
-            com_array[i] = new Card(new ImageIcon("img/CardDown.png"));
+            com_array[i] = new T_Card(new ImageIcon("img/CardDown.png"));
             com_array[i].setValue(com.getCard(i));
             com_array[i].setLocation(buttonset+(i*50),90);
             com_array[i].setSize(100,140);
@@ -105,10 +105,10 @@ public class Thief extends JFrame {
             throw_card[i] = Throw.trash.get(Throw.trash.size()-(2-i));
         }
 
-        trash = new Card[2];
+        trash = new T_Card[2];
 
         for(int i=0; i<2; i++){
-            trash[i] = new Card(new ImageIcon("img/"+throw_card[i]+".png"));
+            trash[i] = new T_Card(new ImageIcon("img/"+throw_card[i]+".png"));
             trash[i].setLocation(500+(i*110),285);
             trash[i].setSize(100,140);
             add(trash[i]);
@@ -117,7 +117,7 @@ public class Thief extends JFrame {
         JButton next = new JButton(new ImageIcon("img/NextBtn.gif"));
         next.setBorderPainted(false);
         next.setLocation(1075,346);
-        next.setSize(60,30);
+        next.setSize(100,30);
         add(next);
         next.addMouseListener(new MouseNext());
 
@@ -129,13 +129,13 @@ public class Thief extends JFrame {
                 player_array[i].setVisible(false);
             }
         }
-        player_array = new Card[player.getSize()];
+        player_array = new T_Card[player.getSize()];
 
         for(int i = 0; i< player.getSize(); i++){
-            player_array[i] = new Card(new ImageIcon("img/"+player.getCard(i)+".png"));
+            player_array[i] = new T_Card(new ImageIcon("img/"+player.getCard(i)+".png"));
             player_array[i].setValue(player.getCard(i));
             player_array[i].setLocation(buttonset+(i*50),480);
-            player_array[i].setSize(100,40);
+            player_array[i].setSize(100,140);
             add(player_array[i]);
             player_array[i].addMouseListener(new MouseSelectCard());
         }
@@ -144,6 +144,7 @@ public class Thief extends JFrame {
         delete.setBorderPainted(false);
         delete.setLocation(1075,480);
         delete.setSize(100,40);
+        delete.setBackground(Color.BLACK);
         add(delete);
         delete.addMouseListener(new MouseDelete());
 
@@ -176,7 +177,7 @@ public class Thief extends JFrame {
 
         public void mousePressed(MouseEvent e){
 
-            Card seletedBtn = (Card) e.getSource();
+            T_Card seletedBtn = (T_Card) e.getSource();
 
             if(val3 != -1){
 
@@ -197,7 +198,7 @@ public class Thief extends JFrame {
     class MouseSelectCard extends MouseAdapter{
 
         public void mousePressed(MouseEvent e){
-            Card seletedBtn = (Card) e.getSource();
+            T_Card seletedBtn = (T_Card) e.getSource();
 
             if(val1 != -1 && val2 != -1){
 
