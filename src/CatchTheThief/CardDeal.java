@@ -3,8 +3,8 @@ package CatchTheThief;
 import java.util.*;
 
 public class CardDeal {
-    List<List<String>> myList = new ArrayList<>();
-    List<List<String>> comList = new ArrayList<>();
+    List<String> myList = new ArrayList<>();
+    List<String> comList = new ArrayList<>();
     void run() {
         int cardsForCom = 27;
         int cardsForMe = 26;
@@ -21,21 +21,16 @@ public class CardDeal {
         Collections.shuffle(deck);
 
 
-        List<String> mydeck = dealHand(deck, cardsForMe);
-        List<String> comdeck = dealHand(deck, cardsForCom);
-        System.out.println(mydeck);
-        System.out.println(comdeck);
-        myList.add(mydeck);
-        comList.add(comdeck);
+        myList = dealHand(deck, cardsForMe);
+        comList = dealHand(deck, cardsForCom);
+        System.out.println(myList);
+        System.out.println(comList);
 
-        for(List<String> list : myList){
-            match(list);
-        }
 
     }
 
-    boolean match(List<String> rank1){
-        return rank1.contains(rank1);
+    boolean match(){
+
     }
 
     public <E> List<E> dealHand(List<E> deck, int n) {
