@@ -28,12 +28,14 @@ public class CardDeal {
         myList.add(mydeck);
         comList.add(comdeck);
 
-        //비교 후 삭제
+        for(List<String> list : myList){
+            match(list);
+        }
 
     }
 
-    void match(){
-
+    boolean match(List<String> rank1){
+        return rank1.contains(rank1);
     }
 
     public <E> List<E> dealHand(List<E> deck, int n) {
