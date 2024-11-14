@@ -17,7 +17,7 @@ public class InputUsers {
     public void readAll(){
         users.clear();
         String id;
-        int point;
+        int point=0;
         Scanner scanner = openFile("user.txt");
         while(scanner.hasNext()){
             id = scanner.next();
@@ -48,7 +48,7 @@ public class InputUsers {
     }
     public void addUserToFile(String id, int point) {
         boolean userExists = false;
-
+        System.out.println(point);
         // 기존 유저 점수 업데이트
         for (User user : users) {
             if (user.getName().equals(id)) {
@@ -61,7 +61,9 @@ public class InputUsers {
         if (!userExists) {
             // 기존 유저가 없다면 새로운 유저 추가
             User user = new User(id);
+            System.out.println(point);
             user.addScore(point);
+            System.out.println(user.getScore());
             users.add(user);
         }
 

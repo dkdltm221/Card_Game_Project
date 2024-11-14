@@ -106,6 +106,12 @@ public class BlackJack implements KeyListener {
         DealMoney();
     }
     private void DealMoney() {
+        if (mDealerCost <= 0) {
+            mFrame.AddText("\n\n   Dealer has run out of money. Game over.");
+            mState = STATE.FINISH;
+            mFrame.AddText(" If you want to leave, please press the E ");
+            return;
+        }
         mFrame.SetText(null);
         mFrame.AddText("\n\n");
         mFrame.AddText("   --------------- BlackJack Game ---------------\n\n");
@@ -294,6 +300,7 @@ public class BlackJack implements KeyListener {
             default:
                 break;
         }
+
     }
     private void CheckPlayerCost() {
         if (mCode == FinishCode.NONE)

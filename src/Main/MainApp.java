@@ -25,7 +25,7 @@ public class MainApp extends JFrame {
         setSize(800, 600);
 
         inputUsers.readAll();
-        user = setUserName(userName); //이건 추후에 변경예정
+        user = setUserName(userName);
         scoreboardPanel = new ScoreboardPanel(this);
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -39,9 +39,6 @@ public class MainApp extends JFrame {
         setVisible(true);
     }
     public User setUserName(String id){
-        if(inputUsers.getUser(id)==null){
-            inputUsers.addUserToFile(id,10);
-        }
         return user = inputUsers.getUser(id);
     }
     public static String getUserName(){

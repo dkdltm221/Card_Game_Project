@@ -71,7 +71,7 @@ public class Login  {
                 int point;
                 if (!register.matches(username)) {
                     register.addUserToFile(username, pw);
-                    inputUsers.addUserToFile(username,10);
+                    inputUsers.addUserToFile(username,100);
                     JOptionPane.showMessageDialog(mainFrame, "회원가입 성공!!");
                 } else {
                     JOptionPane.showMessageDialog(mainFrame, "중복된 아이디");
