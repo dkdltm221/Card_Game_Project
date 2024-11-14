@@ -20,7 +20,7 @@ public class User {
 
 
     public int getScore() {
-        return score;
+        return this.score;
     }
 
 

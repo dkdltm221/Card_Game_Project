@@ -17,7 +17,7 @@ public class InputUsers {
     public void readAll(){
         users.clear();
         String id;
-        int point;
+        int point=0;
         Scanner scanner = openFile("user.txt");
         while(scanner.hasNext()){
             id = scanner.next();
@@ -48,7 +48,7 @@ public class InputUsers {
     }
     public void addUserToFile(String id, int point) {
         boolean userExists = false;
-
+        System.out.println(point);
         // 기존 유저 점수 업데이트
         for (User user : users) {
             if (user.getName().equals(id)) {
@@ -61,7 +61,9 @@ public class InputUsers {
         if (!userExists) {
             // 기존 유저가 없다면 새로운 유저 추가
             User user = new User(id);
+            System.out.println(point);
             user.addScore(point);
+            System.out.println(user.getScore());
             users.add(user);
         }
 
@@ -69,7 +71,7 @@ public class InputUsers {
         writeSortedToFile();
     }
 
-    private static void writeSortedToFile() {
+    public static void writeSortedToFile() {
         try (FileWriter writer = new FileWriter("user.txt")) {
             Collections.sort(users, new Comparator<User>() {
                 @Override
@@ -86,6 +88,7 @@ public class InputUsers {
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
+
     }
 
     User getUser(String id){
@@ -96,14 +99,6 @@ public class InputUsers {
         }
         return null;
     }
-    static void userUpdate(String userName, int point) {
-        for (User u : users) {
-            if (u.getName().equals(userName)) {
-                u.addScore(point);
-                break;
-            }
-        }
-        writeSortedToFile();
-    }
+
 
 }
