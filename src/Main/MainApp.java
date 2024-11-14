@@ -10,12 +10,15 @@ import java.awt.*;
 import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
 import Panel.BlackjackPanel;
+
+
+
 public class MainApp extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static User user = null;
     static InputUsers inputUsers = new InputUsers();
-
+    private ScoreboardPanel scoreboardPanel;
     public MainApp(String userName) {
         setTitle("Mini Game App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,11 +26,11 @@ public class MainApp extends JFrame {
 
         inputUsers.readAll();
         user = setUserName(userName); //이건 추후에 변경예정
-
+        scoreboardPanel = new ScoreboardPanel(this);
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
-        mainPanel.add(new ScoreboardPanel(this), "Scoreboard");
+        mainPanel.add(scoreboardPanel, "Scoreboard");
         mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
 
@@ -50,7 +53,12 @@ public class MainApp extends JFrame {
 
     public static void updateScore(int point){
         user.addScore(point);
-        InputUsers.userUpdate(user.getName(),user.getScore());
+
+        InputUsers.writeSortedToFile();
+    }
+    public void updateScore(){
+            scoreboardPanel.updateScores();
+            // 다른 패널들도 필요 시 업데이트
     }
     public void showScreen(String screenName) {
         cardLayout.show(mainPanel, screenName);

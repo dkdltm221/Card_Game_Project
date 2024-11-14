@@ -69,7 +69,7 @@ public class InputUsers {
         writeSortedToFile();
     }
 
-    private static void writeSortedToFile() {
+    public static void writeSortedToFile() {
         try (FileWriter writer = new FileWriter("user.txt")) {
             Collections.sort(users, new Comparator<User>() {
                 @Override
@@ -86,6 +86,7 @@ public class InputUsers {
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
+
     }
 
     User getUser(String id){
@@ -96,14 +97,6 @@ public class InputUsers {
         }
         return null;
     }
-    static void userUpdate(String userName, int point) {
-        for (User u : users) {
-            if (u.getName().equals(userName)) {
-                u.addScore(point);
-                break;
-            }
-        }
-        writeSortedToFile();
-    }
+
 
 }
