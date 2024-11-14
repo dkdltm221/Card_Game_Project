@@ -29,11 +29,11 @@ public class MainApp extends JFrame {
         scoreboardPanel = new ScoreboardPanel(this);
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
+
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
         mainPanel.add(scoreboardPanel, "Scoreboard");
         mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
-
 
         add(mainPanel);
         setVisible(true);

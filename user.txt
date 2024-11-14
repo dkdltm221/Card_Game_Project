@@ -1,4 +1,4 @@
-yunbin 1100
+yunbin 500
 Kim 310
 kkk 220
 hi 200

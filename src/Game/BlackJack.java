@@ -14,6 +14,7 @@ enum STATE {
     LOADGAME, BET, INGAME, FINISH, PLYAER_SQUANDERD, PLYAER_NOT_SQUANDER,
 }
 public class BlackJack implements KeyListener {
+    static int count=0;
     private BlackjackPanel mFrame;
     FinishCode mCode;
     STATE mState;
@@ -424,7 +425,10 @@ public class BlackJack implements KeyListener {
             case KeyEvent.VK_E:{
                 if(mState!=STATE.FINISH)
                     break;
-                MainApp.updateScore(addPoint);
+                if(count==0) {
+                    MainApp.updateScore(addPoint);
+                }
+                count++;
                 mainApp.showScreen("GameSelection");
             }
         }

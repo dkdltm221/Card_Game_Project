@@ -8,6 +8,7 @@ public class GameSelectionPanel extends JPanel {
     private MainApp mainApp;
     private JLabel jLabel2;
     public GameSelectionPanel(MainApp app) {
+
         this.mainApp = app;
         setLayout(new BorderLayout());
 
