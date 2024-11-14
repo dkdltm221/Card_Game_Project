@@ -2,6 +2,8 @@ yunbin 500
 Kim 310
 kkk 220
 hi 200
+hong 200
+dd 150
 kk 100
 ha 10
 zizi 10
