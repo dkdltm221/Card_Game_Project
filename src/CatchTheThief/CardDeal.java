@@ -1,11 +1,10 @@
 package CatchTheThief;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class CardDeal {
-    public static void main(String[] args) {
+    Scanner scan = new Scanner(System.in);
+    void run() {
         String[] suit = {"♤", "♡", "◇", "♧"};
         String[] rank = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         String joker = "joker";
@@ -18,7 +17,7 @@ public class CardDeal {
                 deck.add(s + r);
             }
         }
-        // 조커 카드 추가s
+        // 조커 카드 추가
         deck.add(joker);
 
         // 카드 섞기
@@ -31,15 +30,44 @@ public class CardDeal {
         System.out.println("컴퓨터의 초기 카드: " + deckForCom);
         System.out.println("사용자의 초기 카드: " + deckForMe);
 
-        // 각 덱에서 중복된 숫자에 따라 카드 제거
+        // 각 덱에서 중복된 숫자 삭제
         removeDuplicatesBasedOnCount(deckForCom);
         removeDuplicatesBasedOnCount(deckForMe);
 
-        System.out.println("중복 삭제 후 컴퓨터의 카드: " + deckForCom);
-        System.out.println("중복 삭제 후 사용자의 카드: " + deckForMe);
+        System.out.println("중복 제거 후 컴퓨터의 카드: " + deckForCom);
+        System.out.println("중복 제거 후 사용자의 카드: " + deckForMe);
+
+        int go = scan.nextInt();
+        while(true){
+
+            transferRandomCard(deckForCom, deckForMe);
+            System.out.println("뽑았다!");
+            //removeDuplicatesBasedOnCount(deckForMe);
+
+            checkAndEndGame(deckForCom,deckForMe);
+            System.out.println("중복 제거 후 컴퓨터의 카드: " + deckForCom);
+            System.out.println("중복 제거 후 사용자의 카드: " + deckForMe);
+            go = scan.nextInt();
+            if(go==0){
+                break;
+            }
+
+            transferRandomCard(deckForMe, deckForCom);
+            System.out.println("뽑았다!");
+            removeDuplicatesBasedOnCount(deckForCom);
+            checkAndEndGame(deckForCom,deckForMe);
+            System.out.println("중복 제거 후 컴퓨터의 카드: " + deckForCom);
+            System.out.println("중복 제거 후 사용자의 카드: " + deckForMe);
+            go = scan.nextInt();
+            if(go==0){
+                break;
+            }
+        }
+
     }
 
-    // 중복된 랭크의 카드들을 조건에 따라 삭제하는 함수
+
+    // 중복된 랭크를 제거하는 함수
     public static void removeDuplicatesBasedOnCount(ArrayList<String> deck) {
         HashMap<String, Integer> rankCount = new HashMap<>();
 
@@ -81,5 +109,31 @@ public class CardDeal {
         } else {
             return card.substring(1); // 첫 글자는 무늬이므로 제거하고 숫자만 반환
         }
+    }
+    public static void transferRandomCard(ArrayList<String> fromDeck, ArrayList<String> toDeck) {
+        if (!fromDeck.isEmpty()) {
+            Random rand = new Random();
+            int randomIndex = rand.nextInt(fromDeck.size());
+            String card = fromDeck.remove(randomIndex); // fromDeck에서 카드 제거
+            toDeck.add(card); // toDeck에 카드 추가
+            removeDuplicatesBasedOnCount(toDeck);
+            if(!card.equals("joker"))  toDeck.remove(card);
+        }
+    }
+    public static void checkAndEndGame(ArrayList<String> deckForCom, ArrayList<String> deckForMe) {
+        if (isOnlyJokerLeft(deckForCom)) {
+            System.out.println("컴퓨터 덱에 joker만 남았습니다. 게임 종료.");
+            System.exit(0);
+        } else if (isOnlyJokerLeft(deckForMe)) {
+            System.out.println("사용자 덱에 joker만 남았습니다. 게임 종료.");
+            System.exit(0);
+        }
+    }
+    public static boolean isOnlyJokerLeft(ArrayList<String> deck) {
+        return deck.size() == 1 && deck.get(0).equals("joker");
+    }
+    public static void main(String[] args){
+        CardDeal cardDeal = new CardDeal();
+        cardDeal.run();
     }
 }
