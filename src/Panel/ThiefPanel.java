@@ -109,18 +109,16 @@ public class ThiefPanel extends JPanel {
             selectedCardNames.add(card.getName());
         }
 
-        // 해당 이름과 일치하는 버튼 제거
+        //일치하는 버튼 제거
         for (int i = 0; i < userButtons.size(); i++) {
             JButton button = userButtons.get(i);
-            if (button == null) continue; // Null 방어
+            if (button == null) continue; // 널 방어..?
             if (selectedCardNames.contains(button.getText())) {
                 userButtons.remove(i);
                 button.getParent().remove(button);
-                i--; // 인덱스 조정
+                i--;
             }
         }
-
-        // 패널 갱신
         this.revalidate();
         this.repaint();
 

@@ -42,7 +42,7 @@ public class Thief {
             // 최대 2개의 카드만 선택할 수 있음
             if (selectedCards.size() < 2) {
                 if (!selectedCards.contains(card)) {
-                    selectedCards.add(card); // 카드 선택 추가
+                    selectedCards.add(card);
                     panel.addText("유저 카드 " + card.getName() + " 클릭됨.");
                 }
             } else {
@@ -51,26 +51,26 @@ public class Thief {
         }
     }
 
-    // 턴 넘기기 처리
+    // 턴 넘기기
     public void passTurn() {
         panel.addText("턴을 넘겼습니다.");
-        // 추가 로직 구현
+        // 여기다가 턴 넘기는 로직 만들고
     }
 
-    // 상대방 카드 가져오기 처리
+    // 상대방 카드 가져오기
     public void takeCard() {
         panel.addText("상대방의 카드를 가져왔습니다.");
-        // 추가 로직 구현
+        // 여기다가 상대방 카드 가져오는 로직 만들어줘
     }
 
-    // 같은 카드 2장 제거 처리
+    // 같은 카드 2장 제거
     public void removePair() {
         if (selectedCards.size() == 2) {
             Card card1 = selectedCards.get(0);
             Card card2 = selectedCards.get(1);
 
             if (card1.getValue() == card2.getValue()) {
-                panel.removePairButtons(); // ThiefPanel에 카드 제거 요청
+                panel.removePairButtons();
                 panel.addText("같은 카드 두 장을 제거했습니다: " + card1.getName() + "와 " + card2.getName());
             } else {
                 panel.addText("선택된 카드가 서로 다릅니다.");
