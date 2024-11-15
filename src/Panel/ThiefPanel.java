@@ -9,14 +9,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class ThiefPanel extends JPanel {
     private JTextArea displayArea;
     private Thief thief;
-    private List<Card> computerCards;
-    private List<Card> userCards;
-    private List<JButton> userButtons;
+    private List<Card> computerCards;    //컴퓨터 카드덱
+    private List<Card> userCards;       //유저 카드덱
+    private List<JButton> userButtons;      //버튼 클릭 시 담아줄 리스트
+    private List<JButton> computerButtons = new ArrayList<>(); //컴퓨터 버튼들
 
     public ThiefPanel(MainApp mainApp) {
         // 레이아웃 설정
@@ -51,8 +53,10 @@ public class ThiefPanel extends JPanel {
         JPanel computerPanel = new JPanel(new GridLayout(3, 9, 5, 5));
         for (int i = 0; i < computerCards.size(); i++) {
             int index = i;
-            JButton button = new JButton(" ");
+            JButton button = new JButton(" ");  //컴퓨터는 카드값 안보여주게 설정
+            button.setActionCommand(computerCards.get(index).getName()); // 카드 이름을 ActionCommand에 설정, 버튼 지울때 사용
             computerPanel.add(button);
+            computerButtons.add(button);
             button.addActionListener(e -> thief.computerCardClicked(index)); // 컴터 카드는 뭔지 안나오게 설정
         }
         add(computerPanel, BorderLayout.NORTH);
@@ -105,7 +109,7 @@ public class ThiefPanel extends JPanel {
 
     public void removePairButtons() {
         List<String> selectedCardNames = new ArrayList<>();
-        for (Card card : thief.getSelectedCards()) {
+        for (Card card : thief.getSelectedCards()) {    //선택된 카드를 selectedCardNames에 넣어주는 과정
             selectedCardNames.add(card.getName());
         }
 
@@ -125,4 +129,54 @@ public class ThiefPanel extends JPanel {
         // 선택된 카드 초기화
         thief.clearSelectedCards();
     }
+
+    //같은 카드 자동으로 삭제
+    public void removeCardAll() {
+        List<Card> cardsToRemove = new ArrayList<>();
+
+        // 컴퓨터 덱에서 value 값이 같은 두 장의 카드 찾기
+        for (int i = 0; i < computerCards.size(); i++) {
+            for (int j = i + 1; j < computerCards.size(); j++) {
+                if (computerCards.get(i).getValue() == computerCards.get(j).getValue()) {
+                    // 동일한 value 값을 가진 카드 두 장을 리스트에 추가
+                    cardsToRemove.add(computerCards.get(i));
+                    cardsToRemove.add(computerCards.get(j));
+                    break; // 일치하는 쌍을 찾으면 더 이상 내부 루프를 돌 필요 없음
+                }
+            }
+        }
+
+        // 찾은 카드 제거
+        for (Card card : cardsToRemove) {
+            computerCards.remove(card);
+            removeComputerButton(card);
+        }
+
+        // 메시지 추가
+        if (!cardsToRemove.isEmpty()) {
+            addText("컴퓨터 덱에서 카드 제거: " +
+                    cardsToRemove.stream().map(Card::getName).reduce((a, b) -> a + ", " + b).orElse(""));
+        } else {
+            addText("컴퓨터 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
+        }
+    }
+
+    //컴퓨터 버튼 삭제
+    private void removeComputerButton(Card card) {
+        for (int i = 0; i < computerButtons.size(); i++) {
+            JButton button = computerButtons.get(i);
+
+            // ActionCommand와 카드 이름을 비교
+            if (button.getActionCommand().equals(card.getName())) {
+                computerButtons.remove(i); // 리스트에서 버튼 제거
+                button.getParent().remove(button); // 버튼 제거
+                break;
+            }
+        }
+
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
+    }
 }
+

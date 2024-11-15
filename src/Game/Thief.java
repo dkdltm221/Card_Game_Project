@@ -54,6 +54,8 @@ public class Thief {
     // 턴 넘기기
     public void passTurn() {
         panel.addText("턴을 넘겼습니다.");
+        panel.addText("컴퓨터 카드 삭제");
+        panel.removeCardAll();
         // 여기다가 턴 넘기는 로직 만들고
     }
 
@@ -86,4 +88,6 @@ public class Thief {
     public void clearSelectedCards() {
         selectedCards.clear();
     }
+
+
 }
