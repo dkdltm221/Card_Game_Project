@@ -3,7 +3,15 @@ package CatchTheThief;
 import java.util.*;
 
 public class CardDeal {
-    Scanner scan = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
+    private boolean gameOver;
+    private String winner;
+    ArrayList<String> deckForCom=new ArrayList<>();
+    ArrayList<String> deckForMe=new ArrayList<>();
+    public CardDeal() {
+        gameOver = false;
+        winner = "";
+    }
     void run() {
         String[] suit = {"♤", "♡", "◇", "♧"};
         String[] rank = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
@@ -24,8 +32,8 @@ public class CardDeal {
         Collections.shuffle(deck);
 
         // 컴퓨터와 사용자 덱 나누기
-        ArrayList<String> deckForCom = new ArrayList<>(deck.subList(0, 27));
-        ArrayList<String> deckForMe = new ArrayList<>(deck.subList(26, 53));
+        deckForCom = new ArrayList<>(deck.subList(0, 27));
+        deckForMe = new ArrayList<>(deck.subList(26, 53));
 
         System.out.println("컴퓨터의 초기 카드: " + deckForCom);
         System.out.println("사용자의 초기 카드: " + deckForMe);
@@ -37,34 +45,74 @@ public class CardDeal {
         System.out.println("중복 제거 후 컴퓨터의 카드: " + deckForCom);
         System.out.println("중복 제거 후 사용자의 카드: " + deckForMe);
 
-        int go = scan.nextInt();
+        int go = scanner.nextInt();
         while(true){
 
             transferRandomCard(deckForCom, deckForMe);
             System.out.println("뽑았다!");
-            //removeDuplicatesBasedOnCount(deckForMe);
-
             checkAndEndGame(deckForCom,deckForMe);
             System.out.println("중복 제거 후 컴퓨터의 카드: " + deckForCom);
             System.out.println("중복 제거 후 사용자의 카드: " + deckForMe);
-            go = scan.nextInt();
+            go = scanner.nextInt();
             if(go==0){
                 break;
             }
 
             transferRandomCard(deckForMe, deckForCom);
             System.out.println("뽑았다!");
-            removeDuplicatesBasedOnCount(deckForCom);
             checkAndEndGame(deckForCom,deckForMe);
             System.out.println("중복 제거 후 컴퓨터의 카드: " + deckForCom);
             System.out.println("중복 제거 후 사용자의 카드: " + deckForMe);
-            go = scan.nextInt();
+            go = scanner.nextInt();
             if(go==0){
                 break;
             }
         }
-
     }
+
+    public ArrayList<String> getPlayerDeck() {
+        return deckForMe;
+    }
+
+    // 컴퓨터 카드 덱을 반환하는 메서드
+    public ArrayList<String> getComputerDeck() {
+        return deckForCom;
+    }
+
+    // 게임 한 라운드를 진행하는 메서드
+    public void playRound() {
+        if (gameOver) return;
+
+        transferRandomCard(deckForCom, deckForMe);
+        checkAndEndGame();
+
+        if (!gameOver) {
+            transferRandomCard(deckForMe, deckForCom);
+            checkAndEndGame();
+        }
+    }
+
+    // 게임 종료 여부를 반환하는 메서드
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    // 승자를 반환하는 메서드
+    public String getWinner() {
+        return winner;
+    }
+
+    // 게임 종료 조건을 확인하고 승자를 설정하는 메서드
+    private void checkAndEndGame() {
+        if (isOnlyJokerLeft(deckForCom)) {
+            gameOver = true;
+            winner = "사용자";
+        } else if (isOnlyJokerLeft(deckForMe)) {
+            gameOver = true;
+            winner = "컴퓨터";
+        }
+    }
+
 
 
     // 중복된 랭크를 제거하는 함수
@@ -136,4 +184,5 @@ public class CardDeal {
         CardDeal cardDeal = new CardDeal();
         cardDeal.run();
     }
+
 }

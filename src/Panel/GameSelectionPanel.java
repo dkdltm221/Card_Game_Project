@@ -35,10 +35,9 @@ public class GameSelectionPanel extends JPanel {
             mainApp.showScreen("BlackjackPanel");
         });
         bingoButton.addActionListener(e -> showNotImplemented());
-        thiefGameButton.addActionListener(e ->
-                //mainApp.showScreen("BlackjackPanel");
-                showNotImplemented());
-
+        thiefGameButton.addActionListener(e -> {
+            mainApp.showScreen("ThiefPanel");
+        });
         centerPanel.add(blackjackButton);
         centerPanel.add(bingoButton);
         centerPanel.add(thiefGameButton);

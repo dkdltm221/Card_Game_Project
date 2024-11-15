@@ -10,7 +10,7 @@ import java.awt.*;
 import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
 import Panel.BlackjackPanel;
-
+import Panel.ThiefPanel;
 
 
 public class MainApp extends JFrame {
@@ -32,6 +32,7 @@ public class MainApp extends JFrame {
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
         mainPanel.add(scoreboardPanel, "Scoreboard");
         mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
+        mainPanel.add(new ThiefPanel(this),"ThiefPanel");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
 
 
