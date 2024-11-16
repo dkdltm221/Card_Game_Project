@@ -92,7 +92,7 @@ public class ThiefPanel extends JPanel {
         JButton removePairButton = new JButton("같은 카드 제거");
 
         passTurnButton.addActionListener(e -> thief.passTurnToComputer());
-        takeCardButton.addActionListener(e -> takeCardFromCom(thief.getSelectedCardsIndex()-1));
+        takeCardButton.addActionListener(e -> thief.takeCardFromCom());
         removePairButton.addActionListener(e -> thief.removePair());
 
         rightPanel.add(passTurnButton);
@@ -227,39 +227,24 @@ public class ThiefPanel extends JPanel {
         this.revalidate();
         this.repaint();
     }
+    public void addUserButton(Card card) {
+        JButton newButton = new JButton();
+        newButton.setActionCommand(card.getName());
+        userButtons.add(newButton);
 
-    public void takeCardFromCom(int cardIndex){
-        if (cardIndex-1 >= 0 && cardIndex-1 < computerCards.size()) {
-            // 컴퓨터 카드에서 카드 가져오기
-            Card takenCard = computerCards.remove(cardIndex-1);
-            userCards.add(takenCard);
+        newButton.addActionListener(e -> {
+            int buttonIndex = userButtons.indexOf(newButton);
+            if (buttonIndex >= 0) {
+                thief.computerCardClicked(buttonIndex);
+            }
+        });
 
-            // 컴퓨터 버튼 제거
-            JButton removedButton = computerButtons.remove(cardIndex-1);
-            removedButton.getParent().remove(removedButton);
-
-            // 유저 버튼 추가
-            JButton newUserButton = new JButton(takenCard.getName());
-            userButtons.add(newUserButton);
-
-            newUserButton.addActionListener(e -> {
-                if (newUserButton.getBackground() == Color.YELLOW) {
-                    newUserButton.setBackground(null);
-                    thief.userCardClicked(null);
-                } else {
-                    newUserButton.setBackground(Color.YELLOW);
-                    thief.userCardClicked(takenCard);
-                }
-            });
-
-            // UI 갱신
-            revalidate();
-            repaint();
-
-            addText("컴퓨터 카드 " + takenCard.getName() + "를 가져왔습니다.");
-        } else {
-            addText("유효하지 않은 카드 선택입니다.");
-        }
+        // 컴퓨터 패널에 버튼 추가
+        JPanel computerPanel = (JPanel) this.getComponent(0); // 컴퓨터 패널 위치
+        computerPanel.add(newButton);
+        this.revalidate();
+        this.repaint();
     }
+    
 }
 
