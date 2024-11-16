@@ -14,9 +14,10 @@ import java.util.Scanner;
 public class InputUsers {
     static ArrayList<User> users=new ArrayList<>();
 
-    void readAll(){
+    public void readAll(){
+        users.clear();
         String id;
-        int point;
+        int point=0;
         Scanner scanner = openFile("user.txt");
         while(scanner.hasNext()){
             id = scanner.next();
@@ -45,17 +46,32 @@ public class InputUsers {
         }
         return filein;
     }
-    void addUserToFile(String id,int point) {
-        try (FileWriter writer = new FileWriter("user.txt", true)) {
-            writer.write(id + " "+point+"\n");
-            writeSortedToFile();
-            users.clear();
-            readAll();
-        } catch (IOException e) {
-            System.out.println("Error writing to file: " + e.getMessage());
+    public void addUserToFile(String id, int point) {
+        boolean userExists = false;
+        System.out.println(point);
+        // 기존 유저 점수 업데이트
+        for (User user : users) {
+            if (user.getName().equals(id)) {
+                userExists = true;
+                user.addScore(point); // 기존 유저의 점수를 업데이트
+                break;
+            }
         }
+
+        if (!userExists) {
+            // 기존 유저가 없다면 새로운 유저 추가
+            User user = new User(id);
+            System.out.println(point);
+            user.addScore(point);
+            System.out.println(user.getScore());
+            users.add(user);
+        }
+
+        // 업데이트된 사용자 목록을 파일에 쓰기
+        writeSortedToFile();
     }
-    void writeSortedToFile() {
+
+    public static void writeSortedToFile() {
         try (FileWriter writer = new FileWriter("user.txt")) {
             Collections.sort(users, new Comparator<User>() {
                 @Override
@@ -64,14 +80,17 @@ public class InputUsers {
                 }
             });
 
-            // Write sorted users to file
+            // 파일에 정렬된 사용자 목록 쓰기
             for (User user : users) {
                 writer.write(user.getName() + " " + user.getScore() + "\n");
             }
+            writer.close();
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
+
     }
+
     User getUser(String id){
         for(User user:users){
             if(user.getName().equals(id)){
@@ -80,15 +99,6 @@ public class InputUsers {
         }
         return null;
     }
-    static void userUpdate(String userName, int point) {
-        for (User u : users) {
-            if (u.getName().equals(userName)) {
-                u.addScore(point);
-                break;
-            }
-        }
-        InputUsers inputUsers = new InputUsers();
-        inputUsers.writeSortedToFile();
-    }
+
 
 }
