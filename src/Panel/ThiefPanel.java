@@ -100,6 +100,7 @@ public class ThiefPanel extends JPanel {
         rightPanel.add(removePairButton);
         add(rightPanel, BorderLayout.EAST);
 
+        VictoryMessage(checkWinner(userCards, computerCards));
     }
 
     // 메시지 출력 메서드
@@ -245,6 +246,26 @@ public class ThiefPanel extends JPanel {
         this.revalidate();
         this.repaint();
     }
-    
+    //승리 판단 메서드
+    public int checkWinner(List<Card> userCards, List<Card> computerCards){
+        if (userCards.isEmpty()) { // userCards가 비어 있으면
+            return 1; // 1 반환
+        }
+        if (computerCards.isEmpty()) { // computerCards가 비어 있으면
+            return 2; // 2 반환
+        }
+        return 0; // 둘 다 비어 있지 않으면 0 반환
+    }
+    //승리시 출력 메서드
+    public void VictoryMessage(int isVictory){
+        if (isVictory==1) {
+            JOptionPane.showMessageDialog(null, "당신의 승리입니다", "승리", JOptionPane.INFORMATION_MESSAGE);
+        } else if (isVictory==2) {
+            JOptionPane.showMessageDialog(null, "컴퓨터의 승리입니다", "패배", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "아직 승자가 없습니다.", "오류메세지", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 }
 

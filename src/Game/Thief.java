@@ -57,7 +57,7 @@ public class Thief {
     public void passTurnToComputer() {
         panel.addText("컴퓨터에게 턴을 넘겼습니다.");
         panel.addText("컴퓨터 pair 카드 삭제");
-        panel.removeAll();
+        panel.removeCardAll();
         panel.addText("당신의 카드를 뽑겠습니다.");
         takeCardFromUser();
         panel.addText("이제 당신의 턴입니다.");
@@ -81,14 +81,14 @@ public class Thief {
             }
     }
     public void takeCardFromCom() {
-        if (!panel.getUserCards().isEmpty()) {
+        if (!panel.getComputerCards().isEmpty()) {
             // 랜덤으로 유저 카드 선택
-            int randomIndex = (int) (Math.random() * panel.getComputerCards().size());
-            Card takenCard = panel.getUserCards().remove(randomIndex);
+            int comIndex = (int) (Math.random() * panel.getComputerCards().size());
+            Card takenCard = panel.getUserCards().remove(comIndex);
             panel.getUserCards().add(takenCard);
 
             // UI 갱신
-            panel.removeUserButton(randomIndex); // 유저 버튼 제거
+            panel.removeUserButton(comIndex); // 유저 버튼 제거
             panel.addUserButton(takenCard); // 컴퓨터 버튼 추가
 
             panel.addText("유저가 컴퓨터 카드 " + takenCard.getName() + "를 가져갔습니다.");
