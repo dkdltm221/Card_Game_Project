@@ -19,5 +19,6 @@ public class ThiefCard implements Card{
 
     @Override
     public int getValue() {
+        return mRank;
     }
 }
