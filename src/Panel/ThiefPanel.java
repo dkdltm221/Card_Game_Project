@@ -278,7 +278,7 @@ public class ThiefPanel extends JPanel {
         Card selectedCard = computerCards.remove(randomIndex);
 
         // 선택한 카드를 컴퓨터 카드 덱에 추가
-        computerCards.add(selectedCard);
+        userCards.add(selectedCard);
 
         // 관련된 유저 버튼 삭제
         JButton buttonToRemove = computerButtons.remove(randomIndex);
