@@ -11,8 +11,6 @@ public class ThiefCardFactory implements CardFactory {
     public List<Card> createCards() {
         List<Card> cards = new ArrayList<>();
         String[] suits = { "♤", "♡", "◇", "♧"};
-        String[] names = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
-        int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
         Card joker=new PlayCard("joker",0);
 
         for (String suit : suits) {
@@ -20,7 +18,6 @@ public class ThiefCardFactory implements CardFactory {
                 cards.add(new PlayCard(  suit+names[i], values[i]));
             }
             cards.add(joker);
-        }
         return cards;
     }
 
