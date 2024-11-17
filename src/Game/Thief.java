@@ -3,12 +3,9 @@ package Game;
 import Panel.ThiefPanel;
 import Main.MainApp;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import Card.*;
-
-import javax.swing.*;
 
 public class Thief {
     private ThiefPanel panel;
@@ -30,6 +27,7 @@ public class Thief {
     // 컴퓨터 카드 클릭 처리
     public void computerCardClicked(int index) {
         panel.addText("컴퓨터 카드 " + (index + 1) + " 클릭됨.");
+        // 추가 로직 구현
     }
 
     // 유저 카드 클릭 처리
@@ -54,47 +52,18 @@ public class Thief {
     }
 
     // 턴 넘기기
-    public void passTurnToComputer() {
-        panel.addText("컴퓨터에게 턴을 넘겼습니다.");
-        panel.addText("컴퓨터 pair 카드 삭제");
+    public void passTurn() {
+        panel.addText("턴을 넘겼습니다.");
+        panel.takeCardFromUser();
+        panel.addText("컴퓨터 동일 카드 삭제!");
         panel.removeCardAll();
-        panel.addText("당신의 카드를 뽑겠습니다.");
-        takeCardFromUser();
-        panel.addText("이제 당신의 턴입니다.");
+        panel.addText("당신의 턴이에요!");
     }
 
     // 상대방 카드 가져오기
-    public void takeCardFromUser() {
-            if (!panel.getUserCards().isEmpty()) {
-                // 랜덤으로 유저 카드 선택
-                int randomIndex = (int) (Math.random() * panel.getUserCards().size());
-                Card takenCard = panel.getUserCards().remove(randomIndex);
-                panel.getComputerCards().add(takenCard);
-
-                // UI 갱신
-                panel.removeUserButton(randomIndex); // 유저 버튼 제거
-                panel.addComputerButton(takenCard); // 컴퓨터 버튼 추가
-
-                panel.addText("컴퓨터가 유저 카드 " + takenCard.getName() + "를 가져갔습니다.");
-            } else {
-                panel.addText("유저에게 가져올 카드가 없습니다.");
-            }
-    }
-    public void takeCardFromCom() {
-        if (!panel.getComputerCards().isEmpty()) {
-            // 랜덤으로 유저 카드 선택
-            int comIndex = (int) (Math.random() * panel.getComputerCards().size());
-            Card takenCard = panel.getUserCards().remove(comIndex);
-            panel.getUserCards().add(takenCard);
-
-            // UI 갱신
-            panel.removeUserButton(comIndex); // 유저 버튼 제거
-            panel.addUserButton(takenCard); // 컴퓨터 버튼 추가
-
-            panel.addText("유저가 컴퓨터 카드 " + takenCard.getName() + "를 가져갔습니다.");
-        } else {
-            panel.addText("컴퓨터에게 가져올 카드가 없습니다.");
-        }
+    public void takeCard() {
+        panel.addText("상대방의 카드를 가져왔습니다.");
+        panel.takeCardFromCom();
     }
 
     // 같은 카드 2장 제거
@@ -120,5 +89,6 @@ public class Thief {
     public void clearSelectedCards() {
         selectedCards.clear();
     }
+
 
 }
