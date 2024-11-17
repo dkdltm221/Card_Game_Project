@@ -1,5 +1,6 @@
 package Main;
 
+import Bingo.Bingoapp;
 import Deck.BlackjackDeck;
 import Deck.Deck;
 import Login.Login;
@@ -32,7 +33,9 @@ public class MainApp extends JFrame {
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
         mainPanel.add(scoreboardPanel, "Scoreboard");
         mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
+        mainPanel.add(new Bingoapp(this),"BingoApp");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
+
 
 
         add(mainPanel);

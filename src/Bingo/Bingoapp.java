@@ -1,5 +1,7 @@
 package Bingo;
 
+import Main.MainApp;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,8 +13,10 @@ public class Bingoapp extends JPanel {
     static JLabel bingoCountLabel = new JLabel("Bingo Count: 0");
     static JLabel turnLabel = new JLabel("현재 턴: 사용자"); // 현재 턴 표시 라벨 추가
     Gameboard board;
+    private MainApp mainApp;
 
-    public Bingoapp() {
+    public Bingoapp(MainApp mainApp) {
+        this.mainApp = mainApp;
         setupMainPanel();
     }
 
@@ -43,7 +47,7 @@ public class Bingoapp extends JPanel {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                mainApp.showScreen("GameSelection");
             }
         });
 
@@ -89,15 +93,5 @@ public class Bingoapp extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Bingo Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(800, 600));
 
-        Bingoapp app = new Bingoapp();
-        frame.add(app);
-
-        frame.pack();
-        frame.setVisible(true);
-    }
 }
