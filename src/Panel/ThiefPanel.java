@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class ThiefPanel extends JPanel {
@@ -22,18 +23,17 @@ public class ThiefPanel extends JPanel {
     private List<JButton> computerButtons = new ArrayList<>(); //컴퓨터 버튼들
     private JPanel userPanel; // 유저 패널
     private JPanel computerPanel; // 컴퓨터 패널
-
+    private MainApp mainApp;
 
     public ThiefPanel(MainApp mainApp) {
         // 레이아웃 설정
         setLayout(new BorderLayout());
-
+        this.mainApp = mainApp;
         // 게임 메시지 출력 영역
         displayArea = new JTextArea();
         displayArea.setEditable(false);
         displayArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         add(new JScrollPane(displayArea), BorderLayout.CENTER);
-
         // 도둑잡기 게임 클래스 초기화
         thief = new Thief(this, mainApp);
 
@@ -63,15 +63,6 @@ public class ThiefPanel extends JPanel {
             computerPanel.add(button);
             computerButtons.add(button);
             button.addActionListener(e -> thief.computerCardClicked(index)); // 컴터 카드는 뭔지 안나오게 설정
-            if(computerCards.isEmpty()){
-                VictoryMessage(checkWinner(userCards, computerCards));
-                if(checkWinner(userCards,computerCards)==1){
-                    MainApp.updateScore(100);
-                } else{
-                    MainApp.updateScore(-100);
-                }
-                mainApp.showScreen("GameSelection");
-            }
         }
         add(computerPanel, BorderLayout.NORTH);
 
@@ -82,46 +73,39 @@ public class ThiefPanel extends JPanel {
             JButton button = new JButton(userCards.get(index).getName()); // 카드 이름 표시
             userPanel.add(button);
             userButtons.add(button);
-            button.addActionListener(e -> {
-                if (button.getBackground() == Color.YELLOW) {
-                    // 이미 선택된 카드인 경우
-                    button.setBackground(null);
-                    thief.userCardClicked(null);
-                } else {
-                    // 선택되지 않은 카드인 경우 선택
-                    button.setBackground(Color.YELLOW);
-                    userSelectButtons.add(button);
-                    thief.userCardClicked(userCards.get(index));
-                }
+            button.addActionListener(e -> { thief.userCardClicked(userCards.get(index));
+//                if (button.getBackground() == Color.YELLOW) {
+//                    // 이미 선택된 카드인 경우
+//                    button.setBackground(null);
+//                    thief.userCardClicked(null);
+//                } else {
+//                    // 선택되지 않은 카드인 경우 선택
+//                    button.setBackground(Color.YELLOW);
+//                    userSelectButtons.add(button);
+//                    thief.userCardClicked(userCards.get(index));
+//                }
             });
-            if(userCards.isEmpty()){
-                VictoryMessage(checkWinner(userCards, computerCards));
-                if(checkWinner(userCards,computerCards)==1){
-                    MainApp.updateScore(100);
-                } else{
-                    MainApp.updateScore(-100);
-                }
-                mainApp.showScreen("GameSelection");
-            }
+
         }
         add(userPanel, BorderLayout.SOUTH);
 
         // 오른쪽 버튼 패널
-        JPanel rightPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+        JPanel rightPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         JButton passTurnButton = new JButton("턴 넘기기");
+        JButton removeComButton = new JButton("컴퓨터 카드제거");
         JButton takeCardButton = new JButton("카드 가져오기");
         JButton removePairButton = new JButton("같은 카드 제거");
 
         passTurnButton.addActionListener(e -> thief.passTurn());
+        removeComButton.addActionListener(e->thief.removeCom());
         takeCardButton.addActionListener(e -> thief.takeCard());
         removePairButton.addActionListener(e -> thief.removePair());
 
         rightPanel.add(passTurnButton);
+        rightPanel.add(removeComButton);
         rightPanel.add(takeCardButton);
         rightPanel.add(removePairButton);
         add(rightPanel, BorderLayout.EAST);
-
-
     }
 
     // 메시지 출력 메서드
@@ -131,6 +115,10 @@ public class ThiefPanel extends JPanel {
 
     public void addText(String text) {
         displayArea.append(text + "\n");
+    }
+
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
     }
 
     public void removePairButtons() {
@@ -169,34 +157,43 @@ public class ThiefPanel extends JPanel {
 
     //같은 카드 자동으로 삭제
     public void removeCardAll() {
-        List<Card> cardsToRemove = new ArrayList<>();
-
         // 컴퓨터 덱에서 value 값이 같은 두 장의 카드 찾기
         for (int i = 0; i < computerCards.size(); i++) {
+            boolean pairFound = false; // 한 쌍을 찾았는지 여부
             for (int j = i + 1; j < computerCards.size(); j++) {
                 if (computerCards.get(i).getValue() == computerCards.get(j).getValue()) {
-                    // 동일한 value 값을 가진 카드 두 장을 리스트에 추가
-                    cardsToRemove.add(computerCards.get(i));
-                    cardsToRemove.add(computerCards.get(j));
-                    break; // 일치하는 쌍을 찾으면 더 이상 내부 루프를 돌 필요 없음
+                    // 동일한 value 값을 가진 카드 두 장을 즉시 삭제
+                    Card card1 = computerCards.get(i);
+                    Card card2 = computerCards.get(j);
+
+                    // 버튼 및 덱에서 카드 삭제
+                    removeComputerButton(card1);
+                    removeComputerButton(card2);
+                    computerCards.remove(j); // 주의: j 먼저 제거
+                    computerCards.remove(i); // i 제거 (j가 먼저 제거되었으므로 안전)
+
+                    addText("컴퓨터 덱에서 카드 제거: " + card1.getName() + ", " + card2.getName());
+
+                    pairFound = true;
+                    break; // 내부 루프 탈출
                 }
+            }
+            if (pairFound) {
+                break; // 외부 루프 탈출 후 다시 시작
             }
         }
 
-        // 찾은 카드 제거
-        for (Card card : cardsToRemove) {
-            computerCards.remove(card);
-            removeComputerButton(card);
-        }
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
 
-        // 메시지 추가
-        if (!cardsToRemove.isEmpty()) {
-            addText("컴퓨터 덱에서 카드 제거: " +
-                    cardsToRemove.stream().map(Card::getName).reduce((a, b) -> a + ", " + b).orElse(""));
-        } else {
+        // 더 이상 동일한 카드가 없을 경우 메시지 추가
+        if (computerCards.isEmpty()) {
             addText("컴퓨터 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
+            addText("당신 차례!");
         }
     }
+
 
     //컴퓨터 버튼 삭제
     private void removeComputerButton(Card card) {
@@ -220,15 +217,7 @@ public class ThiefPanel extends JPanel {
     public void takeCardFromUser() {
         if (userCards == null || userCards.isEmpty()) {
             addText("유저 카드가 없습니다!");
-            return; // 유저 카드가 없는 경우 종료
-        }
-        if (userButtons == null || userButtons.isEmpty()) { //오류 찾기
-            addText("유저 버튼이 초기화되지 않았습니다!");
-            return;
-        }
-        if (userPanel == null) {    //오류 찾기
-            addText("유저 패널이 초기화되지 않았습니다!");
-            return;
+            checkUserCardsAndAlertVictory();
         }
 
         // 유저 카드 중 랜덤으로 하나를 선택
@@ -258,11 +247,12 @@ public class ThiefPanel extends JPanel {
         // 메시지 출력
         addText("유저 카드 '" + selectedCard.getName() + "'을(를) 컴퓨터가 가져갔습니다.");
     }
+
     //컴터 덱에서 유저 덱으로 카드와 버튼 이동
     public void takeCardFromCom() {
         if (computerCards == null || computerCards.isEmpty()) {
             addText("컴퓨터 카드가 없습니다!");
-            return; // 컴퓨처 카드가 없는 경우 종료
+            checkComputerCardsAndAlertVictory(); // 유저 카드가 없는 경우 종료
         }
         if (computerButtons == null || computerButtons.isEmpty()) { //오류 찾기
             addText("컴퓨터 버튼 초기화되지 않았습니다!");
@@ -277,7 +267,7 @@ public class ThiefPanel extends JPanel {
         int randomIndex = (int) (Math.random() * computerCards.size());
         Card selectedCard = computerCards.remove(randomIndex);
 
-        // 선택한 카드를 컴퓨터 카드 덱에 추가
+        // 선택한 카드를 유저 카드 덱에 추가
         userCards.add(selectedCard);
 
         // 관련된 유저 버튼 삭제
@@ -286,7 +276,7 @@ public class ThiefPanel extends JPanel {
             computerPanel.remove(buttonToRemove);
         }
 
-        // 컴퓨터 버튼 추가
+        // 유저 버튼 추가
         JButton newUserButton = new JButton(selectedCard.getName()); // 유저카드 버튼 추가
         newUserButton.addActionListener(e -> thief.userCardClicked(selectedCard));
         userPanel.add(newUserButton);
@@ -299,27 +289,118 @@ public class ThiefPanel extends JPanel {
         // 메시지 출력
         addText("컴퓨터 카드 '" + selectedCard.getName() + "'을(를) 유저가 가져갔습니다.");
     }
-    //승리 판단 메서드
-    public int checkWinner(List<Card> userCards, List<Card> computerCards){
-        if (userCards.isEmpty()) { // userCards가 비어 있으면
-            return 1; // 1 반환
+
+    public void removeUserCardAll() {
+        for (int i = 0; i < userCards.size(); i++) {
+            boolean pairFound = false; // 한 쌍을 찾았는지 여부
+            for (int j = i + 1; j < userCards.size(); j++) {
+                if (userCards.get(i).getValue() == userCards.get(j).getValue()) {
+                    // 동일한 value 값을 가진 카드 두 장을 즉시 삭제
+                    Card card1 = userCards.get(i);
+                    Card card2 = userCards.get(j);
+
+                    // 버튼 및 덱에서 카드 삭제
+                    removeUserButton(card1);
+                    removeUserButton(card2);
+                    userCards.remove(j); // 주의: j 먼저 제거
+                    userCards.remove(i); // i 제거 (j가 먼저 제거되었으므로 안전)
+
+                    addText("유저 덱에서 카드 제거: " + card1.getName() + ", " + card2.getName());
+
+                    pairFound = true;
+                    break; // 내부 루프 탈출
+                }
+            }
+            if (pairFound) {
+                break; // 외부 루프 탈출 후 다시 시작
+            }
         }
-        if (computerCards.isEmpty()) { // computerCards가 비어 있으면
-            return 2; // 2 반환
-        }
-        return 0; // 둘 다 비어 있지 않으면 0 반환
-    }
-    //승리시 출력 메서드
-    public void VictoryMessage(int isVictory){
-        if (isVictory==1) {
-            JOptionPane.showMessageDialog(null, "당신의 승리입니다", "승리", JOptionPane.INFORMATION_MESSAGE);
-        } else if (isVictory==2) {
-            JOptionPane.showMessageDialog(null, "컴퓨터의 승리입니다", "패배", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "아직 승자가 없습니다.", "오류메세지", JOptionPane.INFORMATION_MESSAGE);
+
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
+
+        // 더 이상 동일한 카드가 없을 경우 메시지 추가
+        if (userCards.isEmpty()) {
+            addText("유저 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
+            addText("턴넘기기! ");
         }
     }
 
+    private void removeUserButton(Card card) {
+        for (int i = 0; i < userButtons.size(); i++) {
+            JButton button = userButtons.get(i);
+
+            // 버튼의 텍스트가 카드의 이름과 일치하는지 확인
+            if (button.getText().equals(card.getName())) {
+                // 버튼을 패널에서 제거하고, 버튼 리스트에서도 제거
+                userButtons.remove(i);
+                userPanel.remove(button);
+                break; // 한 번 찾으면 반복문을 종료
+            }
+        }
+
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
+    }
+    public void checkUserCardsAndAlertVictory() {
+        if (userCards.isEmpty()) {
+            // 알림 창 생성
+            int response = JOptionPane.showOptionDialog(
+                    this,
+                    "승리!",
+                    "알림",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    new Object[]{"확인"},
+                    "확인"
+            );
+
+            // 확인 버튼 클릭 시 동작
+            /*if (response == JOptionPane.OK_OPTION || response == JOptionPane.CLOSED_OPTION) {
+                MainApp.updateScore(100);
+                // mainApp.showScreen 호출
+                mainApp.showScreen("GameSelection");
+            }*/
+            if (response == JOptionPane.OK_OPTION || response == JOptionPane.CLOSED_OPTION) {
+                if (mainApp == null) {
+                    System.err.println("mainApp이 null입니다. 제대로 초기화되었는지 확인하세요.");
+                    return; // null일 경우 실행 중단
+                }
+                MainApp.updateScore(100);
+                mainApp.showScreen("GameSelection");
+            }
+        }
+    }
+    public void checkComputerCardsAndAlertVictory() {
+        if (computerCards.isEmpty()) {
+            // 알림 창 생성
+            int response = JOptionPane.showOptionDialog(
+                    this,
+                    "패배!",
+                    "알림",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    new Object[]{"확인"},
+                    "확인"
+            );
+
+            // 확인 버튼 클릭 시 동작
+            //if (response == JOptionPane.OK_OPTION || response == JOptionPane.CLOSED_OPTION) {
+                // mainApp.showScreen 호출
+            //    mainApp.showScreen("GameSelection");
+            //}
+            if (response == JOptionPane.OK_OPTION || response == JOptionPane.CLOSED_OPTION) {
+                if (mainApp == null) {
+                    System.err.println("mainApp이 null입니다. 제대로 초기화되었는지 확인하세요.");
+                    return; // null일 경우 실행 중단
+                }
+                mainApp.showScreen("GameSelection");
+            }
+        }
+    }
 }
 

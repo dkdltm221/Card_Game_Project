@@ -7,4 +7,4 @@ nㅇㄴㅁ 3
 nㅇㄴㅇㅈ 3
 nㅈㅂㄷ 3
 nsda 1
-qwer 0
+qwer -600
