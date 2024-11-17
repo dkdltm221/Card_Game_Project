@@ -54,15 +54,16 @@ public class Thief {
     // 턴 넘기기
     public void passTurn() {
         panel.addText("턴을 넘겼습니다.");
-        panel.addText("컴퓨터 카드 삭제");
+        panel.takeCardFromUser();
+        panel.addText("컴퓨터 동일 카드 삭제!");
         panel.removeCardAll();
-        // 여기다가 턴 넘기는 로직 만들고
+        panel.addText("당신의 턴이에요!");
     }
 
     // 상대방 카드 가져오기
     public void takeCard() {
         panel.addText("상대방의 카드를 가져왔습니다.");
-        // 여기다가 상대방 카드 가져오는 로직 만들어줘
+        panel.takeCardFromCom();
     }
 
     // 같은 카드 2장 제거

@@ -17,8 +17,12 @@ public class ThiefPanel extends JPanel {
     private Thief thief;
     private List<Card> computerCards;    //컴퓨터 카드덱
     private List<Card> userCards;       //유저 카드덱
-    private List<JButton> userButtons;      //버튼 클릭 시 담아줄 리스트
+    private List<JButton> userSelectButtons;//버튼 클릭 시 담아줄 리스트
+    private List<JButton> userButtons;//유저 버튼들
     private List<JButton> computerButtons = new ArrayList<>(); //컴퓨터 버튼들
+    private JPanel userPanel; // 유저 패널
+    private JPanel computerPanel; // 컴퓨터 패널
+
 
     public ThiefPanel(MainApp mainApp) {
         // 레이아웃 설정
@@ -41,7 +45,8 @@ public class ThiefPanel extends JPanel {
         // 컴퓨터와 유저에게 카드를 분배
         computerCards = new ArrayList<>();
         userCards = new ArrayList<>();
-        userButtons = new ArrayList<>();
+        userButtons=new ArrayList<>();
+        userSelectButtons = new ArrayList<>();
         for (int i = 0; i < 27; i++) {
             computerCards.add(deck.remove(0)); //덱에 담긴 카드 하나씩 삭제해서 넣어줌 ㅇㅅㅇa
         }
@@ -50,10 +55,10 @@ public class ThiefPanel extends JPanel {
         }
 
         // 컴퓨터 카드 패널
-        JPanel computerPanel = new JPanel(new GridLayout(3, 9, 5, 5));
+        computerPanel = new JPanel(new GridLayout(3, 9, 5, 5));
         for (int i = 0; i < computerCards.size(); i++) {
             int index = i;
-            JButton button = new JButton(" ");  //컴퓨터는 카드값 안보여주게 설정
+            JButton button = new JButton(computerCards.get(index).getName());  //컴퓨터는 카드값 안보여주게 설정
             button.setActionCommand(computerCards.get(index).getName()); // 카드 이름을 ActionCommand에 설정, 버튼 지울때 사용
             computerPanel.add(button);
             computerButtons.add(button);
@@ -62,11 +67,12 @@ public class ThiefPanel extends JPanel {
         add(computerPanel, BorderLayout.NORTH);
 
         // 유저 카드 패널
-        JPanel userPanel = new JPanel(new GridLayout(3, 9, 5, 5));
+        userPanel = new JPanel(new GridLayout(3, 9, 5, 5));
         for (int i = 0; i < userCards.size(); i++) {
             int index = i;
             JButton button = new JButton(userCards.get(index).getName()); // 카드 이름 표시
             userPanel.add(button);
+            userButtons.add(button);
             button.addActionListener(e -> {
                 if (button.getBackground() == Color.YELLOW) {
                     // 이미 선택된 카드인 경우
@@ -75,7 +81,7 @@ public class ThiefPanel extends JPanel {
                 } else {
                     // 선택되지 않은 카드인 경우 선택
                     button.setBackground(Color.YELLOW);
-                    userButtons.add(button);
+                    userSelectButtons.add(button);
                     thief.userCardClicked(userCards.get(index));
                 }
             });
@@ -108,26 +114,37 @@ public class ThiefPanel extends JPanel {
     }
 
     public void removePairButtons() {
+        // 선택된 카드 이름들 저장
         List<String> selectedCardNames = new ArrayList<>();
-        for (Card card : thief.getSelectedCards()) {    //선택된 카드를 selectedCardNames에 넣어주는 과정
+        for (Card card : thief.getSelectedCards()) {
             selectedCardNames.add(card.getName());
         }
 
-        //일치하는 버튼 제거
-        for (int i = 0; i < userButtons.size(); i++) {
-            JButton button = userButtons.get(i);
-            if (button == null) continue; // 널 방어..?
-            if (selectedCardNames.contains(button.getText())) {
-                userButtons.remove(i);
-                button.getParent().remove(button);
-                i--;
+        // 선택된 버튼 삭제
+        for (int i = 0; i < userSelectButtons.size(); i++) {
+            JButton selectedButton = userSelectButtons.get(i);
+            if (selectedButton == null) continue;
+
+            // 선택된 버튼의 텍스트와 userButtons의 버튼 텍스트 비교
+            for (int j = 0; j < userButtons.size(); j++) {
+                JButton userButton = userButtons.get(j);
+
+                if (userButton != null && selectedButton.getText().equals(userButton.getText())) {
+                    // 일치하는 버튼을 리스트와 패널에서 제거
+                    userButtons.remove(j);
+                    userPanel.remove(userButton);
+                    break; // 한 번 찾으면 내부 루프 탈출
+                }
             }
         }
+
+        // UI 갱신
         this.revalidate();
         this.repaint();
 
         // 선택된 카드 초기화
         thief.clearSelectedCards();
+        userSelectButtons.clear(); // 선택된 버튼 리스트 초기화
     }
 
     //같은 카드 자동으로 삭제
@@ -178,5 +195,91 @@ public class ThiefPanel extends JPanel {
         this.revalidate();
         this.repaint();
     }
+
+    // 유저 덱에서 컴퓨터 덱으로 카드와 버튼 이동
+    public void takeCardFromUser() {
+        if (userCards == null || userCards.isEmpty()) {
+            addText("유저 카드가 없습니다!");
+            return; // 유저 카드가 없는 경우 종료
+        }
+        if (userButtons == null || userButtons.isEmpty()) { //오류 찾기
+            addText("유저 버튼이 초기화되지 않았습니다!");
+            return;
+        }
+        if (userPanel == null) {    //오류 찾기
+            addText("유저 패널이 초기화되지 않았습니다!");
+            return;
+        }
+
+        // 유저 카드 중 랜덤으로 하나를 선택
+        int randomIndex = (int) (Math.random() * userCards.size());
+        Card selectedCard = userCards.remove(randomIndex);
+
+        // 선택한 카드를 컴퓨터 카드 덱에 추가
+        computerCards.add(selectedCard);
+
+        // 관련된 유저 버튼 삭제
+        JButton buttonToRemove = userButtons.remove(randomIndex);
+        if (buttonToRemove != null) {
+            userPanel.remove(buttonToRemove);
+        }
+
+        // 컴퓨터 버튼 추가
+        JButton newComputerButton = new JButton(" "); // 컴퓨터 카드는 내용 숨김
+        newComputerButton.setActionCommand(selectedCard.getName());
+        newComputerButton.addActionListener(e -> thief.computerCardClicked(computerButtons.size()));
+        computerPanel.add(newComputerButton);
+        computerButtons.add(newComputerButton);
+
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
+
+        // 메시지 출력
+        addText("유저 카드 '" + selectedCard.getName() + "'을(를) 컴퓨터가 가져갔습니다.");
+    }
+    //컴터 덱에서 유저 덱으로 카드와 버튼 이동
+    public void takeCardFromCom() {
+        if (computerCards == null || computerCards.isEmpty()) {
+            addText("유저 카드가 없습니다!");
+            return; // 유저 카드가 없는 경우 종료
+        }
+        if (computerButtons == null || computerButtons.isEmpty()) { //오류 찾기
+            addText("컴퓨터 버튼 초기화되지 않았습니다!");
+            return;
+        }
+        if (computerPanel == null) {    //오류 찾기
+            addText("컴퓨터 패널이 오류!");
+            return;
+        }
+
+        // 컴터 카드 중 랜덤으로 하나를 선택
+        int randomIndex = (int) (Math.random() * computerCards.size());
+        Card selectedCard = computerCards.remove(randomIndex);
+
+        // 선택한 카드를 컴퓨터 카드 덱에 추가
+        computerCards.add(selectedCard);
+
+        // 관련된 유저 버튼 삭제
+        JButton buttonToRemove = computerButtons.remove(randomIndex);
+        if (buttonToRemove != null) {
+            computerPanel.remove(buttonToRemove);
+        }
+
+        // 컴퓨터 버튼 추가
+        JButton newUserButton = new JButton(selectedCard.getName()); // 유저카드 버튼 추가
+        newUserButton.addActionListener(e -> thief.computerCardClicked(userButtons.size()));
+        userPanel.add(newUserButton);
+        userButtons.add(newUserButton);
+
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
+
+        // 메시지 출력
+        addText("컴퓨터 카드 '" + selectedCard.getName() + "'을(를) 유저가 가져갔습니다.");
+    }
+
+
 }
 
