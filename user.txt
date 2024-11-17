@@ -3,6 +3,7 @@ Kim 310
 kkk 220
 hi 200
 kk 100
+yiji 100
 ha 10
 zizi 10
 a 10

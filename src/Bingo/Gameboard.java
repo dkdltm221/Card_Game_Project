@@ -172,9 +172,11 @@ public class Gameboard extends JPanel implements ActionListener {
             bingoCount += newBingoCount;
             bingoapp.updateBingoCount(bingoCount);
 
+            /*MainApp.updateScore(Score);*/
+
             // 사용자가 3개 이상의 빙고를 만들면 점수를 추가하고 게임 종료
             if (bingoCount >= 3) {
-                bingoapp.incrementScore(1);
+                bingoapp.incrementScore(100); // 100점 추가
                 bingoapp.gameOver();
                 return true;
             }
