@@ -424,7 +424,7 @@ public class BlackJack implements KeyListener {
             case KeyEvent.VK_E:{
                 if(mState!=STATE.FINISH)
                     break;
-                MainApp.updateScore(addPoint);
+                    MainApp.updateScore(addPoint);
                 mainApp.showScreen("GameSelection");
             }
         }
