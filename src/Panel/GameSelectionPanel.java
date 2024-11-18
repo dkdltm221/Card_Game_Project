@@ -32,12 +32,15 @@ public class GameSelectionPanel extends JPanel {
         JButton thiefGameButton = new JButton("도둑잡기");
 
         blackjackButton.addActionListener(e -> {
-            mainApp.showScreen("BlackjackPanel");
+            mainApp.showScreen("Blackjack");
         });
-        bingoButton.addActionListener(e -> showNotImplemented());
-        thiefGameButton.addActionListener(e -> {
-            mainApp.showScreen("ThiefPanel");
-        });
+        bingoButton.addActionListener(e ->
+                mainApp.showScreen("BingoApp")
+        );
+        thiefGameButton.addActionListener(e ->
+                mainApp.showScreen("ThiefPanel")
+        );
+
         centerPanel.add(blackjackButton);
         centerPanel.add(bingoButton);
         centerPanel.add(thiefGameButton);
@@ -45,8 +48,8 @@ public class GameSelectionPanel extends JPanel {
         JPanel southPanel = new JPanel();
         JButton scoreboardButton = new JButton("점수판");
         southPanel.add(scoreboardButton);
-        scoreboardButton.addActionListener(e ->
-                mainApp.showScreen("Scoreboard"));
+
+        scoreboardButton.addActionListener(e -> mainApp.showScreen("Scoreboard"));
 
         add(northPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
@@ -55,7 +58,6 @@ public class GameSelectionPanel extends JPanel {
 
     private void updateScoreLabel() {
         jLabel2.setText(" " + MainApp.getUserScore());
-        mainApp.updateScore();
     }
     private void showNotImplemented() {
         JOptionPane.showMessageDialog(this, "아직 게임이 개발되지 않았음");
