@@ -32,7 +32,7 @@ public class GameSelectionPanel extends JPanel {
         JButton thiefGameButton = new JButton("도둑잡기");
 
         blackjackButton.addActionListener(e -> {
-            mainApp.showScreen("Blackjack");
+            mainApp.showScreen("BlackjackPanel");
         });
         bingoButton.addActionListener(e ->
                 mainApp.showScreen("BingoApp")
