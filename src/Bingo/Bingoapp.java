@@ -13,7 +13,6 @@ public class Bingoapp extends JPanel {
     static JLabel bingoCountLabel = new JLabel("Bingo Count: 0");
     static JLabel turnLabel = new JLabel("현재 턴: 사용자"); // 현재 턴 표시 라벨 추가
     Gameboard board;
-
     private MainApp mainApp;
 
     public Bingoapp(MainApp mainApp) {
@@ -48,7 +47,7 @@ public class Bingoapp extends JPanel {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainApp.showScreen("GameSelectionPanel");
+                mainApp.showScreen("GameSelection");
             }
         });
 
@@ -94,19 +93,5 @@ public class Bingoapp extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
-        // MainApp 객체를 먼저 생성
-        MainApp mainApp = new MainApp("사용자 이름"); // 사용자 이름을 적절히 설정
 
-        // Bingoapp 객체를 생성할 때 MainApp 객체를 전달
-        Bingoapp app = new Bingoapp(mainApp);
-
-        JFrame frame = new JFrame("Bingo Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(800, 600));
-        frame.add(app);
-
-        frame.pack();
-        frame.setVisible(true);
-    }
 }
