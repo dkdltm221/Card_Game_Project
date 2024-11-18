@@ -58,6 +58,7 @@ public class GameSelectionPanel extends JPanel {
 
     private void updateScoreLabel() {
         jLabel2.setText(" " + MainApp.getUserScore());
+        mainApp.updateScoreBord();
     }
     private void showNotImplemented() {
         JOptionPane.showMessageDialog(this, "아직 게임이 개발되지 않았음");
