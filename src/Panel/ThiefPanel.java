@@ -157,9 +157,10 @@ public class ThiefPanel extends JPanel {
 
     //같은 카드 자동으로 삭제
     public void removeCardAll() {
+        boolean pairFound = true;
         // 컴퓨터 덱에서 value 값이 같은 두 장의 카드 찾기
         for (int i = 0; i < computerCards.size(); i++) {
-            boolean pairFound = false; // 한 쌍을 찾았는지 여부
+            pairFound = false; // 한 쌍을 찾았는지 여부
             for (int j = i + 1; j < computerCards.size(); j++) {
                 if (computerCards.get(i).getValue() == computerCards.get(j).getValue()) {
                     // 동일한 value 값을 가진 카드 두 장을 즉시 삭제
@@ -188,7 +189,7 @@ public class ThiefPanel extends JPanel {
         this.repaint();
 
         // 더 이상 동일한 카드가 없을 경우 메시지 추가
-        if (computerCards.isEmpty()) {
+        if (!pairFound) {
             addText("컴퓨터 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
             addText("당신 차례!");
         }
@@ -291,8 +292,9 @@ public class ThiefPanel extends JPanel {
     }
 
     public void removeUserCardAll() {
+        boolean pairFound =true;
         for (int i = 0; i < userCards.size(); i++) {
-            boolean pairFound = false; // 한 쌍을 찾았는지 여부
+            pairFound = false; // 한 쌍을 찾았는지 여부
             for (int j = i + 1; j < userCards.size(); j++) {
                 if (userCards.get(i).getValue() == userCards.get(j).getValue()) {
                     // 동일한 value 값을 가진 카드 두 장을 즉시 삭제
@@ -321,7 +323,7 @@ public class ThiefPanel extends JPanel {
         this.repaint();
 
         // 더 이상 동일한 카드가 없을 경우 메시지 추가
-        if (userCards.isEmpty()) {
+        if (!pairFound) {
             addText("유저 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
             addText("턴넘기기! ");
         }
