@@ -1,8 +1,2 @@
-Kim 310
-ndsa 30
-ndfas 8
-nㅁㄴㅇㄹ 5
-nㅇㄴㅁ 3
-nㅇㄴㅇㅈ 3
-nㅈㅂㄷ 3
-nsda 1
+kim 100
+yunbin 100
