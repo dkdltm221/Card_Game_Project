@@ -222,31 +222,36 @@ public class ThiefPanel extends JPanel {
         }
 
         // 유저 카드 중 랜덤으로 하나를 선택
-        int randomIndex = (int) (Math.random() * userCards.size());
-        Card selectedCard = userCards.remove(randomIndex);
+       try{
+           int randomIndex = (int) (Math.random() * userCards.size());
+           Card selectedCard = userCards.remove(randomIndex);
 
-        // 선택한 카드를 컴퓨터 카드 덱에 추가
-        computerCards.add(selectedCard);
+           // 선택한 카드를 컴퓨터 카드 덱에 추가
+           computerCards.add(selectedCard);
 
-        // 관련된 유저 버튼 삭제
-        JButton buttonToRemove = userButtons.remove(randomIndex);
-        if (buttonToRemove != null) {
-            userPanel.remove(buttonToRemove);
-        }
+           // 관련된 유저 버튼 삭제
+           JButton buttonToRemove = userButtons.remove(randomIndex);
+           if (buttonToRemove != null) {
+               userPanel.remove(buttonToRemove);
+           }
 
-        // 컴퓨터 버튼 추가
-        JButton newComputerButton = new JButton(" "); // 컴퓨터 카드는 내용 숨김
-        newComputerButton.setActionCommand(selectedCard.getName());
-        newComputerButton.addActionListener(e -> thief.computerCardClicked(computerButtons.size()));
-        computerPanel.add(newComputerButton);
-        computerButtons.add(newComputerButton);
+           // 컴퓨터 버튼 추가
+           JButton newComputerButton = new JButton(" "); // 컴퓨터 카드는 내용 숨김
+           newComputerButton.setActionCommand(selectedCard.getName());
+           newComputerButton.addActionListener(e -> thief.computerCardClicked(computerButtons.size()));
+           computerPanel.add(newComputerButton);
+           computerButtons.add(newComputerButton);
 
-        // UI 갱신
-        this.revalidate();
-        this.repaint();
+           // UI 갱신
+           this.revalidate();
+           this.repaint();
 
-        // 메시지 출력
-        addText("유저 카드 '" + selectedCard.getName() + "'을(를) 컴퓨터가 가져갔습니다.");
+           // 메시지 출력
+           addText("유저 카드 '" + selectedCard.getName() + "'을(를) 컴퓨터가 가져갔습니다.");
+       }catch (IndexOutOfBoundsException e){
+           addText("컴퓨터가 이겼습니다.");
+
+       }
     }
 
     //컴터 덱에서 유저 덱으로 카드와 버튼 이동
@@ -400,6 +405,7 @@ public class ThiefPanel extends JPanel {
                     System.err.println("mainApp이 null입니다. 제대로 초기화되었는지 확인하세요.");
                     return; // null일 경우 실행 중단
                 }
+                MainApp.updateScore(-100);
                 mainApp.showScreen("GameSelection");
             }
         }
