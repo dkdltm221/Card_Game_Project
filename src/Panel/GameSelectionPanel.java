@@ -8,7 +8,6 @@ public class GameSelectionPanel extends JPanel {
     private MainApp mainApp;
     private JLabel jLabel2;
     public GameSelectionPanel(MainApp app) {
-
         this.mainApp = app;
         setLayout(new BorderLayout());
 
@@ -35,8 +34,12 @@ public class GameSelectionPanel extends JPanel {
         blackjackButton.addActionListener(e -> {
             mainApp.showScreen("BlackjackPanel");
         });
-        bingoButton.addActionListener(e -> showNotImplemented());
-        thiefGameButton.addActionListener(e -> showNotImplemented());
+        bingoButton.addActionListener(e ->
+                mainApp.showScreen("BingoApp")
+        );
+        thiefGameButton.addActionListener(e ->
+                mainApp.showScreen("ThiefPanel")
+        );
 
         centerPanel.add(blackjackButton);
         centerPanel.add(bingoButton);
@@ -45,8 +48,8 @@ public class GameSelectionPanel extends JPanel {
         JPanel southPanel = new JPanel();
         JButton scoreboardButton = new JButton("점수판");
         southPanel.add(scoreboardButton);
-        scoreboardButton.addActionListener(e ->
-                mainApp.showScreen("Scoreboard"));
+
+        scoreboardButton.addActionListener(e -> mainApp.showScreen("Scoreboard"));
 
         add(northPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
@@ -55,7 +58,7 @@ public class GameSelectionPanel extends JPanel {
 
     private void updateScoreLabel() {
         jLabel2.setText(" " + MainApp.getUserScore());
-        mainApp.updateScore();
+        mainApp.updateScoreBord();
     }
     private void showNotImplemented() {
         JOptionPane.showMessageDialog(this, "아직 게임이 개발되지 않았음");

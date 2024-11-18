@@ -1,5 +1,6 @@
 package Main;
 
+import Bingo.Bingoapp;
 import Deck.BlackjackDeck;
 import Deck.Deck;
 import Login.Login;
@@ -10,8 +11,7 @@ import java.awt.*;
 import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
 import Panel.BlackjackPanel;
-
-
+import Panel.ThiefPanel;
 
 public class MainApp extends JFrame {
     private CardLayout cardLayout;
@@ -27,13 +27,17 @@ public class MainApp extends JFrame {
         inputUsers.readAll();
         user = setUserName(userName);
         scoreboardPanel = new ScoreboardPanel(this);
+
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
-        mainPanel.add(scoreboardPanel, "Scoreboard");
+        mainPanel.add(new ScoreboardPanel(this), "Scoreboard");
         mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
+        mainPanel.add(new ThiefPanel(this),"ThiefPanel");
+        mainPanel.add(new Bingoapp(this),"BingoApp");
+
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
+
 
         add(mainPanel);
         setVisible(true);
@@ -50,14 +54,12 @@ public class MainApp extends JFrame {
 
     public static void updateScore(int point){
         user.addScore(point);
-
         InputUsers.writeSortedToFile();
     }
-    public void updateScore(){
-            scoreboardPanel.updateScores();
-            // 다른 패널들도 필요 시 업데이트
+    public void updateScoreBord() {
+        scoreboardPanel.updateScores();
     }
-    public void showScreen(String screenName) {
+        public void showScreen(String screenName) {
         cardLayout.show(mainPanel, screenName);
     }
 

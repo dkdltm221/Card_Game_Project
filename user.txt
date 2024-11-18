@@ -1,8 +1,2 @@
-Kim 310
-yunbin 250
-kkk 220
-hi 200
-kk 100
-ha 10
-zizi 10
-a 10
+yunbin 480
+kim 100
