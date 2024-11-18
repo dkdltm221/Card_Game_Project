@@ -18,7 +18,7 @@ public class MainApp extends JFrame {
     private JPanel mainPanel;
     private static User user = null;
     static InputUsers inputUsers = new InputUsers();
-
+    private ScoreboardPanel scoreboardPanel;
     public MainApp(String userName) {
         setTitle("Mini Game App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,6 +26,7 @@ public class MainApp extends JFrame {
 
         inputUsers.readAll();
         user = setUserName(userName);
+        scoreboardPanel = new ScoreboardPanel(this);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -55,8 +56,10 @@ public class MainApp extends JFrame {
         user.addScore(point);
         InputUsers.writeSortedToFile();
     }
-
-    public void showScreen(String screenName) {
+    public void updateScoreBord() {
+        scoreboardPanel.updateScores();
+    }
+        public void showScreen(String screenName) {
         cardLayout.show(mainPanel, screenName);
     }
 

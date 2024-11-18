@@ -1,2 +1,2 @@
-yunbin 300
+yunbin 250
 kim 100
