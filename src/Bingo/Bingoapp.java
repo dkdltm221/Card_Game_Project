@@ -48,7 +48,7 @@ public class Bingoapp extends JPanel {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                mainApp.showScreen("GameSelectionPanel");
             }
         });
 
