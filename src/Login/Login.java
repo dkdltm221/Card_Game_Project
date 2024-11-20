@@ -37,7 +37,7 @@ public class Login {
         int frameHeight = screenSize.height;
 
         // 배경 이미지 로드 및 크기 조정
-        ImageIcon backgroundIcon = new ImageIcon("C:\\Users\\황정연\\IdeaProjects\\Card_Game_Project\\LoginBackground.png.jpg");
+        ImageIcon backgroundIcon = new ImageIcon("img/cards/LoginBackground.png.jpg");
         Image backgroundImage = backgroundIcon.getImage();
         Image scaledImage = backgroundImage.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH); // 창 크기에 맞게 조정
         ImageIcon scaledBackgroundIcon = new ImageIcon(scaledImage);
@@ -90,11 +90,11 @@ public class Login {
 
         // 버튼 스타일 설정
         loginButton.setBackground(new Color(70, 130, 180)); // 스틸 블루
-        loginButton.setForeground(Color.WHITE); // 텍스트 흰색
+        loginButton.setForeground(Color.BLACK); // 텍스트 흰색
         loginButton.setFont(new Font("Arial", Font.BOLD, 12));
 
         signupButton.setBackground(new Color(34, 139, 34)); // 초록색
-        signupButton.setForeground(Color.WHITE);
+        signupButton.setForeground(Color.BLACK);
         signupButton.setFont(new Font("Arial", Font.BOLD, 12));
 
         // 로그인 버튼 액션 (기존 로직 유지)

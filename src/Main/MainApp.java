@@ -11,6 +11,7 @@ import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
 import Panel.BlackjackPanel;
 import Panel.ThiefPanel;
+import blackjack.Game;
 
 
 public class MainApp extends JFrame {
@@ -31,7 +32,7 @@ public class MainApp extends JFrame {
         mainPanel = new JPanel(cardLayout);
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
         mainPanel.add(scoreboardPanel, "Scoreboard");
-        mainPanel.add(new BlackjackPanel(this),"BlackjackPanel");
+        mainPanel.add(new Game(),"BlackjackPanel");
         mainPanel.add(new ThiefPanel(this),"ThiefPanel");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
 
