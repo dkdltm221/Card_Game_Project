@@ -61,12 +61,12 @@ public class ThiefPanel extends JPanel {
         // 컴퓨터 카드 패널
         computerPanel = new JPanel();
         computerPanel.setLayout(null);
-        computerPanel.setBorder(new EmptyBorder(10,10,10,10));
-        computerPanel.setPreferredSize(new Dimension(110,150));
+        computerPanel.setBorder(new EmptyBorder(5,10,5,10));
+        computerPanel.setPreferredSize(new Dimension(126,180));
         for (int i = 0; i < computerCards.size(); i++) {
             int index = i;
             JButton button = new JButton(" ");  //컴퓨터는 카드값 안보여주게 설정
-            button.setBounds(i * 30, 30, 100, 140);
+            button.setBounds(i * 30, 30, 126, 180);
             button.setActionCommand(computerCards.get(index).getName()); // 카드 이름을 ActionCommand에 설정, 버튼 지울때 사용
             computerPanel.add(button);
             computerButtons.add(button);
@@ -78,12 +78,12 @@ public class ThiefPanel extends JPanel {
         // 유저 카드 패널
         userPanel = new JPanel();
         userPanel.setLayout(null);
-        userPanel.setBorder(new EmptyBorder(10,10,10,10));
-        userPanel.setPreferredSize(new Dimension(110,150));
+        userPanel.setBorder(new EmptyBorder(5,10,5,10));
+        userPanel.setPreferredSize(new Dimension(126,180));
         for (int i = 0; i < userCards.size(); i++) {
             int index = i;
             JButton button = new JButton(userCards.get(index).getName()); // 카드 이름 표시
-            button.setBounds(i * 30, 30, 100, 140);
+            button.setBounds(i * 30, 30, 126, 180);
             userPanel.add(button);
             userButtons.add(button);
             button.addActionListener(e -> { thief.userCardClicked(userCards.get(index));
