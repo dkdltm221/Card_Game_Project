@@ -6,7 +6,9 @@ import Game.Thief;
 import Main.MainApp;
 import com.sun.tools.javac.Main;
 
+import javax.management.ImmutableDescriptor;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +27,7 @@ public class ThiefPanel extends JPanel {
     private JPanel computerPanel; // 컴퓨터 패널
     private MainApp mainApp;
 
+    
     public ThiefPanel(MainApp mainApp) {
         // 레이아웃 설정
         setLayout(new BorderLayout());
@@ -54,23 +57,33 @@ public class ThiefPanel extends JPanel {
             userCards.add(deck.remove(0));    // 유저 카드는 26장
         }
 
+
         // 컴퓨터 카드 패널
-        computerPanel = new JPanel(new GridLayout(3, 9, 5, 5));
+        computerPanel = new JPanel();
+        computerPanel.setLayout(null);
+        computerPanel.setBorder(new EmptyBorder(10,10,10,10));
+        computerPanel.setPreferredSize(new Dimension(110,150));
         for (int i = 0; i < computerCards.size(); i++) {
             int index = i;
             JButton button = new JButton(" ");  //컴퓨터는 카드값 안보여주게 설정
+            button.setBounds(i * 30, 30, 100, 140);
             button.setActionCommand(computerCards.get(index).getName()); // 카드 이름을 ActionCommand에 설정, 버튼 지울때 사용
             computerPanel.add(button);
             computerButtons.add(button);
             button.addActionListener(e -> thief.computerCardClicked(index)); // 컴터 카드는 뭔지 안나오게 설정
         }
+
         add(computerPanel, BorderLayout.NORTH);
 
         // 유저 카드 패널
-        userPanel = new JPanel(new GridLayout(3, 9, 5, 5));
+        userPanel = new JPanel();
+        userPanel.setLayout(null);
+        userPanel.setBorder(new EmptyBorder(10,10,10,10));
+        userPanel.setPreferredSize(new Dimension(110,150));
         for (int i = 0; i < userCards.size(); i++) {
             int index = i;
             JButton button = new JButton(userCards.get(index).getName()); // 카드 이름 표시
+            button.setBounds(i * 30, 30, 100, 140);
             userPanel.add(button);
             userButtons.add(button);
             button.addActionListener(e -> { thief.userCardClicked(userCards.get(index));
