@@ -1,6 +1,6 @@
 package Main;
 
-import Deck.BlackjackDeck;
+
 import Deck.Deck;
 import Login.Login;
 import User.User;
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
-import Panel.BlackjackPanel;
+
 import Panel.ThiefPanel;
 import blackjack.Game;
 
@@ -32,7 +32,7 @@ public class MainApp extends JFrame {
         mainPanel = new JPanel(cardLayout);
         mainPanel.add(new GameSelectionPanel(this), "GameSelection");
         mainPanel.add(scoreboardPanel, "Scoreboard");
-        mainPanel.add(new Game(),"BlackjackPanel");
+        mainPanel.add(new Game(this),"BlackjackPanel");
         mainPanel.add(new ThiefPanel(this),"ThiefPanel");
         cardLayout.show(mainPanel, "GameSelection"); // Show login screen initially
 

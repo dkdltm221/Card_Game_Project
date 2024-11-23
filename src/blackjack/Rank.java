@@ -19,7 +19,7 @@ public enum Rank {
     KING("King",10);
 
     String rankName;
-    int rankValue;
+    public int rankValue;
 
     Rank(String rankName, int rankValue){
         this.rankName = rankName;

@@ -22,7 +22,6 @@ public class GameSelectionPanel extends JPanel {
         backgroundPanel.setLayout(new BorderLayout());
 
         // 중앙의 이름과 점수 패널
-        // 중앙의 이름과 점수 패널
         JPanel infoPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -49,17 +48,15 @@ public class GameSelectionPanel extends JPanel {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-                // 텍스트 그림자 효과
-                g2.setColor(Color.BLACK);
-                g2.drawString(getText(), 3, 3); // 그림자 오프셋
+                // 텍스트만 표시 (그림자 효과 제거)
+                g2.setColor(getForeground());
+                g2.drawString(getText(), 0, getHeight() - g.getFontMetrics().getDescent());
             }
         };
         infoLabel.setFont(new Font("Serif", Font.BOLD, 20));
         infoLabel.setForeground(new Color(255, 215, 0)); // 황금빛 텍스트
 
         infoPanel.add(infoLabel);
-
 
         Timer timer = new Timer(1000, e -> updateInfoLabel());
         timer.start();
@@ -74,20 +71,23 @@ public class GameSelectionPanel extends JPanel {
         // 블랙잭 게임
         gbc.gridx = 0;
         gbc.gridy = 0;
-        centerPanel.add(createGameComponent("블랙잭", IMAGE_DIR + "BlackJack.jpg", e -> mainApp.showScreen("BlackjackPanel")), gbc);
+        JButton button = setButton("블랙잭");
+        centerPanel.add(createGameComponent(IMAGE_DIR + "BlackJack_Card.jpg",button,"BlackjackPanel"), gbc);
 
         // 빙고 게임
         gbc.gridx = 1;
-        centerPanel.add(createGameComponent("빙고", IMAGE_DIR + "Bingo.jpg", e -> mainApp.showScreen("BingoApp")), gbc);
+        JButton bingoButton = setButton("빙고");
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card.jpg", bingoButton,"BingoPanel"), gbc);
 
         // 도둑잡기 게임
         gbc.gridx = 2;
-        centerPanel.add(createGameComponent("도둑잡기", IMAGE_DIR + "Thief.jpg", e -> mainApp.showScreen("ThiefPanel")), gbc);
+        JButton ThiefButton = setButton("도둑잡기");
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Thief_Card.jpg",ThiefButton,"ThiefPanel"), gbc);
 
         JPanel southPanel = new JPanel();
         southPanel.setOpaque(false);
         JButton scoreboardButton = new JButton("점수판");
-        scoreboardButton.setPreferredSize(new Dimension(100,20));
+        scoreboardButton.setPreferredSize(new Dimension(100, 20));
         southPanel.add(scoreboardButton);
         scoreboardButton.addActionListener(e -> mainApp.showScreen("Scoreboard"));
 
@@ -100,17 +100,35 @@ public class GameSelectionPanel extends JPanel {
         add(backgroundPanel);
     }
 
-    // 게임 컴포넌트를 생성하는 메서드 (이미지 + 버튼)
-    private JPanel createGameComponent(String text, String imagePath, java.awt.event.ActionListener actionListener) {
+    private JPanel createGameComponent(String imagePath, JButton button,String text) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
 
         // 이미지 설정
+        ImageIcon endIcon = new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH));
         ImageIcon icon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH));
-        JLabel imageLabel = new JLabel(icon);
+        JLabel imageLabel = new JLabel(icon); // 초기 이미지는 icon
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // 컴포넌트 추가
+        panel.add(imageLabel);
+        panel.add(Box.createVerticalStrut(10)); // 이미지와 버튼 사이 간격
+        panel.add(button);
+
+        // 버튼 클릭 시 이미지 변경 로직 추가
+        button.addActionListener(e -> {
+            imageLabel.setIcon(endIcon);
+            button.setVisible(false);
+            panel.revalidate();
+            panel.repaint();
+            mainApp.showScreen(text);
+        });
+
+        return panel;
+    }
+
+    private JButton setButton(String text){
         // 커스텀 버튼 생성
         JButton button = new JButton(text) {
             @Override
@@ -145,22 +163,13 @@ public class GameSelectionPanel extends JPanel {
         button.setFont(new Font("돋움", Font.BOLD, 18)); // 세련된 폰트
         button.setForeground(Color.WHITE); // 텍스트 색상
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        button.addActionListener(actionListener);
-
-        // 컴포넌트 추가
-        panel.add(imageLabel);
-        panel.add(Box.createVerticalStrut(10)); // 이미지와 버튼 사이 간격
-        panel.add(button);
-
-        return panel;
+        return button;
     }
-
 
     private void updateInfoLabel() {
         infoLabel.setText("이름: " + MainApp.getUserName() + " 점수: " + MainApp.getUserScore());
         infoLabel.repaint(); // 즉각적인 텍스트 업데이트
     }
-
 
     // 배경 이미지를 표시하는 사용자 정의 JPanel 클래스
     class BackgroundPanel extends JPanel {

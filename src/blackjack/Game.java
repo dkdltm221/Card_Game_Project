@@ -1,10 +1,10 @@
 package blackjack;
 
+import Main.MainApp;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import Deck.BlackJackDeck;
 /**
  * Contains all Game logic
  */
@@ -16,13 +16,15 @@ public class Game extends JPanel {
     public static final String IMAGE_DIR = "img/cards/"; // 카드 이미지 디렉토리
 
     // Game 클래스에서 필요한 인스턴스 변수 선언
-    private Deck deck, discarded; // 카드 덱과 버려진 카드 덱
+    private int score =0;
+    private boolean oneGame = true;
+    private BlackJackDeck deck, discarded; // 카드 덱과 버려진 카드 덱
     private Dealer dealer; // 딜러 객체
     private Player player; // 플레이어 객체
     private int wins, losses, pushes; // 승리, 패배, 무승부 횟수
-
+    private MainApp mainApp = null;
     // "Hit", "Stand", "Next Round" 버튼
-    private JButton btnHit, btnStand, btnNext;
+    private JButton btnHit, btnStand, btnNext,btnEnd;
 
     // 딜러와 플레이어의 카드 이미지를 표시하기 위한 라벨 배열
     private JLabel[] lblDealerCards, lblPlayerCards;
@@ -33,11 +35,12 @@ public class Game extends JPanel {
      * Game 클래스 생성자
      * 변수를 초기화하고 게임을 시작함
      */
-    public Game() {
+    public Game(MainApp mainApp) {
+        this.mainApp = mainApp;
         // 52장의 카드로 새로운 덱 생성
-        deck = new Deck(true);
+        deck = new BlackJackDeck(true);
         // 빈 덱 생성
-        discarded = new Deck();
+        discarded = new BlackJackDeck();
 
         // 딜러와 플레이어 객체 생성
         dealer = new Dealer();
@@ -66,6 +69,9 @@ public class Game extends JPanel {
         btnNext = new JButton("Next Round");
         btnNext.setBounds(180, 10, 140, 20);
         btnNext.setVisible(false);
+        btnEnd = new JButton("Leave the game");
+        btnEnd.setBounds(10,10,140,20);
+        btnEnd.setVisible(false);
 
         // 절대 위치를 사용하기 위해 레이아웃 설정
         this.setLayout(null);
@@ -74,7 +80,7 @@ public class Game extends JPanel {
         this.add(btnHit);
         this.add(btnStand);
         this.add(btnNext);
-
+        this.add(btnEnd);
         // 딜러와 플레이어 카드 이미지를 저장할 배열 초기화
         lblDealerCards = new JLabel[11];
         lblPlayerCards = new JLabel[11];
@@ -104,13 +110,13 @@ public class Game extends JPanel {
         }
 
         // 점수판 라벨 설정
-        lblScore = new JLabel("[Wins: 0]   [Losses: 0]   [Pushes: 0]");
-        lblScore.setBounds(450, 10, 300, 50);
+        lblScore = new JLabel("[Wins: 0]   [Losses: 0]   [Pushes: 0]  [플레이어 점수: 0]");
+        lblScore.setBounds(350, 10, 400, 50);
         this.add(lblScore);
 
         // 메시지 라벨 설정
         lblGameMessage = new JLabel("라운드 시작! Hit 또는 Stand를 선택하세요.");
-        lblGameMessage.setBounds(450, 200, 300, 40);
+        lblGameMessage.setBounds(400, 200, 350, 40);
         lblGameMessage.setFont(new Font("Arial", Font.BOLD, 20));
         this.add(lblGameMessage);
 
@@ -149,15 +155,25 @@ public class Game extends JPanel {
             // 다음 라운드 버튼 활성화
             btnHit.setVisible(false);
             btnStand.setVisible(false);
+            btnEnd.setVisible(true);
             btnNext.setVisible(true);
         });
 
         btnNext.addActionListener(e -> {
             // 다음 라운드 시작
             btnNext.setVisible(false);
+            btnEnd.setVisible(false);
             btnHit.setVisible(true);
             btnStand.setVisible(true);
             startRound();
+        });
+        btnEnd.addActionListener(e -> {
+            if(oneGame){
+                MainApp.updateScore(score);
+                oneGame = false;
+            }
+            mainApp.showScreen("GameSelection");
+
         });
     }
 
@@ -170,10 +186,12 @@ public class Game extends JPanel {
             // show message
             lblGameMessage.setText("You BUST - Over 21");
             // update score
+            score-=100;
             losses++;
             // make next round button only visible button
             btnHit.setVisible(false);
             btnStand.setVisible(false);
+            btnEnd.setVisible(true);
             btnNext.setVisible(true);
         }
     }
@@ -186,12 +204,15 @@ public class Game extends JPanel {
 
         if (dealer.getHand().calculatedValue() > 21) {
             lblGameMessage.setText("딜러 Bust! 당신이 승리했습니다.");
+            score+=100;
             wins++;
         } else if (dealer.getHand().calculatedValue() > player.getHand().calculatedValue()) {
             lblGameMessage.setText("딜러 승리 - 더 높은 값");
+            score-=100;
             losses++;
         } else if (player.getHand().calculatedValue() > dealer.getHand().calculatedValue()) {
             lblGameMessage.setText("플레이어 승리 - 더 높은 값");
+            score+=100;
             wins++;
         } else {
             lblGameMessage.setText("무승부");
@@ -205,9 +226,11 @@ public class Game extends JPanel {
     private void checkPlayer21() {
         if (player.getHand().calculatedValue() == 21) {
             lblGameMessage.setText("21에 도달했습니다!");
+            score +=100;
             wins++;
             btnHit.setVisible(false);
             btnStand.setVisible(false);
+            btnEnd.setVisible(true);
             btnNext.setVisible(true);
         }
     }
@@ -225,11 +248,21 @@ public class Game extends JPanel {
     /**
      * 화면 배경을 카드 테이블처럼 녹색으로 설정
      */
-    public void paintComponent(Graphics g) {
+    @Override
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.decode("#18320e"));
-        g.fillRect(0, 0, 1000, 1000);
+
+        // 배경 이미지를 로드
+        Image backgroundImage = new ImageIcon("img/BlackJackBackground.jpg").getImage();
+
+        // 배경 이미지를 패널 크기에 맞게 그리기
+        g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+
+        // 기존 초록색 배경을 그리는 코드를 삭제 (필요시 조정)
+        // g.setColor(Color.decode("#18320e"));
+        // g.fillRect(0, 0, 1000, 1000);
     }
+
 
     /**
      * 화면 업데이트
@@ -238,7 +271,7 @@ public class Game extends JPanel {
     private void updateScreen() {
         lblPlayerHandVal.setText("플레이어 핸드 값: " + player.getHand().calculatedValue());
         player.printHand(lblPlayerCards);
-        lblScore.setText("[Wins: " + wins + "]   [Losses: " + losses + "]   [Pushes: " + pushes + "]");
+        lblScore.setText("[Wins: " + wins + "]   [Losses: " + losses + "]   [Pushes: " + pushes + "]  [플레이어 점수: "+score+"]");
     }
 
     /**

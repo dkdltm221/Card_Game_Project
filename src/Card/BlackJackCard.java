@@ -1,11 +1,14 @@
-package blackjack;
+package Card;
+
+import blackjack.Rank;
+import blackjack.Suit;
 
 /**
  * The Card class allows us to create cards with a Suit and a Rank
  * It contains the methods needed to get the value of the card
  * and it contains a method to print the card to the console
  */
-public class Card implements Comparable<Card>{
+public class BlackJackCard implements Comparable<BlackJackCard> {
 
      private Suit suit;
      private Rank rank;
@@ -15,7 +18,7 @@ public class Card implements Comparable<Card>{
      * @param suit  The Suit of the card to be created
      * @param rank  The Rank of the card to be created
      */
-    public Card(Suit suit, Rank rank){
+    public BlackJackCard(Suit suit, Rank rank){
         this.suit = suit;
         this.rank = rank;
     }
@@ -24,7 +27,7 @@ public class Card implements Comparable<Card>{
      * Copy constructor
      * @param card the card being copied
      */
-    public Card(Card card){
+    public BlackJackCard(BlackJackCard card){
         this.suit = card.getSuit();
         this.rank = card.getRank();
     }
@@ -64,7 +67,7 @@ public class Card implements Comparable<Card>{
      * @return
      */
     @Override
-    public int compareTo(Card c) {
+    public int compareTo(BlackJackCard c) {
         //if this card is greater than the other card
         if(this.getValue() > c.getValue()){
             return 1;

@@ -1,5 +1,7 @@
 package blackjack;
 
+import Card.BlackJackCard;
+import Deck.BlackJackDeck;
 import java.util.ArrayList;
 
 /**
@@ -7,17 +9,17 @@ import java.util.ArrayList;
  */
 public class Hand {
 
-    private ArrayList<Card> hand;
+    private ArrayList<BlackJackCard> hand;
 
     public Hand(){
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<BlackJackCard>();
     }
 
     /**
      * Take a single card from the top of this deck and add it to the hand, removing it from the previous deck
      * @param deck The deck of cards we're taking from
      */
-    public void takeCardFromDeck(Deck deck){
+    public void takeCardFromDeck(BlackJackDeck deck){
         hand.add(deck.takeCard());
     }
 
@@ -29,7 +31,7 @@ public class Hand {
      *
      * @param discardDeck The deck we're discarding this hand to
      */
-    public void discardHandToDeck(Deck discardDeck){
+    public void discardHandToDeck(BlackJackDeck discardDeck){
 
         //copy cards from hand to discardDeck
         discardDeck.addCards(hand);
@@ -45,7 +47,7 @@ public class Hand {
      */
     public String toString(){
         String output = "";
-        for(Card card: hand){
+        for(BlackJackCard card: hand){
             output += card + " - ";
         }
         return output;
@@ -63,7 +65,7 @@ public class Hand {
         int aceCount = 0;
 
         //For each card in this hand
-        for(Card card: hand){
+        for(BlackJackCard card: hand){
             //Add the card value to the hand
             value += card.getValue();
             //Count how many aces have been added
@@ -89,7 +91,7 @@ public class Hand {
      * @param idx the index of the card we're getting
      * @return the card we got
      */
-    public Card getCard(int idx){
+    public BlackJackCard getCard(int idx){
         return hand.get(idx);
     }
 

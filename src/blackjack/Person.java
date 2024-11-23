@@ -2,6 +2,7 @@ package blackjack;
 
 import javax.swing.*;
 import java.awt.*;
+import Deck.BlackJackDeck;
 
 /**
  * Used for shared logic between the dealer and player
@@ -61,7 +62,7 @@ public abstract class Person {
      * Player takes a card from the deck
      * @param deck
      */
-    public void hit(Deck deck, Deck discard){
+    public void hit(BlackJackDeck deck, BlackJackDeck discard){
 
         //If there's no cards left in the deck
         if (!deck.hasCards()) {

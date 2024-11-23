@@ -1,5 +1,8 @@
-package blackjack;
+package Deck;
 
+import Card.BlackJackCard;
+import blackjack.Rank;
+import blackjack.Suit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -7,24 +10,24 @@ import java.util.Random;
 /**
  * A deck of cards
  */
-public class Deck {
+public class BlackJackDeck {
 
     //An arraylist to hold the deck of Cards
-    private ArrayList<Card> deck;
+    private ArrayList<BlackJackCard> deck;
 
 
     /**
      * Create an empty deck of cards
      */
-    public Deck(){
-        deck = new ArrayList<Card>();
+    public BlackJackDeck(){
+        deck = new ArrayList<BlackJackCard>();
     }
 
     /**
      * Copy Constructor
      * @param c deck being copied
      */
-    public Deck(Deck c){
+    public BlackJackDeck(BlackJackDeck c){
         Collections.copy(this.deck, c.getCards());
     }
 
@@ -32,15 +35,15 @@ public class Deck {
      * Create a standard deck of cards
      * @param makeDeck makes a standard deck of cards if true
      */
-    public Deck(boolean makeDeck){
-        deck = new ArrayList<Card>();
+    public BlackJackDeck(boolean makeDeck){
+        deck = new ArrayList<BlackJackCard>();
         if(makeDeck){
             //Go through all the suits
             for(Suit suit : Suit.values()){
                 //Go through all the ranks
                 for(Rank rank : Rank.values()){
                     //add a new card containing each iterations suit and rank
-                    deck.add(new Card(suit, rank));
+                    deck.add(new BlackJackCard(suit, rank));
                 }
             }
         }
@@ -50,7 +53,7 @@ public class Deck {
      *
      * @param card The card being added to this deck
      */
-    public void addCard(Card card){
+    public void addCard(BlackJackCard card){
         deck.add(card);
     }
 
@@ -58,7 +61,7 @@ public class Deck {
      *
      * @param cards an arraylist of cards to be added to this deck
      */
-    public void addCards(ArrayList<Card> cards){
+    public void addCards(ArrayList<BlackJackCard> cards){
         deck.addAll(cards);
     }
 
@@ -70,7 +73,7 @@ public class Deck {
         //A string to hold everything we're going to return
         String output = "";
 
-        for(Card card: deck){
+        for(BlackJackCard card: deck){
             output += card;
             output += "\n";
         }
@@ -88,10 +91,10 @@ public class Deck {
      *
      * @return The card taken from the deck
      */
-    public Card takeCard(){
+    public BlackJackCard takeCard(){
 
             //Take a copy of the first card from the deck
-            Card cardToTake = new Card(deck.get(0));
+            BlackJackCard cardToTake = new BlackJackCard(deck.get(0));
             //Remove the card from the deck
             deck.remove(0);
             //Give the card back
@@ -124,7 +127,7 @@ public class Deck {
      *
      * @return the arraylist containing all the cards in this deck
      */
-    public ArrayList<Card> getCards() {
+    public ArrayList<BlackJackCard> getCards() {
         return deck;
     }
 
@@ -141,7 +144,7 @@ public class Deck {
      * Clear the old deck
      * @param discard - the deck we're getting the cards from
      */
-    public void reloadDeckFromDiscard(Deck discard){
+    public void reloadDeckFromDiscard(BlackJackDeck discard){
         this.addCards(discard.getCards());
         this.shuffle();
         discard.emptyDeck();
