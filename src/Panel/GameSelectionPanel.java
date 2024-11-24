@@ -77,7 +77,7 @@ public class GameSelectionPanel extends JPanel {
         // 빙고 게임
         gbc.gridx = 1;
         JButton bingoButton = setButton("빙고");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card.jpg", bingoButton,"BingoPanel"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card.jpg", bingoButton,"BingoApp"), gbc);
 
         // 도둑잡기 게임
         gbc.gridx = 2;
