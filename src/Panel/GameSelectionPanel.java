@@ -72,17 +72,17 @@ public class GameSelectionPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         JButton button = setButton("블랙잭");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "BlackJack_Card.jpg",button,"BlackjackPanel"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "BlackJack_Card",button,"BlackjackPanel"), gbc);
 
         // 빙고 게임
         gbc.gridx = 1;
         JButton bingoButton = setButton("빙고");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card.jpg", bingoButton,"BingoApp"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card", bingoButton,"BingoApp"), gbc);
 
         // 도둑잡기 게임
         gbc.gridx = 2;
         JButton ThiefButton = setButton("도둑잡기");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "Thief_Card.jpg",ThiefButton,"ThiefPanel"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Thief_Card",ThiefButton,"ThiefPanel"), gbc);
 
         JPanel southPanel = new JPanel();
         southPanel.setOpaque(false);
@@ -106,8 +106,8 @@ public class GameSelectionPanel extends JPanel {
         panel.setOpaque(false);
 
         // 이미지 설정
-        ImageIcon endIcon = new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH));
-        ImageIcon icon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH));
+        ImageIcon endIcon = new ImageIcon(new ImageIcon(imagePath+"_END.jpg").getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH));
+        ImageIcon icon = new ImageIcon(new ImageIcon(imagePath+".jpg").getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH));
         JLabel imageLabel = new JLabel(icon); // 초기 이미지는 icon
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
