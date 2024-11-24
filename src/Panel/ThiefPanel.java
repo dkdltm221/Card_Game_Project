@@ -81,21 +81,17 @@ public class ThiefPanel extends JPanel {
         }
 
         // 컴퓨터 카드 패널
-        computerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        computerPanel.setLayout(null);
+        computerPanel = new JPanel(null);
         computerPanel.setOpaque(false);
-        computerPanel.setBorder(null);
-        computerPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
-        computerPanel.setPreferredSize(new Dimension(126, 180));
+        computerPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
+        computerPanel.setPreferredSize(new Dimension(800, 240));
         backgroundPanel.add(computerPanel, BorderLayout.NORTH);
 
         // 유저 카드 패널
-        userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        userPanel.setLayout(null);
+        userPanel = new JPanel(null);
         userPanel.setOpaque(false);
-        userPanel.setBorder(null);
-        userPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
-        userPanel.setPreferredSize(new Dimension(126, 180));
+        userPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
+        userPanel.setPreferredSize(new Dimension(800, 240));
         backgroundPanel.add(userPanel, BorderLayout.SOUTH);
 
         // 오른쪽 버튼 패널
@@ -147,7 +143,7 @@ public class ThiefPanel extends JPanel {
         timer.addActionListener(e -> {
             if (index[0] < 27) { // 컴퓨터 카드 배분 (27장)
                 JButton button = new JButton(scaledIcon);
-                button.setBounds(index[0] * 30, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
+                button.setBounds(index[0] * 40, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
                 computerPanel.add(button);
                 computerButtons.add(button); // 버튼 리스트에 추가
 
@@ -164,7 +160,7 @@ public class ThiefPanel extends JPanel {
             }
             if (index[0] < 26) { // 유저 카드 배분 (26장)
                 JButton button = new JButton(userCards.get(index[0]).getName());
-                button.setBounds(index[0] * 30, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
+                button.setBounds(index[0] * 40, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
                 userPanel.add(button);
                 userButtons.add(button); // 버튼 리스트에 추가
 
