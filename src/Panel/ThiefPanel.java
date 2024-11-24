@@ -4,9 +4,9 @@ import Card.Card;
 import Card.ThiefCardFactory;
 import Game.Thief;
 import Main.MainApp;
-import com.sun.tools.javac.Main;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,78 +16,87 @@ import java.util.List;
 public class ThiefPanel extends JPanel {
     private JTextArea displayArea;
     private Thief thief;
-    private List<Card> computerCards;    //컴퓨터 카드덱
-    private List<Card> userCards;       //유저 카드덱
-    private List<JButton> userSelectButtons;//버튼 클릭 시 담아줄 리스트
-    private List<JButton> userButtons;//유저 버튼들
-    private List<JButton> computerButtons = new ArrayList<>(); //컴퓨터 버튼들
-    private JPanel userPanel; // 유저 패널
-    private JPanel computerPanel; // 컴퓨터 패널
+    private List<Card> computerCards;
+    private List<Card> userCards;
+    private List<JButton> computerButtons; // 컴퓨터 카드 버튼들
+    private List<JButton> userButtons; // 유저 카드 버튼들
+    private JPanel userPanel;
+    private JPanel computerPanel;
     private MainApp mainApp;
 
+    // 배경 이미지를 표시하는 사용자 정의 JPanel 클래스
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            backgroundImage = new ImageIcon(imagePath).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
+    }
+
     public ThiefPanel(MainApp mainApp) {
-        // 레이아웃 설정
         setLayout(new BorderLayout());
         this.mainApp = mainApp;
+        //배경사진
+        BackgroundPanel backgroundPanel = new BackgroundPanel( "img/BackGround.png");
+        backgroundPanel.setLayout(new BorderLayout());
+        add(backgroundPanel, BorderLayout.CENTER);
         // 게임 메시지 출력 영역
         displayArea = new JTextArea();
+        displayArea.setOpaque(false);
         displayArea.setEditable(false);
         displayArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        add(new JScrollPane(displayArea), BorderLayout.CENTER);
+        //add(new JScrollPane(displayArea), BorderLayout.CENTER);
+        // 게임 메시지 출력 영역을 배경 패널 위에 추가
+        JScrollPane scrollPane = new JScrollPane(displayArea);
+        scrollPane.setOpaque(false); // 스크롤 투명 처리
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setOpaque(false); // 뷰포트도 투명 처리
+        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
         // 도둑잡기 게임 클래스 초기화
         thief = new Thief(this, mainApp);
 
         // 카드 덱 초기화
         ThiefCardFactory cardFactory = new ThiefCardFactory();
         List<Card> deck = cardFactory.createCards();
-        Collections.shuffle(deck); // 카드 섞기
+        Collections.shuffle(deck);
 
         // 컴퓨터와 유저에게 카드를 분배
         computerCards = new ArrayList<>();
         userCards = new ArrayList<>();
-        userButtons=new ArrayList<>();
-        userSelectButtons = new ArrayList<>();
+        computerButtons = new ArrayList<>();
+        userButtons = new ArrayList<>();
         for (int i = 0; i < 27; i++) {
-            computerCards.add(deck.remove(0)); //덱에 담긴 카드 하나씩 삭제해서 넣어줌 ㅇㅅㅇa
+            computerCards.add(deck.remove(0));
         }
         for (int i = 0; i < 26; i++) {
-            userCards.add(deck.remove(0));    // 유저 카드는 26장
+            userCards.add(deck.remove(0));
         }
 
         // 컴퓨터 카드 패널
-        computerPanel = new JPanel(new GridLayout(3, 9, 5, 5));
-        for (int i = 0; i < computerCards.size(); i++) {
-            int index = i;
-            JButton button = new JButton(" ");  //컴퓨터는 카드값 안보여주게 설정
-            button.setActionCommand(computerCards.get(index).getName()); // 카드 이름을 ActionCommand에 설정, 버튼 지울때 사용
-            computerPanel.add(button);
-            computerButtons.add(button);
-            button.addActionListener(e -> thief.computerCardClicked(index)); // 컴터 카드는 뭔지 안나오게 설정
-        }
-        add(computerPanel, BorderLayout.NORTH);
+        computerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        computerPanel.setLayout(null);
+        computerPanel.setOpaque(false);
+        computerPanel.setBorder(null);
+        computerPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
+        computerPanel.setPreferredSize(new Dimension(126, 180));
+        backgroundPanel.add(computerPanel, BorderLayout.NORTH);
 
         // 유저 카드 패널
-        userPanel = new JPanel(new GridLayout(3, 9, 5, 5));
-        for (int i = 0; i < userCards.size(); i++) {
-            int index = i;
-            JButton button = new JButton(userCards.get(index).getName()); // 카드 이름 표시
-            userPanel.add(button);
-            userButtons.add(button);
-            button.addActionListener(e -> { thief.userCardClicked(userCards.get(index));
-//                if (button.getBackground() == Color.YELLOW) {
-//                    // 이미 선택된 카드인 경우
-//                    button.setBackground(null);
-//                    thief.userCardClicked(null);
-//                } else {
-//                    // 선택되지 않은 카드인 경우 선택
-//                    button.setBackground(Color.YELLOW);
-//                    userSelectButtons.add(button);
-//                    thief.userCardClicked(userCards.get(index));
-//                }
-            });
-
-        }
-        add(userPanel, BorderLayout.SOUTH);
+        userPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        userPanel.setLayout(null);
+        userPanel.setOpaque(false);
+        userPanel.setBorder(null);
+        userPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
+        userPanel.setPreferredSize(new Dimension(126, 180));
+        backgroundPanel.add(userPanel, BorderLayout.SOUTH);
 
         // 오른쪽 버튼 패널
         JPanel rightPanel = new JPanel(new GridLayout(4, 1, 5, 5));
@@ -97,7 +106,7 @@ public class ThiefPanel extends JPanel {
         JButton removePairButton = new JButton("같은 카드 제거");
 
         passTurnButton.addActionListener(e -> thief.passTurn());
-        removeComButton.addActionListener(e->thief.removeCom());
+        removeComButton.addActionListener(e -> thief.removeCom());
         takeCardButton.addActionListener(e -> thief.takeCard());
         removePairButton.addActionListener(e -> thief.removePair());
 
@@ -105,7 +114,11 @@ public class ThiefPanel extends JPanel {
         rightPanel.add(removeComButton);
         rightPanel.add(takeCardButton);
         rightPanel.add(removePairButton);
-        add(rightPanel, BorderLayout.EAST);
+        rightPanel.setOpaque(false); // 투명 처리
+        backgroundPanel.add(rightPanel, BorderLayout.EAST);
+
+        // 카드 배분 애니메이션 실행
+        dealCardsAnimation();
     }
 
     // 메시지 출력 메서드
@@ -121,46 +134,104 @@ public class ThiefPanel extends JPanel {
         this.mainApp = mainApp;
     }
 
-    public void removePairButtons() {
-        // 선택된 카드 이름들 저장
-        List<String> selectedCardNames = new ArrayList<>();
-        for (Card card : thief.getSelectedCards()) {
-            selectedCardNames.add(card.getName());
-        }
+    // 카드 배분 애니메이션
+    private void dealCardsAnimation() {
+        Timer timer = new Timer(100, null); // 100ms 간격으로 실행
+        final int[] index = {0}; // 현재 카드 인덱스
+        final int cardHeight = 180;
+        //뒷면사진 크기에 맞게 적용
+        ImageIcon originalIcon = new ImageIcon("img/cards/CardDown.png");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(126, 180, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-        // 선택된 버튼 삭제
-        for (int i = 0; i < userSelectButtons.size(); i++) {
-            JButton selectedButton = userSelectButtons.get(i);
-            if (selectedButton == null) continue;
+        timer.addActionListener(e -> {
+            if (index[0] < 27) { // 컴퓨터 카드 배분 (27장)
+                JButton button = new JButton(scaledIcon);
+                button.setBounds(index[0] * 30, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
+                computerPanel.add(button);
+                computerButtons.add(button); // 버튼 리스트에 추가
 
-            // 선택된 버튼의 텍스트와 userButtons의 버튼 텍스트 비교
-            for (int j = 0; j < userButtons.size(); j++) {
-                JButton userButton = userButtons.get(j);
-
-                if (userButton != null && selectedButton.getText().equals(userButton.getText())) {
-                    // 일치하는 버튼을 리스트와 패널에서 제거
-                    userButtons.remove(j);
-                    userPanel.remove(userButton);
-                    break; // 한 번 찾으면 내부 루프 탈출
-                }
+                // 애니메이션: 카드가 내려오는 효과
+                Timer fallTimer = new Timer(30, null);
+                fallTimer.addActionListener(fallEvent -> {
+                    if (button.getY() < 30) {
+                        button.setBounds(button.getX(), button.getY() + 10, 126, cardHeight);
+                    } else {
+                        fallTimer.stop(); // 떨어짐 완료
+                    }
+                });
+                fallTimer.start();
             }
-        }
+            if (index[0] < 26) { // 유저 카드 배분 (26장)
+                JButton button = new JButton(userCards.get(index[0]).getName());
+                button.setBounds(index[0] * 30, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
+                userPanel.add(button);
+                userButtons.add(button); // 버튼 리스트에 추가
 
-        // UI 갱신
-        this.revalidate();
-        this.repaint();
+                // 애니메이션: 카드가 내려오는 효과
+                Timer fallTimer = new Timer(30, null);
+                fallTimer.addActionListener(fallEvent -> {
+                    if (button.getY() < 30) {
+                        button.setBounds(button.getX(), button.getY() + 10, 126, cardHeight);
+                    } else {
+                        fallTimer.stop(); // 떨어짐 완료
+                    }
+                });
+                fallTimer.start();
+            }
+            index[0]++;
+            computerPanel.revalidate();
+            computerPanel.repaint();
+            userPanel.revalidate();
+            userPanel.repaint();
 
-        // 선택된 카드 초기화
-        thief.clearSelectedCards();
-        userSelectButtons.clear(); // 선택된 버튼 리스트 초기화
+            if (index[0] >= 27) {
+                timer.stop(); // 애니메이션 종료
+            }
+        });
+        timer.start();
     }
+
+    // 컴퓨터 덱에서 동일한 값의 카드 두 장을 제거
+//    public void removePairButtons() {
+//        // 선택된 카드 이름들 저장
+//        List<String> selectedCardNames = new ArrayList<>();
+//        for (Card card : thief.getSelectedCards()) {
+//            selectedCardNames.add(card.getName());
+//        }
+//
+//        // 선택된 버튼 삭제
+//        for (int i = 0; i < userSelectButtons.size(); i++) {
+//            JButton selectedButton = userSelectButtons.get(i);
+//            if (selectedButton == null) continue;
+//
+//            // 선택된 버튼의 텍스트와 userButtons의 버튼 텍스트 비교
+//            for (int j = 0; j < userButtons.size(); j++) {
+//                JButton userButton = userButtons.get(j);
+//
+//                if (userButton != null && selectedButton.getText().equals(userButton.getText())) {
+//                    // 일치하는 버튼을 리스트와 패널에서 제거
+//                    userButtons.remove(j);
+//                    userPanel.remove(userButton);
+//                    break; // 한 번 찾으면 내부 루프 탈출
+//                }
+//            }
+//        }
+//
+//        // UI 갱신
+//        this.revalidate();
+//        this.repaint();
+//
+//        // 선택된 카드 초기화
+//        thief.clearSelectedCards();
+//        userSelectButtons.clear(); // 선택된 버튼 리스트 초기화
+//    }
 
     //같은 카드 자동으로 삭제
     public void removeCardAll() {
-        boolean pairFound = true;
         // 컴퓨터 덱에서 value 값이 같은 두 장의 카드 찾기
         for (int i = 0; i < computerCards.size(); i++) {
-            pairFound = false; // 한 쌍을 찾았는지 여부
+            boolean pairFound = false; // 한 쌍을 찾았는지 여부
             for (int j = i + 1; j < computerCards.size(); j++) {
                 if (computerCards.get(i).getValue() == computerCards.get(j).getValue()) {
                     // 동일한 value 값을 가진 카드 두 장을 즉시 삭제
@@ -189,7 +260,7 @@ public class ThiefPanel extends JPanel {
         this.repaint();
 
         // 더 이상 동일한 카드가 없을 경우 메시지 추가
-        if (!pairFound) {
+        if (computerCards.isEmpty()) {
             addText("컴퓨터 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
             addText("당신 차례!");
         }
@@ -201,17 +272,18 @@ public class ThiefPanel extends JPanel {
         for (int i = 0; i < computerButtons.size(); i++) {
             JButton button = computerButtons.get(i);
 
-            // ActionCommand와 카드 이름을 비교
+            // 버튼의 이름과 카드 이름이 일치하는지 확인
             if (button.getActionCommand().equals(card.getName())) {
+                // 버튼을 패널에서 제거하고, 버튼 리스트에서도 제거
                 computerButtons.remove(i); // 리스트에서 버튼 제거
-                button.getParent().remove(button); // 버튼 제거
-                break;
+                computerPanel.remove(button); // 패널에서 버튼 제거
+                break; // 일치하는 버튼을 찾으면 탈출
             }
         }
 
         // UI 갱신
-        this.revalidate();
-        this.repaint();
+        computerPanel.revalidate();
+        computerPanel.repaint();
     }
 
     // 유저 덱에서 컴퓨터 덱으로 카드와 버튼 이동
@@ -292,9 +364,8 @@ public class ThiefPanel extends JPanel {
     }
 
     public void removeUserCardAll() {
-        boolean pairFound =true;
         for (int i = 0; i < userCards.size(); i++) {
-            pairFound = false; // 한 쌍을 찾았는지 여부
+            boolean pairFound = false; // 한 쌍을 찾았는지 여부
             for (int j = i + 1; j < userCards.size(); j++) {
                 if (userCards.get(i).getValue() == userCards.get(j).getValue()) {
                     // 동일한 value 값을 가진 카드 두 장을 즉시 삭제
@@ -323,7 +394,7 @@ public class ThiefPanel extends JPanel {
         this.repaint();
 
         // 더 이상 동일한 카드가 없을 경우 메시지 추가
-        if (!pairFound) {
+        if (userCards.isEmpty()) {
             addText("유저 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
             addText("턴넘기기! ");
         }
@@ -392,7 +463,7 @@ public class ThiefPanel extends JPanel {
 
             // 확인 버튼 클릭 시 동작
             //if (response == JOptionPane.OK_OPTION || response == JOptionPane.CLOSED_OPTION) {
-                // mainApp.showScreen 호출
+            // mainApp.showScreen 호출
             //    mainApp.showScreen("GameSelection");
             //}
             if (response == JOptionPane.OK_OPTION || response == JOptionPane.CLOSED_OPTION) {
@@ -404,5 +475,43 @@ public class ThiefPanel extends JPanel {
             }
         }
     }
-}
+    public void removeComputerCardAll() {
+        // 컴퓨터 덱에서 value 값이 같은 두 장의 카드 찾기
+        HashMap<Integer, List<Card>> groupedCards = new HashMap<>();
+        for (Card card : computerCards) {
+            groupedCards.computeIfAbsent(card.getValue(), k -> new ArrayList<>()).add(card); //같은 value를 가진 카드끼리 그룹화
+            //omputeIfAbsent는 지정된 키(card.getValue())가 맵에 없는 경우 실행, 새 리스트 생성
+        }
 
+        List<Card> cardsToRemove = new ArrayList<>();
+        // 그룹별로 처리
+        for (List<Card> group : groupedCards.values()) {
+            if (group.size() == 2 || group.size() == 4) {
+                // 그룹 크기가 2나 4이면 모두 제거
+                cardsToRemove.addAll(group);
+            } else if (group.size() == 3) {
+                // 그룹 크기가 3이면 2개만 제거
+                cardsToRemove.add(group.get(0));
+                cardsToRemove.add(group.get(1));
+            }
+        }
+
+        // 제거 대상 카드 처리
+        for (Card card : cardsToRemove) {
+            computerCards.remove(card);
+            removeComputerButton(card);
+        }
+
+        // 메시지 추가
+        if (!cardsToRemove.isEmpty()) {
+            addText("컴퓨터 덱에서 제거된 카드: " +
+                    cardsToRemove.stream().map(Card::getName).reduce((a, b) -> a + ", " + b).orElse(""));
+        } else {
+            addText("컴퓨터 덱에 제거할 카드가 없습니다.");
+        }
+
+        // UI 갱신
+        this.revalidate();
+        this.repaint();
+    }
+}
