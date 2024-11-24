@@ -24,7 +24,7 @@ public class Login {
 
     private void createAndShowLoginPanel() {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setPreferredSize(new Dimension(1600, 1200)); // 창 크기 설정
+        mainFrame.setPreferredSize(new Dimension(800, 600)); // 창 크기 설정
         mainFrame.setContentPane(createBackgroundPanel()); // 배경 설정
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -32,7 +32,7 @@ public class Login {
 
     private JPanel createBackgroundPanel() {
         // JFrame 크기 가져오기
-        Dimension screenSize = new Dimension(1600, 1200); // 창 크기와 동일하게 설정
+        Dimension screenSize = new Dimension(800, 600); // 창 크기와 동일하게 설정
         int frameWidth = screenSize.width;
         int frameHeight = screenSize.height;
 
