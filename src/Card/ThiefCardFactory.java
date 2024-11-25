@@ -17,7 +17,7 @@ public class ThiefCardFactory implements CardFactory {
 
         for (String suit : suits) {
             for (int i = 0; i < names.length; i++) {
-                cards.add(new PlayCard(  suit+names[i], values[i]));
+                cards.add(new PlayCard(  names[i]+suit, values[i]));
             }
         }
         cards.add(joker);

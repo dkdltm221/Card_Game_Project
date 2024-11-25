@@ -56,12 +56,13 @@ public class Thief {
     public void passTurn() {
         panel.addText("턴을 넘겼습니다.");
         panel.takeCardFromUser();
+        panel.removeComputerCardAll();
     }
 
     // 상대방 카드 가져오기
     public void takeCard() {
         panel.addText("상대방의 카드를 가져왔습니다.");
-        panel.takeCardFromCom();
+        panel.takeSelectedComputerCard();
     }
 
     // 같은 카드 2장 제거
