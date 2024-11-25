@@ -13,6 +13,13 @@ public class Gameboard extends JPanel implements ActionListener {
     Random rand = new Random();
     MyButton[][] cellPanel = new MyButton[rowSize][colSize];
     int[][] bingoNum = new int[rowSize][colSize];
+    static String[] images = { // 씨앗 이미지 배열
+            "seed1.png","seed2.png","seed3.png","seed4.png", "seed5.png",
+            "seed6.png","seed7.png","seed8.png","seed9.png", "seed10.png",
+            "seed11.png","seed12.png","seed13.png","seed14.png", "seed15.png",
+            "seed16.png","seed17.png","seed18.png","seed19.png", "seed20.png",
+            "seed21.png","seed22.png","seed23.png","seed24.png", "seed25.png"
+    };
     boolean[][] btnOX = new boolean[rowSize][colSize];
     boolean[] rowBingo = new boolean[rowSize];
     boolean[] colBingo = new boolean[colSize];
@@ -46,14 +53,15 @@ public class Gameboard extends JPanel implements ActionListener {
 
     public void initializeBoard() {
         removeAll();
+        Cursor c=customcursor();
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
                 btnOX[i][j] = false;
                 cellPanel[i][j] = new MyButton(i, j, bingoNum[i][j]);
                 cellPanel[i][j].addActionListener(this);
                 cellPanel[i][j].setFont(cellPanel[i][j].getFont().deriveFont(28.0f));
-                cellPanel[i][j].setBackground(null);
                 add(cellPanel[i][j]);
+                cellPanel[i][j].setCursor(c);
             }
         }
         bingoCount = 0;
@@ -71,21 +79,25 @@ public class Gameboard extends JPanel implements ActionListener {
 
         // 사용자가 선택한 버튼 처리
         if (!btnOX[btn.x][btn.y] && !isComputerTurn) { // 이미 선택된 버튼인지 확인
-            btn.setBackground(Color.BLUE);
+            btn.setIcon(changeImage("sprout.png"));
             btnOX[btn.x][btn.y] = true;
             bingoapp.setTurnLabel("현재 턴: 컴퓨터"); // 턴을 컴퓨터로 변경
             checkBingo();
             isComputerTurn = true; // 컴퓨터 턴으로 변경
 
-            // 1초 후에 컴퓨터 턴으로 전환
-            Timer timer = new Timer(1000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    computerTurn(); // 컴퓨터의 차례 실행
-                }
-            });
-            timer.setRepeats(false); // 한 번만 실행
-            timer.start();
+            if(bingoCount<3) {
+                // 1초 후에 컴퓨터 턴으로 전환
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        computerTurn(); // 컴퓨터의 차례 실행
+                    }
+                });
+                timer.setRepeats(false); // 한 번만 실행
+                timer.start();
+            }
+
+
         } else {
             // 이미 선택된 칸을 클릭한 경우
             JOptionPane.showMessageDialog(this, "이미 선택된 칸입니다!");
@@ -106,7 +118,7 @@ public class Gameboard extends JPanel implements ActionListener {
                     int y = rand.nextInt(colSize);
                     if (!btnOX[x][y]) {
                         btnOX[x][y] = true;
-                        cellPanel[x][y].setBackground(Color.RED);
+                        cellPanel[x][y].setIcon(changeImage("sprout.png")); // 버튼 클릭 시 버튼 이미지를 새싹 이미지로 설정
                         break;
                     }
                 }
@@ -138,14 +150,14 @@ public class Gameboard extends JPanel implements ActionListener {
                 rowBingo[i] = true;
                 newBingoCount++;
                 for (int n = 0; n < rowSize; n++) {
-                    cellPanel[i][n].setBackground(Color.YELLOW);
+                    cellPanel[i][n].setIcon(changeImage("flower.png")); // 빙고 한 줄 완성 시 버튼 이미지를 꽃 이미지로 설정
                 }
             }
             if (seroCount == colSize && !colBingo[i]) {
                 colBingo[i] = true;
                 newBingoCount++;
                 for (int n = 0; n < colSize; n++) {
-                    cellPanel[n][i].setBackground(Color.YELLOW);
+                    cellPanel[n][i].setIcon(changeImage("flower.png"));
                 }
             }
             if (btnOX[i][i]) rdcrossCount++;
@@ -156,7 +168,7 @@ public class Gameboard extends JPanel implements ActionListener {
             rdcrossBingo = true;
             newBingoCount++;
             for (int n = 0; n < rowSize; n++) {
-                cellPanel[n][n].setBackground(Color.YELLOW);
+                cellPanel[n][n].setIcon(changeImage("flower.png"));
             }
         }
 
@@ -164,7 +176,7 @@ public class Gameboard extends JPanel implements ActionListener {
             rucrossBingo = true;
             newBingoCount++;
             for (int n = 0; n < rowSize; n++) {
-                cellPanel[n][rowSize - 1 - n].setBackground(Color.YELLOW);
+                cellPanel[n][rowSize - 1 - n].setIcon(changeImage("flower.png"));
             }
         }
 
@@ -192,9 +204,25 @@ public class Gameboard extends JPanel implements ActionListener {
             this.x = x;
             this.y = y;
             this.num = num;
-            setBackground(Color.WHITE);
+            setIcon(changeImage(images[num-1])); // 버튼 초기 이미지를 번호에 맞는 씨앗 이미지로 설정
             setOpaque(true);
-            setText("<html>" + num + "</html>");
         }
+    }
+
+    static ImageIcon changeImage(String filename) { // 이미지 변환 메소드
+        ImageIcon icon = new ImageIcon("./image/" + filename); // 파일 경로 지정
+        Image originImage = icon.getImage();
+        Image changedImage = originImage.getScaledInstance(160, 120, Image.SCALE_SMOOTH); // 이미지 크기 설정
+        ImageIcon icon_new = new ImageIcon(changedImage);
+        return icon_new;
+    }
+
+    public Cursor customcursor() {
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        Image cursorImage = tk.getImage("./image/cursor.png"); // 파일 경로 지정
+        Image scaledImage = cursorImage.getScaledInstance(80, 80, Image.SCALE_SMOOTH); // 커서 크기 설정
+        Point point = new Point(40,40); // 커서 포인트 위치 설정
+        Cursor cursor = tk.createCustomCursor(scaledImage, point, "");
+        return cursor;
     }
 }
