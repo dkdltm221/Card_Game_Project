@@ -119,7 +119,7 @@ public class Game extends JPanel {
         lblScore.setFont(new Font("Arial", Font.BOLD, 20));       // 폰트 설정: Arial, Bold, 20 크기
         this.add(lblScore);
         this.addComponentListener(new ComponentAdapter() {
-            @Overridefi
+            @Override
             public void componentResized(ComponentEvent e) {
                 // 패널 크기 변경 시 lblScore 위치 업데이트
                 lblScore.setBounds(10, 10, getWidth() - 20, 50);
