@@ -113,4 +113,8 @@ public class TablePanel extends JPanel implements ListSelectionListener {
         loadData("user.txt");
         tableModel.fireTableDataChanged(); // tableModel은 테이블의 데이터 모델
     }
+
+
+
+
 }

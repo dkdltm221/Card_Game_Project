@@ -37,7 +37,7 @@ public class Login {
         int frameHeight = screenSize.height;
 
         // 배경 이미지 로드 및 크기 조정
-        ImageIcon backgroundIcon = new ImageIcon("img/cards/LoginBackground.png.jpg");
+        ImageIcon backgroundIcon = new ImageIcon("img/background.png");
         Image backgroundImage = backgroundIcon.getImage();
         Image scaledImage = backgroundImage.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH); // 창 크기에 맞게 조정
         ImageIcon scaledBackgroundIcon = new ImageIcon(scaledImage);

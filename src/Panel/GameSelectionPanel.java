@@ -18,7 +18,7 @@ public class GameSelectionPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // 배경 패널 생성
-        BackgroundPanel backgroundPanel = new BackgroundPanel(IMAGE_DIR + "background.jpg");
+        BackgroundPanel backgroundPanel = new BackgroundPanel("img/background.png");
         backgroundPanel.setLayout(new BorderLayout());
 
         // 중앙의 이름과 점수 패널

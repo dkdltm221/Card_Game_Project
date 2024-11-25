@@ -11,7 +11,6 @@ public class ThiefCard implements Card{
     }
 
 
-
     @Override
     public String getName() {
         return mSuit;

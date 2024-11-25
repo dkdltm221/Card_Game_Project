@@ -45,7 +45,7 @@ public class ThiefPanel extends JPanel {
         setLayout(new BorderLayout());
         this.mainApp = mainApp;
         //배경사진
-        BackgroundPanel backgroundPanel = new BackgroundPanel("img/BackGround.png");
+        BackgroundPanel backgroundPanel = new BackgroundPanel("img/BlackJackBackground.jpg");
         backgroundPanel.setLayout(new BorderLayout());
         add(backgroundPanel, BorderLayout.CENTER);
         // 게임 메시지 출력 영역
@@ -164,13 +164,16 @@ public class ThiefPanel extends JPanel {
                 fallTimer.start();
             }
             if (index[0] < 26) { // 유저 카드 배분 (26장)
-                Card currentCard = userCards.get(index[0]); // 현재 카드
-                JButton button = new JButton(currentCard.getName());
+                ImageIcon userIcon = new ImageIcon("img/cards/"+userCards.get(index[0]).getName()+".png");
+                Image userImage = userIcon.getImage().getScaledInstance(126, 180, Image.SCALE_SMOOTH);
+                ImageIcon userdIcon = new ImageIcon(userImage);
+                JButton button = new JButton(userdIcon); //userCards.get(index[0].getName())
                 button.setBounds(index[0] * 40, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
                 userPanel.add(button);
                 userButtons.add(button); // 버튼 리스트에 추가
 
                 // 버튼에 클릭 이벤트 추가
+                Card currentCard = userCards.get(index[0]);
                 button.addActionListener(ev -> handleUserCardClick(currentCard, button)); // 변수 이름 'ev'로 변경
 
                 // 애니메이션: 카드가 내려오는 효과
@@ -449,7 +452,7 @@ public class ThiefPanel extends JPanel {
                     System.err.println("mainApp이 null입니다. 제대로 초기화되었는지 확인하세요.");
                     return; // null일 경우 실행 중단
                 }
-                MainApp.updateScore(100);
+                MainApp.updateScore(15);
                 mainApp.showScreen("GameSelection");
             }
         }
@@ -669,7 +672,10 @@ public class ThiefPanel extends JPanel {
         userCards.add(selectedComputerCard); // 유저 덱에 카드 추가
 
         // 3. 유저 패널에 버튼 추가
-        JButton userButton = new JButton(selectedComputerCard.getName());
+        ImageIcon userIcon = new ImageIcon("img/cards/"+selectedComputerCard.getName()+".png");
+        Image userImage = userIcon.getImage().getScaledInstance(126, 180, Image.SCALE_SMOOTH);
+        ImageIcon userdIcon = new ImageIcon(userImage);
+        JButton userButton = new JButton(userdIcon);
         int xPosition = userButtons.size() * 40; // 기존 버튼 개수에 따라 위치 계산
         int yPosition = 30; // Y 좌표 고정
         userButton.setBounds(xPosition, yPosition, 126, 180); // 버튼 위치 설정
