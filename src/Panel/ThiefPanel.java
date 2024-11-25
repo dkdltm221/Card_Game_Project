@@ -159,7 +159,7 @@ public class ThiefPanel extends JPanel {
                 fallTimer.start();
             }
             if (index[0] < 26) { // 유저 카드 배분 (26장)
-                JButton button = new JButton(userCards.get(index[0]).getName());//getName=>getImage로 바꾸면 될듯
+                JButton button = new JButton(userCards.get(index[0]).getName());
                 button.setBounds(index[0] * 40, -cardHeight, 126, cardHeight); // 시작 위치: 패널 밖
                 userPanel.add(button);
                 userButtons.add(button); // 버튼 리스트에 추가

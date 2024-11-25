@@ -10,8 +10,8 @@ public class ThiefCardFactory implements CardFactory {
     @Override
     public List<Card> createCards() {
         List<Card> cards = new ArrayList<>();
-        String[] suits = { "♤", "♡", "◇", "♧"};
-        String[] names = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        String[] suits = { "Spades", "Hearts", "Diamonds", "Clubs"};
+        String[] names = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
         int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
         Card joker=new PlayCard("joker",0);
 
