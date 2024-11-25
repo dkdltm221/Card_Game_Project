@@ -45,7 +45,7 @@ public class ThiefPanel extends JPanel {
         setLayout(new BorderLayout());
         this.mainApp = mainApp;
         //배경사진
-        BackgroundPanel backgroundPanel = new BackgroundPanel("img/BackGround.png");
+        BackgroundPanel backgroundPanel = new BackgroundPanel("img/BlackJackBackground.jpg");
         backgroundPanel.setLayout(new BorderLayout());
         add(backgroundPanel, BorderLayout.CENTER);
         // 게임 메시지 출력 영역
@@ -604,7 +604,7 @@ public class ThiefPanel extends JPanel {
 
         if (!isSelected) {
             // 올라가는 애니메이션
-            Timer upTimer = new Timer(100, null); // 15ms 간격으로 실행
+            Timer upTimer = new Timer(15, null); // 15ms 간격으로 실행
             upTimer.addActionListener(e -> {
                 if (button.getY() > targetY) {
                     button.setBounds(button.getX(), button.getY() - 2, button.getWidth(), button.getHeight());
