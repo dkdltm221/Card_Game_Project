@@ -37,7 +37,7 @@ public abstract class Person {
 
 
     /**
-     * Update the image icons for the player's hand
+     * Update the Bingo.image icons for the player's hand
      */
     public void printHand(JLabel[] cardPics){
         System.out.println(this.name + "'s hand looks like this:");
