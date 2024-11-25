@@ -452,7 +452,7 @@ public class ThiefPanel extends JPanel {
                     System.err.println("mainApp이 null입니다. 제대로 초기화되었는지 확인하세요.");
                     return; // null일 경우 실행 중단
                 }
-                MainApp.updateScore(100);
+                MainApp.updateScore(15);
                 mainApp.showScreen("GameSelection");
             }
         }
