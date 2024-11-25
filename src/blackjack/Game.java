@@ -5,6 +5,9 @@ import Main.MainApp;
 import javax.swing.*;
 import java.awt.*;
 import Deck.BlackJackDeck;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 /**
  * Contains all Game logic
  */
@@ -63,14 +66,14 @@ public class Game extends JPanel {
 
         // "Hit", "Stand", "Next Round" 버튼 생성 및 위치 지정
         btnHit = new JButton("Hit");
-        btnHit.setBounds(10, 10, 50, 20);
+        btnHit.setBounds(20, 20, 100, 40);
         btnStand = new JButton("Stand");
-        btnStand.setBounds(70, 10, 100, 20);
+        btnStand.setBounds(140, 20, 200, 40);
         btnNext = new JButton("Next Round");
-        btnNext.setBounds(180, 10, 140, 20);
+        btnNext.setBounds(360, 20, 280, 40);
         btnNext.setVisible(false);
         btnEnd = new JButton("Leave the game");
-        btnEnd.setBounds(10,10,140,20);
+        btnEnd.setBounds(20,20,280,40);
         btnEnd.setVisible(false);
 
         // 절대 위치를 사용하기 위해 레이아웃 설정
@@ -111,8 +114,19 @@ public class Game extends JPanel {
 
         // 점수판 라벨 설정
         lblScore = new JLabel("[Wins: 0]   [Losses: 0]   [Pushes: 0]  [플레이어 점수: 0]");
-        lblScore.setBounds(350, 10, 400, 50);
+        lblScore.setBounds(10, 10, getWidth() - 20, 50); // 위치 조정
+        lblScore.setHorizontalAlignment(SwingConstants.RIGHT); // 텍스트를 오른쪽 정렬
+        lblScore.setFont(new Font("Arial", Font.BOLD, 20));       // 폰트 설정: Arial, Bold, 20 크기
         this.add(lblScore);
+        this.addComponentListener(new ComponentAdapter() {
+            @Overridefi
+            public void componentResized(ComponentEvent e) {
+                // 패널 크기 변경 시 lblScore 위치 업데이트
+                lblScore.setBounds(10, 10, getWidth() - 20, 50);
+            }
+        });
+
+
 
         // 메시지 라벨 설정
         lblGameMessage = new JLabel("라운드 시작! Hit 또는 Stand를 선택하세요.");
