@@ -169,6 +169,7 @@ public class GameSelectionPanel extends JPanel {
     private void updateInfoLabel() {
         infoLabel.setText("이름: " + MainApp.getUserName() + " 점수: " + MainApp.getUserScore());
         infoLabel.repaint(); // 즉각적인 텍스트 업데이트
+        mainApp.updateScoreBord();
     }
 
     // 배경 이미지를 표시하는 사용자 정의 JPanel 클래스
