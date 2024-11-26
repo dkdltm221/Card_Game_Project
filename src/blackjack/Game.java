@@ -139,7 +139,7 @@ public class Game extends JPanel {
 
         // JTextArea 추가 설정 (게임 기록 출력용)
         gameLog.setBounds(lblGameMessage.getX(), lblGameMessage.getY() + lblGameMessage.getHeight(), 550, 400);
-        gameLog.setBackground(new Color(255, 255, 255, 150)); // 반투명 배경 (흰색, 알파값 150)
+        gameLog.setBackground(new Color(0, 0, 0, 150)); // 반투명 배경 (흰색, 알파값 150)
         gameLog.setForeground(Color.WHITE); // 글자 색상
         gameLog.setFont(new Font("Arial", Font.PLAIN, 20)); // Arial 폰트, 크기 20
         gameLog.setLineWrap(true); // 텍스트 자동 줄바꿈
@@ -288,7 +288,7 @@ public class Game extends JPanel {
         super.paintComponent(g);
 
         // 배경 이미지를 로드
-        Image backgroundImage = new ImageIcon("img/BlackJackBackground.jpg").getImage();
+        Image backgroundImage = new ImageIcon("img/blackjackback.png").getImage();
 
         // 배경 이미지를 패널 크기에 맞게 그리기
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
