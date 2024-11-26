@@ -139,7 +139,7 @@ public class Game extends JPanel {
 
         // JTextArea 추가 설정 (게임 기록 출력용)
         gameLog.setBounds(lblGameMessage.getX(), lblGameMessage.getY() + lblGameMessage.getHeight(), 550, 400);
-        gameLog.setBackground(new Color(0, 0, 0, 150)); // 반투명 배경 (흰색, 알파값 150)
+        gameLog.setBackground(new Color(30, 30, 30, 150)); // 반투명 배경 (흰색, 알파값 150)
         gameLog.setForeground(Color.WHITE); // 글자 색상
         gameLog.setFont(new Font("Serif", Font.PLAIN, 20)); // Arial 폰트, 크기 20
         gameLog.setLineWrap(true); // 텍스트 자동 줄바꿈
