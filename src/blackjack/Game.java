@@ -138,11 +138,12 @@ public class Game extends JPanel {
         // JTextArea 추가 설정 (게임 기록 출력용)
         gameLog.setBounds(lblGameMessage.getX(), lblGameMessage.getY() + lblGameMessage.getHeight(), 550, 400);
         gameLog.setBackground(new Color(255, 255, 255, 150)); // 반투명 배경 (흰색, 알파값 150)
-        gameLog.setForeground(Color.BLACK); // 글자 색상
+        gameLog.setForeground(Color.WHITE); // 글자 색상
         gameLog.setFont(new Font("Arial", Font.PLAIN, 20)); // Arial 폰트, 크기 20
         gameLog.setLineWrap(true); // 텍스트 자동 줄바꿈
         gameLog.setWrapStyleWord(true); // 단어 단위로 줄바꿈
-        gameLog.setOpaque(false); // 반투명 효과
+        gameLog.setEditable(false); // 사용자가 직접 수정하지 못하게 설정
+        gameLog.setOpaque(true); // 반투명 효과
         this.add(gameLog);
 
         // 딜러와 플레이어의 핸드 값 표시 라벨 설정
@@ -359,7 +360,6 @@ public class Game extends JPanel {
             if (player.hasBlackjack()) {
                 // 무승부로 라운드를 종료합니다.
                 lblGameMessage.setText("둘 다 블랙잭 - 무승부");
-                gameLog.append("둘 다 블랙잭 - 무승부\n");
                 pushes++;
                 // 다음 라운드 버튼을 활성화합니다.
                 btnHit.setVisible(false);
@@ -367,7 +367,6 @@ public class Game extends JPanel {
                 btnNext.setVisible(true);
             } else {
                 lblGameMessage.setText("딜러가 블랙잭입니다!");
-                gameLog.append("딜러가 블랙잭입니다!\n");
                 dealer.printHand(lblDealerCards);
                 losses++;
                 // 플레이어 패배, 새로운 라운드 시작
@@ -382,7 +381,6 @@ public class Game extends JPanel {
         if (player.hasBlackjack()) {
             // 플레이어가 블랙잭일 경우 메시지를 표시합니다.
             lblGameMessage.setText("블랙잭입니다!");
-            gameLog.append("블랙잭입니다!\n");
             // 점수를 업데이트합니다.
             wins++;
             // 다음 라운드 버튼만 활성화합니다.
