@@ -14,8 +14,8 @@ import java.awt.event.ComponentEvent;
 public class Game extends JPanel {
 
     // 상수
-    public static final int CARD_WIDTH = 100;  // 카드의 너비
-    public static final int CARD_HEIGHT = 145; // 카드의 높이
+    public static final int CARD_WIDTH = 150;  // 카드의 너비
+    public static final int CARD_HEIGHT = 245; // 카드의 높이
     public static final String IMAGE_DIR = "img/cards/"; // 카드 이미지 디렉토리
 
     // Game 클래스에서 필요한 인스턴스 변수 선언
@@ -89,7 +89,7 @@ public class Game extends JPanel {
         lblPlayerCards = new JLabel[11];
 
         // 첫 번째 카드의 초기 위치 설정
-        int initialCardX = 10, initialCardY = 150;
+        int initialCardX = 310, initialCardY = 250;
 
         // 11장의 카드에 대해 반복
         for (int i = 0; i < lblDealerCards.length; i++) {
@@ -101,7 +101,7 @@ public class Game extends JPanel {
 
             // 카드 위치 및 크기 설정
             lblDealerCards[i].setBounds(initialCardX, initialCardY, CARD_WIDTH, CARD_HEIGHT);
-            lblPlayerCards[i].setBounds(initialCardX, initialCardY + 250, CARD_WIDTH, CARD_HEIGHT);
+            lblPlayerCards[i].setBounds(initialCardX, initialCardY + 350, CARD_WIDTH, CARD_HEIGHT);
 
             // JPanel에 라벨 추가
             this.add(lblDealerCards[i]);
@@ -130,15 +130,15 @@ public class Game extends JPanel {
 
         // 메시지 라벨 설정
         lblGameMessage = new JLabel("라운드 시작! Hit 또는 Stand를 선택하세요.");
-        lblGameMessage.setBounds(400, 200, 350, 40);
-        lblGameMessage.setFont(new Font("Arial", Font.BOLD, 20));
+        lblGameMessage.setBounds(800, 200, 550, 140);
+        lblGameMessage.setFont(new Font("Arial", Font.BOLD, 25));
         this.add(lblGameMessage);
 
         // 딜러와 플레이어의 핸드 값 표시 라벨 설정
         lblDealerHandVal = new JLabel("딜러 핸드 값:");
         lblPlayerHandVal = new JLabel("플레이어 핸드 값:");
-        lblDealerHandVal.setBounds(20, 280, 300, 50);
-        lblPlayerHandVal.setBounds(20, 530, 300, 50);
+        lblDealerHandVal.setBounds(320, 480, 300, 50);
+        lblPlayerHandVal.setBounds(320, 830, 300, 50);
         this.add(lblDealerHandVal);
         this.add(lblPlayerHandVal);
 
