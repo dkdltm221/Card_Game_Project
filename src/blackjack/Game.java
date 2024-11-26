@@ -7,7 +7,7 @@ import java.awt.*;
 import Deck.BlackJackDeck;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import Panel.GameSelectionPanel;
 /**
  * Contains all Game logic
  */
@@ -18,6 +18,8 @@ public class Game extends JPanel {
     public static final int CARD_HEIGHT = 245; // 카드의 높이
     public static final String IMAGE_DIR = "img/cards/"; // 카드 이미지 디렉토리
 
+    //객체 선언
+    GameSelectionPanel gameSelectionPanel = GameSelectionPanel.getInstance();
     // Game 클래스에서 필요한 인스턴스 변수 선언
     private int score =0;
     private boolean oneGame = true;
@@ -90,7 +92,7 @@ public class Game extends JPanel {
         lblPlayerCards = new JLabel[11];
 
         // 첫 번째 카드의 초기 위치 설정
-        int initialCardX = 310, initialCardY = 250;
+        int initialCardX = 310, initialCardY = 170;
 
         // 11장의 카드에 대해 반복
         for (int i = 0; i < lblDealerCards.length; i++) {
@@ -149,8 +151,8 @@ public class Game extends JPanel {
         // 딜러와 플레이어의 핸드 값 표시 라벨 설정
         lblDealerHandVal = new JLabel("딜러 핸드 값:");
         lblPlayerHandVal = new JLabel("플레이어 핸드 값:");
-        lblDealerHandVal.setBounds(320, 480, 300, 50);
-        lblPlayerHandVal.setBounds(320, 830, 300, 50);
+        lblDealerHandVal.setBounds(320, 400, 300, 50);
+        lblPlayerHandVal.setBounds(320, 750, 300, 50);
         this.add(lblDealerHandVal);
         this.add(lblPlayerHandVal);
 
@@ -196,6 +198,7 @@ public class Game extends JPanel {
         btnEnd.addActionListener(e -> {
             if(oneGame){
                 MainApp.updateScore(score);
+                gameSelectionPanel.appendToGameLog("----블랙잭----\n"+gameLog.getText());
                 oneGame = false;
             }
             mainApp.showScreen("GameSelection");
