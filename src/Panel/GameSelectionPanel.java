@@ -8,6 +8,7 @@ import java.awt.*;
 public class GameSelectionPanel extends JPanel {
     private MainApp mainApp;
     private JLabel infoLabel;
+    private JTextArea gameLog = new JTextArea();
 
     public static final String IMAGE_DIR = "img/cards/";
 
@@ -65,36 +66,60 @@ public class GameSelectionPanel extends JPanel {
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(50, 30, 50, 50); // 간격 설정
+        gbc.insets = new Insets(20, 50, 20, 50); // 버튼 간격 확대
         gbc.fill = GridBagConstraints.CENTER;
 
-        // 블랙잭 게임
+// 블랙잭 게임
         gbc.gridx = 0;
         gbc.gridy = 0;
         JButton button = setButton("블랙잭");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "BlackJack_Card",button,"BlackjackPanel"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "BlackJack_Card", button, "BlackjackPanel"), gbc);
 
-        // 빙고 게임
+// 빙고 게임
         gbc.gridx = 1;
         JButton bingoButton = setButton("빙고");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card", bingoButton,"BingoApp"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Bingo_Card", bingoButton, "BingoApp"), gbc);
 
-        // 도둑잡기 게임
+// 도둑잡기 게임
         gbc.gridx = 2;
         JButton ThiefButton = setButton("도둑잡기");
-        centerPanel.add(createGameComponent(IMAGE_DIR + "Thief_Card",ThiefButton,"ThiefPanel"), gbc);
+        centerPanel.add(createGameComponent(IMAGE_DIR + "Thief_Card", ThiefButton, "ThiefPanel"), gbc);
 
-        JPanel southPanel = new JPanel();
-        southPanel.setOpaque(false);
+// 점수판 패널 생성
+        JPanel scorePanel = new JPanel();
+        scorePanel.setLayout(new BorderLayout());
+        scorePanel.setPreferredSize(new Dimension(300, 400)); // 점수판 크기 확대
+        scorePanel.setOpaque(false);
+
+
+// 점수판 버튼 추가
         JButton scoreboardButton = new JButton("점수판");
-        scoreboardButton.setPreferredSize(new Dimension(100, 20));
-        southPanel.add(scoreboardButton);
+        scoreboardButton.setPreferredSize(new Dimension(300, 50));
         scoreboardButton.addActionListener(e -> mainApp.showScreen("Scoreboard"));
+        scorePanel.add(scoreboardButton, BorderLayout.NORTH);
 
-        // 배경 패널에 컴포넌트 추가
+// 점수판에 들어갈 JTextArea 생성
+        gameLog.setLineWrap(true);
+        gameLog.setWrapStyleWord(true);
+        gameLog.setEditable(false);
+
+// 반투명 배경 설정 (흰색, 투명도 150)
+        gameLog.setBackground(new Color(20, 20, 20, 150));
+        gameLog.setForeground(Color.WHITE); // 글자 색상
+        gameLog.setFont(new Font("Arial", Font.PLAIN, 16));
+        gameLog.setOpaque(true); // JTextArea의 기본 배경을 유지하면서 반투명 설정
+
+// JTextArea 크기 설정
+        gameLog.setPreferredSize(new Dimension(300, 350));
+
+// 점수판 패널에 JTextArea 직접 추가
+        scorePanel.add(gameLog, BorderLayout.CENTER);
+
+
+// 배경 패널에 컴포넌트 추가
         backgroundPanel.add(infoPanel, BorderLayout.NORTH);
         backgroundPanel.add(centerPanel, BorderLayout.CENTER);
-        backgroundPanel.add(southPanel, BorderLayout.SOUTH);
+        backgroundPanel.add(scorePanel, BorderLayout.EAST);
 
         // 최종적으로 GameSelectionPanel에 배경 패널 추가
         add(backgroundPanel);
