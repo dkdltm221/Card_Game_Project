@@ -198,7 +198,7 @@ public class Game extends JPanel {
         btnEnd.addActionListener(e -> {
             if(oneGame){
                 MainApp.updateScore(score);
-                gameSelectionPanel.appendToGameLog("----블랙잭----\n"+gameLog.getText());
+                gameSelectionPanel.appendToGameLog("----블랙잭----\n"+gameLog.getText()+"블랙잭에서 획득한 점수: "+score+"\n");
                 oneGame = false;
             }
             mainApp.showScreen("GameSelection");
