@@ -161,7 +161,6 @@ public class GameSelectionPanel extends JPanel {
     }
 
     private JButton setButton(String text) {
-        // MacOS 스타일을 유지하면서 커스터마이징
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -179,7 +178,7 @@ public class GameSelectionPanel extends JPanel {
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
                 // 테두리 색상 설정
-                g2.setColor(new Color(255, 255, 255)); // 흰색 테두리
+                g2.setColor(new Color(212, 175, 55)); // 흰색 테두리
                 g2.setStroke(new BasicStroke(2));
                 g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
 
@@ -191,19 +190,26 @@ public class GameSelectionPanel extends JPanel {
             public void setContentAreaFilled(boolean b) {
                 // 기본 배경 비활성화
             }
+
+            @Override
+            public void setBorderPainted(boolean b) {
+                // 테두리 페인팅 비활성화
+            }
         };
 
         // 버튼 속성 설정
-        button.setOpaque(false);
-        button.setFocusPainted(false);
+        button.setOpaque(false); // 기존 배경 제거
+        button.setBackground(Color.BLACK);
+        button.setFocusPainted(false); // 선택 테두리 제거
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFont(new Font("Helvetica Neue", Font.BOLD, 16)); // MacOS 스타일 폰트
-        button.setForeground(Color.BLACK); // 텍스트 색상
+        button.setForeground(Color.WHITE); // 텍스트 색상
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 손가락 커서
 
         return button;
     }
+
 
 
 
