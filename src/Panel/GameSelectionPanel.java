@@ -104,17 +104,17 @@ public class GameSelectionPanel extends JPanel {
         gameLog.setEditable(false);
 
 // 반투명 배경 설정 (흰색, 투명도 150)
-        gameLog.setBackground(new Color(20, 20, 20, 150));
+        gameLog.setBackground(new Color(30, 30, 30, 150));
         gameLog.setForeground(Color.WHITE); // 글자 색상
         gameLog.setFont(new Font("Arial", Font.PLAIN, 16));
         gameLog.setOpaque(true); // JTextArea의 기본 배경을 유지하면서 반투명 설정
+        gameLog.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 // JTextArea 크기 설정
         gameLog.setPreferredSize(new Dimension(300, 350));
 
 // 점수판 패널에 JTextArea 직접 추가
         scorePanel.add(gameLog, BorderLayout.CENTER);
-
 
 // 배경 패널에 컴포넌트 추가
         backgroundPanel.add(infoPanel, BorderLayout.NORTH);
