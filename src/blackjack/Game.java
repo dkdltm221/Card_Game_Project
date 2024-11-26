@@ -119,7 +119,7 @@ public class Game extends JPanel {
         lblScore = new JLabel("[Wins: 0]   [Losses: 0]   [Pushes: 0]  [플레이어 점수: 0]");
         lblScore.setBounds(10, 10, getWidth() - 20, 50); // 위치 조정
         lblScore.setHorizontalAlignment(SwingConstants.RIGHT); // 텍스트를 오른쪽 정렬
-        lblScore.setFont(new Font("Arial", Font.BOLD, 20));       // 폰트 설정: Arial, Bold, 20 크기
+        lblScore.setFont(new Font("Serif", Font.BOLD, 20));       // 폰트 설정: Arial, Bold, 20 크기
         this.add(lblScore);
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -134,14 +134,14 @@ public class Game extends JPanel {
         // 메시지 라벨 설정
         lblGameMessage = new JLabel("라운드 시작! Hit 또는 Stand를 선택하세요.");
         lblGameMessage.setBounds(800, 200, 550, 140);
-        lblGameMessage.setFont(new Font("Arial", Font.BOLD, 25));
+        lblGameMessage.setFont(new Font("Serif", Font.BOLD, 25));
         this.add(lblGameMessage);
 
         // JTextArea 추가 설정 (게임 기록 출력용)
         gameLog.setBounds(lblGameMessage.getX(), lblGameMessage.getY() + lblGameMessage.getHeight(), 550, 400);
         gameLog.setBackground(new Color(0, 0, 0, 150)); // 반투명 배경 (흰색, 알파값 150)
         gameLog.setForeground(Color.WHITE); // 글자 색상
-        gameLog.setFont(new Font("Arial", Font.PLAIN, 20)); // Arial 폰트, 크기 20
+        gameLog.setFont(new Font("Serif", Font.PLAIN, 20)); // Arial 폰트, 크기 20
         gameLog.setLineWrap(true); // 텍스트 자동 줄바꿈
         gameLog.setWrapStyleWord(true); // 단어 단위로 줄바꿈
         gameLog.setEditable(false); // 사용자가 직접 수정하지 못하게 설정
@@ -288,7 +288,7 @@ public class Game extends JPanel {
         super.paintComponent(g);
 
         // 배경 이미지를 로드
-        Image backgroundImage = new ImageIcon("img/blackjackback.png").getImage();
+        Image backgroundImage = new ImageIcon("img/BlackJackBackground.jpg").getImage();
 
         // 배경 이미지를 패널 크기에 맞게 그리기
         g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
