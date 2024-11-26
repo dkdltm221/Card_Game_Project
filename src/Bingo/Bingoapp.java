@@ -25,9 +25,15 @@ public class Bingoapp extends JPanel {
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new FlowLayout());
+
+        // 글씨 크기 설정
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        bingoCountLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
         infoPanel.add(scoreLabel);
         infoPanel.add(bingoCountLabel);
-        infoPanel.add(turnLabel); // 턴 라벨 추가
+        infoPanel.add(turnLabel);
 
         board = new Gameboard(this);
         add(infoPanel, BorderLayout.NORTH);
@@ -36,6 +42,12 @@ public class Bingoapp extends JPanel {
         JPanel controlPanel = new JPanel();
         JButton startButton = new JButton("Start Game");
         JButton exitButton = new JButton("Exit Game");
+
+        // 버튼 글씨 크기와 크기 조정
+        startButton.setFont(new Font("Arial", Font.BOLD, 24));  // 버튼 글씨 크기
+        exitButton.setFont(new Font("Arial", Font.BOLD, 24));   // 버튼 글씨 크기
+        startButton.setPreferredSize(new Dimension(200, 60));  // 버튼 크기 조정
+        exitButton.setPreferredSize(new Dimension(200, 60));   // 버튼 크기 조정
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -55,6 +67,8 @@ public class Bingoapp extends JPanel {
         controlPanel.add(exitButton);
         add(controlPanel, BorderLayout.SOUTH);
     }
+
+
 
     public void resetGame() {
         bingoCountLabel.setText("Bingo Count: 0");
