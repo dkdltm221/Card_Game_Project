@@ -6,13 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameSelectionPanel extends JPanel {
+    private static GameSelectionPanel instance;
     private MainApp mainApp;
     private JLabel infoLabel;
     private JTextArea gameLog = new JTextArea();
 
     public static final String IMAGE_DIR = "img/cards/";
+    private GameSelectionPanel(){}
+    public static GameSelectionPanel getInstance(){
+        if(instance==null) instance = new GameSelectionPanel();
+        return instance;
+    }
 
-    public GameSelectionPanel(MainApp app) {
+    public JPanel createGameSelectionPanel(MainApp app) {
         this.mainApp = app;
 
         // 전체 레이아웃 설정
@@ -123,6 +129,7 @@ public class GameSelectionPanel extends JPanel {
 
         // 최종적으로 GameSelectionPanel에 배경 패널 추가
         add(backgroundPanel);
+        return this;
     }
 
     private JPanel createGameComponent(String imagePath, JButton button,String text) {
@@ -210,5 +217,11 @@ public class GameSelectionPanel extends JPanel {
             super.paintComponent(g);
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         }
+    }
+    public void appendToGameLog(String message) {
+        SwingUtilities.invokeLater(() -> {
+            gameLog.append(message + "\n");
+            gameLog.setCaretPosition(gameLog.getDocument().getLength()); // 자동 스크롤
+        });
     }
 }

@@ -29,7 +29,8 @@ public class MainApp extends JFrame {
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        mainPanel.add(new GameSelectionPanel(this), "GameSelection");
+        GameSelectionPanel gameSelectionPanel = GameSelectionPanel.getInstance();
+        mainPanel.add(gameSelectionPanel.createGameSelectionPanel(this), "GameSelection");
         mainPanel.add(new ScoreboardPanel(this), "Scoreboard");
         mainPanel.add(new Game(this),"BlackjackPanel");
         mainPanel.add(new ThiefPanel(this),"ThiefPanel");
