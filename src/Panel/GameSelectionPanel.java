@@ -199,7 +199,7 @@ public class GameSelectionPanel extends JPanel {
 
         // 버튼 속성 설정
         button.setOpaque(false); // 기존 배경 제거
-        button.setBackground(Color.BLACK);
+        button.setBackground(new Color(20, 20, 20));
         button.setFocusPainted(false); // 선택 테두리 제거
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFont(new Font("Helvetica Neue", Font.BOLD, 16)); // MacOS 스타일 폰트
