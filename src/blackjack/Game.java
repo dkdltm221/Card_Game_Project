@@ -7,7 +7,7 @@ import java.awt.*;
 import Deck.BlackJackDeck;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import Panel.GameSelectionPanel;
 /**
  * Contains all Game logic
  */
@@ -18,6 +18,8 @@ public class Game extends JPanel {
     public static final int CARD_HEIGHT = 245; // 카드의 높이
     public static final String IMAGE_DIR = "img/cards/"; // 카드 이미지 디렉토리
 
+    //객체 선언
+    GameSelectionPanel gameSelectionPanel = GameSelectionPanel.getInstance();
     // Game 클래스에서 필요한 인스턴스 변수 선언
     private int score =0;
     private boolean oneGame = true;
@@ -90,7 +92,7 @@ public class Game extends JPanel {
         lblPlayerCards = new JLabel[11];
 
         // 첫 번째 카드의 초기 위치 설정
-        int initialCardX = 310, initialCardY = 250;
+        int initialCardX = 310, initialCardY = 170;
 
         // 11장의 카드에 대해 반복
         for (int i = 0; i < lblDealerCards.length; i++) {
@@ -117,7 +119,7 @@ public class Game extends JPanel {
         lblScore = new JLabel("[Wins: 0]   [Losses: 0]   [Pushes: 0]  [플레이어 점수: 0]");
         lblScore.setBounds(10, 10, getWidth() - 20, 50); // 위치 조정
         lblScore.setHorizontalAlignment(SwingConstants.RIGHT); // 텍스트를 오른쪽 정렬
-        lblScore.setFont(new Font("Arial", Font.BOLD, 20));       // 폰트 설정: Arial, Bold, 20 크기
+        lblScore.setFont(new Font("Serif", Font.BOLD, 20));       // 폰트 설정: Arial, Bold, 20 크기
         this.add(lblScore);
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -132,14 +134,14 @@ public class Game extends JPanel {
         // 메시지 라벨 설정
         lblGameMessage = new JLabel("라운드 시작! Hit 또는 Stand를 선택하세요.");
         lblGameMessage.setBounds(800, 200, 550, 140);
-        lblGameMessage.setFont(new Font("Arial", Font.BOLD, 25));
+        lblGameMessage.setFont(new Font("Serif", Font.BOLD, 25));
         this.add(lblGameMessage);
 
         // JTextArea 추가 설정 (게임 기록 출력용)
         gameLog.setBounds(lblGameMessage.getX(), lblGameMessage.getY() + lblGameMessage.getHeight(), 550, 400);
-        gameLog.setBackground(new Color(255, 255, 255, 150)); // 반투명 배경 (흰색, 알파값 150)
+        gameLog.setBackground(new Color(30, 30, 30, 150)); // 반투명 배경 (흰색, 알파값 150)
         gameLog.setForeground(Color.WHITE); // 글자 색상
-        gameLog.setFont(new Font("Arial", Font.PLAIN, 20)); // Arial 폰트, 크기 20
+        gameLog.setFont(new Font("Serif", Font.PLAIN, 20)); // Arial 폰트, 크기 20
         gameLog.setLineWrap(true); // 텍스트 자동 줄바꿈
         gameLog.setWrapStyleWord(true); // 단어 단위로 줄바꿈
         gameLog.setEditable(false); // 사용자가 직접 수정하지 못하게 설정
@@ -149,8 +151,8 @@ public class Game extends JPanel {
         // 딜러와 플레이어의 핸드 값 표시 라벨 설정
         lblDealerHandVal = new JLabel("딜러 핸드 값:");
         lblPlayerHandVal = new JLabel("플레이어 핸드 값:");
-        lblDealerHandVal.setBounds(320, 480, 300, 50);
-        lblPlayerHandVal.setBounds(320, 830, 300, 50);
+        lblDealerHandVal.setBounds(320, 400, 300, 50);
+        lblPlayerHandVal.setBounds(320, 750, 300, 50);
         this.add(lblDealerHandVal);
         this.add(lblPlayerHandVal);
 
@@ -196,6 +198,7 @@ public class Game extends JPanel {
         btnEnd.addActionListener(e -> {
             if(oneGame){
                 MainApp.updateScore(score);
+                gameSelectionPanel.appendToGameLog("----블랙잭----\n"+gameLog.getText()+"블랙잭에서 획득한 점수: "+score+"\n");
                 oneGame = false;
             }
             mainApp.showScreen("GameSelection");
@@ -211,7 +214,7 @@ public class Game extends JPanel {
         if (player.getHand().calculatedValue() > 21) {
             // show message
             lblGameMessage.setText("You BUST - Over 21");
-            gameLog.append("You BUST - Over 21\n");
+            gameLog.append("You BUST - 플레이어 포인트 -100\n");
             // update score
             score-=100;
             losses++;
@@ -231,17 +234,17 @@ public class Game extends JPanel {
 
         if (dealer.getHand().calculatedValue() > 21) {
             lblGameMessage.setText("딜러 Bust! 당신이 승리했습니다.");
-            gameLog.append("딜러 Bust! 당신이 승리했습니다.\n");
+            gameLog.append("딜러 Bust! - 플레이어 포인트 +100\n");
             score+=100;
             wins++;
         } else if (dealer.getHand().calculatedValue() > player.getHand().calculatedValue()) {
             lblGameMessage.setText("딜러 승리 - 더 높은 값");
-            gameLog.append("딜러 승리 - 더 높은 값\n");
+            gameLog.append("딜러 승리 - 플레이어 포인트 -100\n");
             score-=100;
             losses++;
         } else if (player.getHand().calculatedValue() > dealer.getHand().calculatedValue()) {
-            lblGameMessage.setText("플레이어 승리 - 더 높은 값");
-            gameLog.append("플레이어 승리 - 더 높은 값\"\n");
+            lblGameMessage.setText("플레이어 승리 - 더 높은 값 ");
+            gameLog.append("플레이어 승리 - 플레이어 포인트 +100\"\n");
             score+=100;
             wins++;
         } else {
@@ -257,7 +260,7 @@ public class Game extends JPanel {
     private void checkPlayer21() {
         if (player.getHand().calculatedValue() == 21) {
             lblGameMessage.setText("21에 도달했습니다! 플레이어 win!");
-            gameLog.append("21에 도달했습니다! 플레이어 win!\n");
+            gameLog.append("플레이어 win! - 플레이어 포인트 +100\n");
             score +=100;
             wins++;
             btnHit.setVisible(false);

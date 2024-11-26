@@ -6,13 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameSelectionPanel extends JPanel {
+    private static GameSelectionPanel instance;
     private MainApp mainApp;
     private JLabel infoLabel;
     private JTextArea gameLog = new JTextArea();
 
     public static final String IMAGE_DIR = "img/cards/";
+    private GameSelectionPanel(){}
+    public static GameSelectionPanel getInstance(){
+        if(instance==null) instance = new GameSelectionPanel();
+        return instance;
+    }
 
-    public GameSelectionPanel(MainApp app) {
+    public JPanel createGameSelectionPanel(MainApp app) {
         this.mainApp = app;
 
         // 전체 레이아웃 설정
@@ -104,17 +110,17 @@ public class GameSelectionPanel extends JPanel {
         gameLog.setEditable(false);
 
 // 반투명 배경 설정 (흰색, 투명도 150)
-        gameLog.setBackground(new Color(20, 20, 20, 150));
+        gameLog.setBackground(new Color(30, 30, 30, 150));
         gameLog.setForeground(Color.WHITE); // 글자 색상
         gameLog.setFont(new Font("Arial", Font.PLAIN, 16));
         gameLog.setOpaque(true); // JTextArea의 기본 배경을 유지하면서 반투명 설정
+        gameLog.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 // JTextArea 크기 설정
         gameLog.setPreferredSize(new Dimension(300, 350));
 
 // 점수판 패널에 JTextArea 직접 추가
         scorePanel.add(gameLog, BorderLayout.CENTER);
-
 
 // 배경 패널에 컴포넌트 추가
         backgroundPanel.add(infoPanel, BorderLayout.NORTH);
@@ -123,6 +129,7 @@ public class GameSelectionPanel extends JPanel {
 
         // 최종적으로 GameSelectionPanel에 배경 패널 추가
         add(backgroundPanel);
+        return this;
     }
 
     private JPanel createGameComponent(String imagePath, JButton button,String text) {
@@ -153,43 +160,58 @@ public class GameSelectionPanel extends JPanel {
         return panel;
     }
 
-    private JButton setButton(String text){
-        // 커스텀 버튼 생성
+    private JButton setButton(String text) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+                // 배경 색상 설정
                 if (getModel().isPressed()) {
-                    g2.setColor(new Color(255, 215, 0)); // 클릭 시 황금 강조
+                    g2.setColor(new Color(50, 50, 50)); // 클릭 시 어두운 회색
                 } else if (getModel().isRollover()) {
-                    g2.setColor(new Color(255, 223, 80)); // 마우스 오버 시 밝은 황금색
+                    g2.setColor(new Color(70, 70, 70)); // 마우스 오버 시 중간 회색
                 } else {
-                    g2.setColor(new Color(44, 62, 80)); // 기본 딥 블루
+                    g2.setColor(new Color(0, 0, 0)); // 기본 색상 (검정)
                 }
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-                g2.setColor(new Color(212, 175, 55)); // 테두리 색상
-                g2.setStroke(new BasicStroke(3));
+                // 테두리 색상 설정
+                g2.setColor(new Color(212, 175, 55)); // 흰색 테두리
+                g2.setStroke(new BasicStroke(2));
                 g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
 
+                // 텍스트 페인팅은 부모 메서드에서 처리
                 super.paintComponent(g);
             }
 
             @Override
             public void setContentAreaFilled(boolean b) {
-                // 기본 구현 비활성화
+                // 기본 배경 비활성화
+            }
+
+            @Override
+            public void setBorderPainted(boolean b) {
+                // 테두리 페인팅 비활성화
             }
         };
-        button.setOpaque(false);
-        button.setFocusPainted(false);
+
+        // 버튼 속성 설정
+        button.setOpaque(false); // 기존 배경 제거
+        button.setBackground(Color.BLACK);
+        button.setFocusPainted(false); // 선택 테두리 제거
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setFont(new Font("돋움", Font.BOLD, 18)); // 세련된 폰트
+        button.setFont(new Font("Helvetica Neue", Font.BOLD, 16)); // MacOS 스타일 폰트
         button.setForeground(Color.WHITE); // 텍스트 색상
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 손가락 커서
+
         return button;
     }
+
+
+
 
     private void updateInfoLabel() {
         infoLabel.setText("이름: " + MainApp.getUserName() + " 점수: " + MainApp.getUserScore());
@@ -210,5 +232,11 @@ public class GameSelectionPanel extends JPanel {
             super.paintComponent(g);
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         }
+    }
+    public void appendToGameLog(String message) {
+        SwingUtilities.invokeLater(() -> {
+            gameLog.append(message + "\n");
+            gameLog.setCaretPosition(gameLog.getDocument().getLength()); // 자동 스크롤
+        });
     }
 }
