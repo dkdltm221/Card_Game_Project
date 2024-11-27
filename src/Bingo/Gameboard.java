@@ -210,7 +210,7 @@ public class Gameboard extends JPanel implements ActionListener {
     }
 
     static ImageIcon changeImage(String filename) { // 이미지 변환 메소드
-        ImageIcon icon = new ImageIcon("./image/" + filename); // 파일 경로 지정
+        ImageIcon icon = new ImageIcon("img/image/" + filename); // 파일 경로 지정
         Image originImage = icon.getImage();
         Image changedImage = originImage.getScaledInstance(160, 120, Image.SCALE_SMOOTH); // 이미지 크기 설정
         ImageIcon icon_new = new ImageIcon(changedImage);
@@ -219,7 +219,7 @@ public class Gameboard extends JPanel implements ActionListener {
 
     public Cursor customcursor() {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        Image cursorImage = tk.getImage("./image/cursor.png"); // 파일 경로 지정
+        Image cursorImage = tk.getImage("img/image/cursor.png"); // 파일 경로 지정
         Image scaledImage = cursorImage.getScaledInstance(80, 80, Image.SCALE_SMOOTH); // 커서 크기 설정
         Point point = new Point(40,40); // 커서 포인트 위치 설정
         Cursor cursor = tk.createCustomCursor(scaledImage, point, "");

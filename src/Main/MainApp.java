@@ -21,7 +21,7 @@ public class MainApp extends JFrame {
     public MainApp(String userName) {
         setTitle("Mini Game App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         inputUsers.readAll();
         user = setUserName(userName);
@@ -29,7 +29,8 @@ public class MainApp extends JFrame {
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        mainPanel.add(new GameSelectionPanel(this), "GameSelection");
+        GameSelectionPanel gameSelectionPanel = GameSelectionPanel.getInstance();
+        mainPanel.add(gameSelectionPanel.createGameSelectionPanel(this), "GameSelection");
         mainPanel.add(new ScoreboardPanel(this), "Scoreboard");
         mainPanel.add(new Game(this),"BlackjackPanel");
         mainPanel.add(new ThiefPanel(this),"ThiefPanel");

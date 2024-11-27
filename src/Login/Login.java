@@ -146,7 +146,19 @@ public class Login {
 
 
     public static void main(String[] args) {
-        Login login = new Login();
-        login.startGUI();
+
+        try {
+            // CrossPlatformLookAndFeel (Metal Look and Feel)
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // 또는 Nimbus Look and Feel 사용
+            // UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SwingUtilities.invokeLater(() -> {
+            Login login = new Login();
+            login.startGUI();
+        });
+
     }
 }
