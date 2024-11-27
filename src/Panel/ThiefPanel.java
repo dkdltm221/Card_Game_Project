@@ -22,7 +22,7 @@ public class ThiefPanel extends JPanel {
     private JPanel userPanel;
     private JPanel computerPanel;
     private MainApp mainApp;
-
+    private JPanel centerPanel;
 
     // 배경 이미지를 표시하는 사용자 정의 JPanel 클래스
     class BackgroundPanel extends JPanel {
@@ -49,17 +49,24 @@ public class ThiefPanel extends JPanel {
         backgroundPanel.setLayout(new BorderLayout());
         add(backgroundPanel, BorderLayout.CENTER);
         // 게임 메시지 출력 영역
-        displayArea = new JTextArea();
-        displayArea.setOpaque(false);
-        displayArea.setEditable(false);
-        displayArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+//        displayArea = new JTextArea();
+//        displayArea.setOpaque(false);
+//        displayArea.setEditable(false);
+//        displayArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         //add(new JScrollPane(displayArea), BorderLayout.CENTER);
         // 게임 메시지 출력 영역을 배경 패널 위에 추가
-        JScrollPane scrollPane = new JScrollPane(displayArea);
-        scrollPane.setOpaque(false); // 스크롤 투명 처리
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setOpaque(false); // 뷰포트도 투명 처리
-        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
+//        JScrollPane scrollPane = new JScrollPane(displayArea);
+//        scrollPane.setOpaque(false); // 스크롤 투명 처리
+//        scrollPane.setBorder(null);
+//        scrollPane.getViewport().setOpaque(false); // 뷰포트도 투명 처리
+//        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
+        centerPanel = new JPanel();
+        centerPanel.setLayout(null);
+        centerPanel.setOpaque(false);
+        centerPanel.setBorder(new EmptyBorder(0,0,0,0));
+        centerPanel.setPreferredSize(new Dimension(300,190));
+
+        backgroundPanel.add(centerPanel, BorderLayout.CENTER);
         // 도둑잡기 게임 클래스 초기화
         thief = new Thief(this, mainApp);
 
@@ -73,6 +80,7 @@ public class ThiefPanel extends JPanel {
         userCards = new ArrayList<>();
         computerButtons = new ArrayList<>();
         userButtons = new ArrayList<>();
+
         for (int i = 0; i < 27; i++) {
             computerCards.add(deck.remove(0));
         }
@@ -84,14 +92,14 @@ public class ThiefPanel extends JPanel {
         computerPanel = new JPanel(null);
         computerPanel.setOpaque(false);
         computerPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
-        computerPanel.setPreferredSize(new Dimension(800, 240));
+        computerPanel.setPreferredSize(new Dimension(800, 220));
         backgroundPanel.add(computerPanel, BorderLayout.NORTH);
 
         // 유저 카드 패널
         userPanel = new JPanel(null);
         userPanel.setOpaque(false);
         userPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
-        userPanel.setPreferredSize(new Dimension(800, 240));
+        userPanel.setPreferredSize(new Dimension(800, 220));
         backgroundPanel.add(userPanel, BorderLayout.SOUTH);
 
         // 오른쪽 버튼 패널
@@ -117,13 +125,14 @@ public class ThiefPanel extends JPanel {
         dealCardsAnimation();
     }
 
+
     // 메시지 출력 메서드
     public void setText(String text) {
         displayArea.setText(text);
     }
 
     public void addText(String text) {
-        displayArea.append(text + "\n");
+        //displayArea.append(text + "\n");
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -217,7 +226,7 @@ public class ThiefPanel extends JPanel {
                     computerCards.remove(j); // 주의: j 먼저 제거
                     computerCards.remove(i); // i 제거 (j가 먼저 제거되었으므로 안전)
 
-                    addText("컴퓨터 덱에서 카드 제거: " + card1.getName() + ", " + card2.getName());
+                    //addText("컴퓨터 덱에서 카드 제거: " + card1.getName() + ", " + card2.getName());
 
                     pairFound = true;
                     break; // 내부 루프 탈출
@@ -234,8 +243,8 @@ public class ThiefPanel extends JPanel {
 
         // 더 이상 동일한 카드가 없을 경우 메시지 추가
         if (computerCards.isEmpty()) {
-            addText("컴퓨터 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
-            addText("당신 차례!");
+            //addText("컴퓨터 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
+            //addText("당신 차례!");
         }
     }
 
@@ -262,7 +271,7 @@ public class ThiefPanel extends JPanel {
     // 유저 덱에서 컴퓨터 덱으로 카드와 버튼 이동
     public void takeCardFromUser() {
         if (userCards == null || userCards.isEmpty()) {
-            addText("유저 카드가 없습니다!");
+            //addText("유저 카드가 없습니다!");
             checkUserCardsAndAlertVictory();
         }
 
@@ -280,7 +289,7 @@ public class ThiefPanel extends JPanel {
         dealCardsAnimation();
 
         // 메시지 출력
-        addText("유저 카드 '" + selectedCard.getName() + "'을(를) 컴퓨터가 가져갔습니다.");
+        //addText("유저 카드 '" + selectedCard.getName() + "'을(를) 컴퓨터가 가져갔습니다.");
     }
 
 
@@ -299,7 +308,7 @@ public class ThiefPanel extends JPanel {
                     userCards.remove(j); // 주의: j 먼저 제거
                     userCards.remove(i); // i 제거 (j가 먼저 제거되었으므로 안전)
 
-                    addText("유저 덱에서 카드 제거: " + card1.getName() + ", " + card2.getName());
+                    //addText("유저 덱에서 카드 제거: " + card1.getName() + ", " + card2.getName());
 
                     pairFound = true;
                     break; // 내부 루프 탈출
@@ -316,8 +325,8 @@ public class ThiefPanel extends JPanel {
 
         // 더 이상 동일한 카드가 없을 경우 메시지 추가
         if (userCards.isEmpty()) {
-            addText("유저 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
-            addText("턴넘기기! ");
+            //addText("유저 덱에 동일한 값을 가진 카드 두 장이 없습니다.");
+            //addText("턴넘기기! ");
         }
     }
 
@@ -406,24 +415,50 @@ public class ThiefPanel extends JPanel {
                 cardsToRemove.add(group.get(1));
             }
         }
-
+        // cardsToRemove 리스트를 centerPanel에 표시
+        if (!cardsToRemove.isEmpty()) {
+            showCardsInCenterPanel(cardsToRemove.get(0), cardsToRemove.get(1));
+        }
         // 제거 대상 카드 처리
         for (Card card : cardsToRemove) {
             computerCards.remove(card);
             removeComputerButton(card);
         }
-
         // 메시지 추가
         if (!cardsToRemove.isEmpty()) {
-            addText("컴퓨터 덱에서 제거된 카드: " +
-                    cardsToRemove.stream().map(Card::getName).reduce((a, b) -> a + ", " + b).orElse(""));
+            //addText("컴퓨터 덱에서 제거된 카드: " +
+            //cardsToRemove.stream().map(Card::getName).reduce((a, b) -> a + ", " + b).orElse(""));
         } else {
-            addText("컴퓨터 덱에 제거할 카드가 없습니다.");
+            //addText("컴퓨터 덱에 제거할 카드가 없습니다.");
         }
 
         // UI 갱신
         this.revalidate();
         this.repaint();
+    }
+    // CenterPanel에 카드 버튼 표시
+    private void showCardsInCenterPanel(Card card1, Card card2) {
+        centerPanel.removeAll(); // 기존 컴포넌트 제거
+        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        // 첫 번째 카드 버튼
+        JButton cardButton1 = createCardButton(card1);
+        centerPanel.add(cardButton1);
+
+        // 두 번째 카드 버튼
+        JButton cardButton2 = createCardButton(card2);
+        centerPanel.add(cardButton2);
+
+        centerPanel.revalidate(); // UI 갱신
+        centerPanel.repaint();
+    }
+    private JButton createCardButton(Card card) {
+        ImageIcon cardIcon = new ImageIcon("img/cards/" + card.getName() + ".png");
+        Image scaledImage = cardIcon.getImage().getScaledInstance(126, 180, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JButton cardButton = new JButton(scaledIcon);
+        cardButton.setPreferredSize(new Dimension(126, 180)); // 버튼 크기 설정
+        return cardButton;
     }
 
     private List<Card> selectedUserCards = new ArrayList<>();
@@ -436,7 +471,7 @@ public class ThiefPanel extends JPanel {
             selectedUserButtons = new ArrayList<>();
         }
         if (selectedUserCards.contains(card)) {
-            addText("같은 카드를 두 번 선택할 수 없습니다. 다른 카드를 선택하세요.");
+            //addText("같은 카드를 두 번 선택할 수 없습니다. 다른 카드를 선택하세요.");
             resetButtonPositions();
             clearSelectedUserCards();
             return; // 중복 선택 방지
@@ -458,10 +493,10 @@ public class ThiefPanel extends JPanel {
             if (firstCard.getValue() == secondCard.getValue()) {
                 // 같은 카드일 경우 제거
                 removeSelectedUserCards();
-                addText("유저 카드 제거: " + firstCard.getName() + ", " + secondCard.getName());
+                //addText("유저 카드 제거: " + firstCard.getName() + ", " + secondCard.getName());
             } else {
                 // 다른 카드일 경우 선택 초기화
-                addText("선택된 카드가 다릅니다. 다시 선택해주세요.");
+                //addText("선택된 카드가 다릅니다. 다시 선택해주세요.");
                 resetButtonPositions();
                 clearSelectedUserCards();
             }
@@ -471,16 +506,23 @@ public class ThiefPanel extends JPanel {
 
     // 선택된 유저 카드 제거
     private void removeSelectedUserCards() {
+        List<Card> cardsToRemove = new ArrayList<>();
+
         for (int i = 0; i < selectedUserCards.size(); i++) {
             Card card = selectedUserCards.get(i);
             JButton button = selectedUserButtons.get(i);
 
             // 카드와 버튼을 삭제
+            cardsToRemove.add(card);
             userCards.remove(card);
             userButtons.remove(button);
             userPanel.remove(button);
         }
 
+        // cardsToRemove 리스트를 centerPanel에 표시
+        if (!cardsToRemove.isEmpty()) {
+            showCardsInCenterPanel(cardsToRemove.get(0), cardsToRemove.get(1));
+        }
         // 선택 초기화
         clearSelectedUserCards();
 
@@ -558,7 +600,7 @@ public class ThiefPanel extends JPanel {
 
     public void takeSelectedComputerCard() {
         if (selectedComputerCard == null || selectedComputerButton == null) {
-            addText("먼저 컴퓨터 카드를 선택하세요.");
+            //addText("먼저 컴퓨터 카드를 선택하세요.");
             return;
         }
 
@@ -579,7 +621,7 @@ public class ThiefPanel extends JPanel {
         dealCardsAnimation();
 
         // 7. 메시지 출력
-        addText("컴퓨터 카드가 유저 덱으로 이동되었습니다.");
+        //addText("컴퓨터 카드가 유저 덱으로 이동되었습니다.");
     }
 
     private void resetGameLayout() {
@@ -596,7 +638,7 @@ public class ThiefPanel extends JPanel {
         userPanel.revalidate();
         userPanel.repaint();
 
-        addText("카드 레이아웃이 초기화되었습니다.");
+        //addText("카드 레이아웃이 초기화되었습니다.");
     }
 
 
