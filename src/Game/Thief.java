@@ -21,18 +21,18 @@ public class Thief {
 
     // 게임 초기화
     private void initializeGame() {
-        panel.setText("도둑잡기 게임이 시작되었습니다!\n");
+        //panel.setText("도둑잡기 게임이 시작되었습니다!\n");
     }
 
     // 컴퓨터 카드 클릭 처리
     public void computerCardClicked(int index) {
-        panel.addText("컴퓨터 카드 " + (index + 1) + " 클릭됨.");
+        //panel.addText("컴퓨터 카드 " + (index + 1) + " 클릭됨.");
         // 추가 로직 구현
     }
 
     // 유저 카드 클릭 처리
     public void userCardClicked(Card card) {
-        panel.addText("유저 카드 " + card.getName() + " 클릭됨.");
+        //panel.addText("유저 카드 " + card.getName() + " 클릭됨.");
 //        if (card == null) {
 //            // 선택 해제
 //            if (!selectedCards.isEmpty()) {
@@ -54,20 +54,20 @@ public class Thief {
 
     // 턴 넘기기
     public void passTurn() {
-        panel.addText("턴을 넘겼습니다.");
+        //panel.addText("턴을 넘겼습니다.");
         panel.takeCardFromUser();
         panel.removeComputerCardAll();
     }
 
     // 상대방 카드 가져오기
     public void takeCard() {
-        panel.addText("상대방의 카드를 가져왔습니다.");
+        //panel.addText("상대방의 카드를 가져왔습니다.");
         panel.takeSelectedComputerCard();
     }
 
     // 같은 카드 2장 제거
     public void removePair() {
-        panel.addText("유저 카드를 삭제합니다.");
+        //panel.addText("유저 카드를 삭제합니다.");
         panel.removeUserCardAll();
 //        if (selectedCards.size() == 2) {
 //            Card card1 = selectedCards.get(0);
@@ -93,7 +93,7 @@ public class Thief {
 
 
     public void removeCom() {
-        panel.addText("컴퓨터 동일 카드 삭제!");
+        //panel.addText("컴퓨터 동일 카드 삭제!");
         panel.removeCardAll();
     }
 }
