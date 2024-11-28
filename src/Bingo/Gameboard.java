@@ -42,6 +42,7 @@ public class Gameboard extends JPanel implements ActionListener {
     Gameboard(Bingoapp bingoapp) { // 생성자
         this.bingoapp = bingoapp;
         setLayout(new GridLayout(rowSize, colSize));
+        setBackground(Color.WHITE);
         generateUniqueRandomNumbers();
         initializeBoard();
         original();
@@ -290,7 +291,12 @@ public class Gameboard extends JPanel implements ActionListener {
             this.y = y;
             this.num = num;
             setIcon(changeImage(images[num-1])); // 버튼 초기 이미지를 각 번호에 맞는 이미지로 설정
-            setOpaque(true);
+            /*setBackground(Color.WHITE);
+            setOpaque(true);*/
+
+            setBackground(Color.WHITE); // 배경 흰색
+            setOpaque(true); // 불투명 처리
+            setBorderPainted(false); // 테두리 비활성화
         }
     }
 

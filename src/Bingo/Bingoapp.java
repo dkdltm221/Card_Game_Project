@@ -1,6 +1,7 @@
 package Bingo;
 
 import Main.MainApp;
+import Panel.GameSelectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +12,12 @@ public class Bingoapp extends JPanel {
     static int score = 0;
     static JLabel scoreLabel = new JLabel("Score: 0");
     static JLabel bingoCountLabel = new JLabel("Bingo Count: 0");
-    static JLabel turnLabel = new JLabel("현재 턴: 사용자"); // 현재 턴 표시 라벨 수정
+    static JLabel turnLabel = new JLabel("현재턴 : 사용자");
     Gameboard board;
     private MainApp mainApp;
+
+    // 싱글톤 GameSelectionPanel 인스턴스
+    private static final GameSelectionPanel gameSelectionPanel = GameSelectionPanel.getInstance();
 
     public Bingoapp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -22,50 +26,34 @@ public class Bingoapp extends JPanel {
 
     public void setupMainPanel() {
         setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
-        // 상단 정보 패널 (가로로 표시)
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10)); // 가로 간격 30, 세로 간격 10
-
-        // 라벨 글씨 크기 설정
+        // 상단 정보 패널
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
+        infoPanel.setBackground(Color.WHITE);
         scoreLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
         bingoCountLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
         turnLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
-
-        // 라벨 추가
         infoPanel.add(scoreLabel);
         infoPanel.add(bingoCountLabel);
         infoPanel.add(turnLabel);
 
         board = new Gameboard(this);
-        add(infoPanel, BorderLayout.NORTH); // 정보 패널 상단 배치
-        add(board, BorderLayout.CENTER); // 게임 보드 가운데 배치
+        add(infoPanel, BorderLayout.NORTH);
+        add(board, BorderLayout.CENTER);
 
         // 하단 버튼 패널
         JPanel controlPanel = new JPanel();
+        controlPanel.setBackground(Color.WHITE);
         JButton startButton = new JButton("Start Game");
         JButton exitButton = new JButton("Exit Game");
+        startButton.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        exitButton.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        startButton.setPreferredSize(new Dimension(200, 60));
+        exitButton.setPreferredSize(new Dimension(200, 60));
 
-        // 버튼 글씨 크기와 크기 조정
-        startButton.setFont(new Font("맑은 고딕", Font.BOLD, 24));  // 버튼 글씨 크기
-        exitButton.setFont(new Font("맑은 고딕", Font.BOLD, 24));   // 버튼 글씨 크기
-        startButton.setPreferredSize(new Dimension(200, 60));  // 버튼 크기 조정
-        exitButton.setPreferredSize(new Dimension(200, 60));   // 버튼 크기 조정
-
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetGame();
-            }
-        });
-
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainApp.showScreen("GameSelection");
-            }
-        });
-
+        startButton.addActionListener(e -> resetGame());
+        exitButton.addActionListener(e -> mainApp.showScreen("GameSelection"));
         controlPanel.add(startButton);
         controlPanel.add(exitButton);
         add(controlPanel, BorderLayout.SOUTH);
@@ -74,21 +62,23 @@ public class Bingoapp extends JPanel {
     public void resetGame() {
         bingoCountLabel.setText("Bingo Count: 0");
         board.bingoCount = 0;
-        board.c_bingoCount = 0;
         board.generateUniqueRandomNumbers();
         board.initializeBoard();
         board.original();
-        board.generateUniqueRandomNumbers();
-        setTurnLabel("사용자"); // 게임 초기화 시 사용자 턴으로 설정
+        setTurnLabel("사용자");
+        gameSelectionPanel.appendToGameLog("게임 초기화됨");
     }
 
     public void gameOver() {
+        String log = "게임 종료: 사용자 승리!";
+        gameSelectionPanel.appendToGameLog(log);
         JOptionPane.showMessageDialog(this, "게임 종료! 빙고가 3개 이상 완성되었습니다.");
     }
 
     public void gameOverComputer() {
+        String log = "게임 종료: 컴퓨터 승리!";
+        gameSelectionPanel.appendToGameLog(log);
         JOptionPane.showMessageDialog(this, "상대방 승리! 빙고가 3개 이상 완성되었습니다.");
-        // 점수를 추가하지 않음
     }
 
     public void updateBingoCount(int bingoCount) {
@@ -101,6 +91,6 @@ public class Bingoapp extends JPanel {
     }
 
     public void setTurnLabel(String turn) {
-        turnLabel.setText("현재 턴: " + turn); // 중복 방지
+        turnLabel.setText("" + turn);
     }
 }
