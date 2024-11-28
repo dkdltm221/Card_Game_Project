@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import Panel.GameSelectionPanel;
 
 public class ThiefPanel extends JPanel {
     private Thief thief;
@@ -24,6 +25,7 @@ public class ThiefPanel extends JPanel {
     private JPanel centerPanel;
     JButton passTurnButton;
     JButton takeCardButton;
+    GameSelectionPanel gameSelectionPanel= GameSelectionPanel.getInstance();
 
     // 배경 이미지를 표시하는 사용자 정의 JPanel 클래스
     class BackgroundPanel extends JPanel {
@@ -268,6 +270,7 @@ public class ThiefPanel extends JPanel {
                     return; // null일 경우 실행 중단
                 }
                 MainApp.updateScore(100);
+                gameSelectionPanel.appendToGameLog("----도둑잡기----\n 승리 ! 도둑잡기에서 획득한 점수: +100점\n");
                 mainApp.showScreen("GameSelection");
             }
         }
@@ -292,6 +295,7 @@ public class ThiefPanel extends JPanel {
                     return; // null일 경우 실행 중단
                 }
                 MainApp.updateScore(-100);
+                gameSelectionPanel.appendToGameLog("----도둑잡기----\n 패배! 도둑잡기에서 획득한 점수: -100점\n");
                 mainApp.showScreen("GameSelection");
             }
         }
@@ -419,6 +423,9 @@ public class ThiefPanel extends JPanel {
             if (firstCard.getValue() == secondCard.getValue()) {
                 // 같은 카드일 경우 제거
                 removeSelectedUserCards();
+                if(userCards.isEmpty()){
+                    checkUserCardsAndAlertVictory();
+                }
             } else {
                 // 다른 카드일 경우 선택 초기화
                 resetButtonPositions();
@@ -454,9 +461,7 @@ public class ThiefPanel extends JPanel {
         this.revalidate();
         this.repaint();
 
-        if(userCards.isEmpty()){
-            checkUserCardsAndAlertVictory();
-        }
+
     }
 
     // 선택 초기화
