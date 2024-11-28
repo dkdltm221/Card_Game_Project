@@ -15,6 +15,7 @@ public class Bingoapp extends JPanel {
     static JLabel turnLabel = new JLabel("현재턴 : 사용자");
     Gameboard board;
     private MainApp mainApp;
+    int playnum=1;
 
     // 싱글톤 GameSelectionPanel 인스턴스
     private static final GameSelectionPanel gameSelectionPanel = GameSelectionPanel.getInstance();
@@ -53,36 +54,45 @@ public class Bingoapp extends JPanel {
         exitButton.setPreferredSize(new Dimension(200, 60));
 
         startButton.addActionListener(e -> resetGame());
-        exitButton.addActionListener(e -> mainApp.showScreen("GameSelection"));
+        exitButton.addActionListener(e -> exitGame());
         controlPanel.add(startButton);
         controlPanel.add(exitButton);
         add(controlPanel, BorderLayout.SOUTH);
     }
 
 
-        public void resetGame() {
-            bingoCountLabel.setText("Bingo Count: 0");
-            board.bingoCount = 0;
-            board.c_bingoCount=0;
-            board.generateUniqueRandomNumbers();
-            board.initializeBoard();
-            board.original();
-            board.generateUniqueRandomNumbers();
-            setTurnLabel("사용자");
-            gameSelectionPanel.appendToGameLog("게임 초기화됨");
-        }
-
-
-    public void gameOver() {
-        String log = "게임 종료: 사용자 승리!";
-        gameSelectionPanel.appendToGameLog(log);
-        JOptionPane.showMessageDialog(this, "게임 종료! 빙고가 3개 이상 완성되었습니다.");
+    public void resetGame() {
+        playnum++;
+        bingoCountLabel.setText("Bingo Count: 0");
+        board.bingoCount = 0;
+        board.c_bingoCount=0;
+        board.generateUniqueRandomNumbers();
+        board.initializeBoard();
+        board.original();
+        board.generateUniqueRandomNumbers();
+        setTurnLabel("사용자");
     }
 
-    public void gameOverComputer() {
-        String log = "게임 종료: 컴퓨터 승리!";
-        gameSelectionPanel.appendToGameLog(log);
-        JOptionPane.showMessageDialog(this, "상대방 승리! 빙고가 3개 이상 완성되었습니다.");
+    public void exitGame() {
+        gameSelectionPanel.appendToGameLog("빙고에서 획득한 점수: "+score+"\n");
+        mainApp.showScreen("GameSelection");
+    }
+
+    public void gameOver(String result) {
+        if(playnum==1)
+            gameSelectionPanel.appendToGameLog("----빙고----");
+
+        gameSelectionPanel.appendToGameLog("게임 횟수: "+playnum+"회");
+        if(result.equals("win")) {
+            String log = "플레이어 win! - 플레이어 포인트 +100";
+            gameSelectionPanel.appendToGameLog(log);
+            JOptionPane.showMessageDialog(this, "게임 종료! 빙고가 3개 이상 완성되었습니다.");
+        }
+        else if(result.equals("lose")) {
+            String log = "컴퓨터 win! - 플레이어 포인트 +0";
+            gameSelectionPanel.appendToGameLog(log);
+            JOptionPane.showMessageDialog(this, "컴퓨터 승리! 빙고가 3개 이상 완성되었습니다.");
+        }
     }
 
     public void updateBingoCount(int bingoCount) {

@@ -165,7 +165,7 @@ public class Gameboard extends JPanel implements ActionListener {
             }
             System.out.println("Bingo Count: "+c_bingoCount);
             bingoapp.incrementScore(100);
-            bingoapp.gameOver();
+            bingoapp.gameOver("win");
             return true;
         } else if (c_bingoCount >= 3) { // 컴퓨터가 승리할 경우 점수 추가 없이 게임 종료
             for(int i=0; i<rowSize; i++) { // 컴퓨터 빙고판 확인
@@ -177,7 +177,7 @@ public class Gameboard extends JPanel implements ActionListener {
                 System.out.println();
             }
             System.out.println("Bingo Count: "+c_bingoCount);
-            bingoapp.gameOverComputer();
+            bingoapp.gameOver("lose");
             return true;
         }
         return false;
