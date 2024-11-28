@@ -11,7 +11,7 @@ public class Bingoapp extends JPanel {
     static int score = 0;
     static JLabel scoreLabel = new JLabel("Score: 0");
     static JLabel bingoCountLabel = new JLabel("Bingo Count: 0");
-    static JLabel turnLabel = new JLabel("현재 턴: 사용자"); // 현재 턴 표시 라벨 추가
+    static JLabel turnLabel = new JLabel("현재 턴: 사용자"); // 현재 턴 표시 라벨 수정
     Gameboard board;
     private MainApp mainApp;
 
@@ -23,29 +23,32 @@ public class Bingoapp extends JPanel {
     public void setupMainPanel() {
         setLayout(new BorderLayout());
 
+        // 상단 정보 패널 (가로로 표시)
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new FlowLayout());
+        infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10)); // 가로 간격 30, 세로 간격 10
 
-        // 글씨 크기 설정
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        bingoCountLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        // 라벨 글씨 크기 설정
+        scoreLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        bingoCountLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        turnLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
 
+        // 라벨 추가
         infoPanel.add(scoreLabel);
         infoPanel.add(bingoCountLabel);
         infoPanel.add(turnLabel);
 
         board = new Gameboard(this);
-        add(infoPanel, BorderLayout.NORTH);
-        add(board, BorderLayout.CENTER);
+        add(infoPanel, BorderLayout.NORTH); // 정보 패널 상단 배치
+        add(board, BorderLayout.CENTER); // 게임 보드 가운데 배치
 
+        // 하단 버튼 패널
         JPanel controlPanel = new JPanel();
         JButton startButton = new JButton("Start Game");
         JButton exitButton = new JButton("Exit Game");
 
         // 버튼 글씨 크기와 크기 조정
-        startButton.setFont(new Font("Arial", Font.BOLD, 24));  // 버튼 글씨 크기
-        exitButton.setFont(new Font("Arial", Font.BOLD, 24));   // 버튼 글씨 크기
+        startButton.setFont(new Font("맑은 고딕", Font.BOLD, 24));  // 버튼 글씨 크기
+        exitButton.setFont(new Font("맑은 고딕", Font.BOLD, 24));   // 버튼 글씨 크기
         startButton.setPreferredSize(new Dimension(200, 60));  // 버튼 크기 조정
         exitButton.setPreferredSize(new Dimension(200, 60));   // 버튼 크기 조정
 
@@ -68,13 +71,14 @@ public class Bingoapp extends JPanel {
         add(controlPanel, BorderLayout.SOUTH);
     }
 
-
-
     public void resetGame() {
         bingoCountLabel.setText("Bingo Count: 0");
         board.bingoCount = 0;
+        board.c_bingoCount = 0;
         board.generateUniqueRandomNumbers();
         board.initializeBoard();
+        board.original();
+        board.generateUniqueRandomNumbers();
         setTurnLabel("사용자"); // 게임 초기화 시 사용자 턴으로 설정
     }
 
@@ -97,15 +101,6 @@ public class Bingoapp extends JPanel {
     }
 
     public void setTurnLabel(String turn) {
-        turnLabel.setText("현재 턴: " + turn); // 턴 업데이트 메서드 추가
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 16)); // 강조 효과 추가
-        // 사용자와 컴퓨터에 따라 색상 변경
-        if (turn.equals("사용자")) {
-            turnLabel.setForeground(Color.BLUE); // 사용자 차례일 때 파란색
-        } else if (turn.equals("컴퓨터")) {
-            turnLabel.setForeground(Color.RED); // 컴퓨터 차례일 때 빨간색
-        }
+        turnLabel.setText("현재 턴: " + turn); // 중복 방지
     }
-
-
 }
