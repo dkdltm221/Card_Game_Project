@@ -112,7 +112,7 @@ public class GameSelectionPanel extends JPanel {
 // 반투명 배경 설정 (흰색, 투명도 150)
         gameLog.setBackground(new Color(30, 30, 30, 150));
         gameLog.setForeground(Color.WHITE); // 글자 색상
-        gameLog.setFont(new Font("Arial", Font.PLAIN, 16));
+        gameLog.setFont(new Font("Helvetica Neue", Font.PLAIN, 16));
         gameLog.setOpaque(true); // JTextArea의 기본 배경을 유지하면서 반투명 설정
         gameLog.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
