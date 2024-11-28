@@ -59,15 +59,19 @@ public class Bingoapp extends JPanel {
         add(controlPanel, BorderLayout.SOUTH);
     }
 
-    public void resetGame() {
-        bingoCountLabel.setText("Bingo Count: 0");
-        board.bingoCount = 0;
-        board.generateUniqueRandomNumbers();
-        board.initializeBoard();
-        board.original();
-        setTurnLabel("사용자");
-        gameSelectionPanel.appendToGameLog("게임 초기화됨");
-    }
+
+        public void resetGame() {
+            bingoCountLabel.setText("Bingo Count: 0");
+            board.bingoCount = 0;
+            board.c_bingoCount=0;
+            board.generateUniqueRandomNumbers();
+            board.initializeBoard();
+            board.original();
+            board.generateUniqueRandomNumbers();
+            setTurnLabel("사용자");
+            gameSelectionPanel.appendToGameLog("게임 초기화됨");
+        }
+
 
     public void gameOver() {
         String log = "게임 종료: 사용자 승리!";
