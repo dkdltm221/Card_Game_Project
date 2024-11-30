@@ -16,12 +16,13 @@ public class Thief {
     public void passTurn() {
         panel.takeCardFromUser();
         panel.removeComputerCardAll();
+        panel.checkUserCardsAndAlertVictory();
     }
 
     // 상대방 카드 가져오기
     public void takeCard() {
-        panel.checkComputerCardsAndAlertVictory();
         panel.takeSelectedComputerCard();
+        panel.checkComputerCardsAndAlertVictory();
     }
 
 }
