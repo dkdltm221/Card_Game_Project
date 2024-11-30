@@ -216,8 +216,8 @@ public class Game extends JPanel {
         // Check if they busted
         if (player.getHand().calculatedValue() > 21) {
             // show message
-            lblGameMessage.setText("You BUST - Over 21");
-            gameLog.append("You BUST - 플레이어 포인트 -100\n");
+            lblGameMessage.setText("플레이어 BUST! - Over 21");
+            gameLog.append("플레이어 BUST! - 플레이어 포인트 -100\n");
             // update score
             score-=100;
             losses++;
@@ -241,13 +241,13 @@ public class Game extends JPanel {
             score+=100;
             wins++;
         } else if (dealer.getHand().calculatedValue() > player.getHand().calculatedValue()) {
-            lblGameMessage.setText("딜러 승리 - 더 높은 값");
-            gameLog.append("딜러 승리 - 플레이어 포인트 -100\n");
+            lblGameMessage.setText("딜러 Win! - 더 높은 값");
+            gameLog.append("딜러 Win! - 플레이어 포인트 -100\n");
             score-=100;
             losses++;
         } else if (player.getHand().calculatedValue() > dealer.getHand().calculatedValue()) {
-            lblGameMessage.setText("플레이어 승리 - 더 높은 값 ");
-            gameLog.append("플레이어 승리 - 플레이어 포인트 +100\"\n");
+            lblGameMessage.setText("플레이어 Win! - 더 높은 값 ");
+            gameLog.append("플레이어 Win! - 플레이어 포인트 +100\n");
             score+=100;
             wins++;
         } else {
@@ -262,8 +262,8 @@ public class Game extends JPanel {
      */
     private void checkPlayer21() {
         if (player.getHand().calculatedValue() == 21) {
-            lblGameMessage.setText("21에 도달했습니다! 플레이어 win!");
-            gameLog.append("플레이어 win! - 플레이어 포인트 +100\n");
+            lblGameMessage.setText("21에 도달했습니다! 플레이어 Win!");
+            gameLog.append("플레이어 Win! - 플레이어 포인트 +100\n");
             score +=100;
             wins++;
             btnHit.setVisible(false);

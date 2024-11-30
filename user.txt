@@ -1,4 +1,5 @@
 yunbin 1000
-kkk 215
+kkk 800
+yiji 200
 qwer 100
-yiji 0
+kcy 100
