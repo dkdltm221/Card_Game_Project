@@ -3,6 +3,7 @@ package blackjack;
 import javax.swing.*;
 import java.awt.*;
 import Deck.BlackJackDeck;
+import Panel.Game;
 
 /**
  * Used for shared logic between the dealer and player

@@ -1,5 +1,6 @@
 package my;
 
+import Panel.BingoPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package blackjack;
+package Panel;
 
 import Main.MainApp;
 
@@ -8,6 +8,9 @@ import Deck.BlackJackDeck;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import Panel.GameSelectionPanel;
+import blackjack.Dealer;
+import blackjack.Player;
+
 /**
  * Contains all Game logic
  */

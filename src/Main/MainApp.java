@@ -1,8 +1,6 @@
 package Main;
 
 import Bingo.Bingoapp;
-import Deck.Deck;
-import Login.Login;
 import User.User;
 
 import javax.swing.*;
@@ -10,7 +8,7 @@ import java.awt.*;
 import Panel.GameSelectionPanel;
 import Panel.ScoreboardPanel;
 import Panel.ThiefPanel;
-import blackjack.Game;
+import Panel.Game;
 
 public class MainApp extends JFrame {
     private CardLayout cardLayout;

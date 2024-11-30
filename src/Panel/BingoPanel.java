@@ -1,4 +1,6 @@
-package my;
+package Panel;
+
+import my.Gameboard;
 
 import javax.swing.*;
 import java.awt.*;

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
-
+import Panel.BingoPanel;
 public class Computer extends JFrame {
     Gameboard computerBoard;
     Set<Integer> usedNumbersForComputer;

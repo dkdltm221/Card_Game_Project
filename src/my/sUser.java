@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import Panel.BingoPanel;
 
 public class sUser extends JFrame {
     Gameboard userBoard;
